@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "sout-2d0f6": {
+      "hosting": {
+        "Sout": [
+          "sout-2d0f6"
+        ]
+      }
+    }
+  }
+}
