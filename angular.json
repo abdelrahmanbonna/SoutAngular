@@ -131,5 +131,8 @@
       }
     }
   },
-  "defaultProject": "Sout"
+  "defaultProject": "Sout",
+  "cli": {
+    "analytics": "7455806a-3f41-4d7c-b422-b8452030644b"
+  }
 }
