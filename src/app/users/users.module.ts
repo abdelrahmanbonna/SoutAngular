@@ -9,10 +9,11 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { TalentsComponent } from './components/talents/talents.component';
 
 
 @NgModule({
-  declarations: [UsersComponent, SidebarComponent, HeaderComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent],
+  declarations: [UsersComponent, SidebarComponent, HeaderComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent, TalentsComponent],
   imports: [
     CommonModule,
     UsersRoutingModule
