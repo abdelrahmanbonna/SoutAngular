@@ -1,1 +1,37 @@
-<p>talents works!</p>
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        <app-sidebar></app-sidebar>
+        <div class="col-7 col-sm-7 col-md-8 col-lg-8 my-2 mx-auto">
+
+            <div class="nav nav-tabs bg-dark " role="tablist" id="nav-tab" style="position: sticky;top:12%;">
+                <a class="nav-item nav-link col" data-toggle="tab" aria-selected="false" aria-controls="jokes" role="tab" href="#jokes" style="color: #d8352b" id="jokes-tab">Jokes</a>
+                <a class="nav-item nav-link col" data-toggle="tab" aria-selected="false" aria-controls="stories" role="tab" href="#stories" style="color: #d8352b" id="stories-tab">Stories</a>
+                <a class="nav-item nav-link col" data-toggle="tab" aria-selected="false" aria-controls="songs" role="tab" href="#songs" style="color: #d8352b" id="songs-tab">Songs</a>
+            </div>
+
+            <div class="row mx-auto my-2">
+                <div id="writePst" class="mx-auto">
+                    <div class="firstRow">
+                        <img src="./../../../../assets/avatar.png">
+                        <input type="text" placeholder="What's on your mind, Mai?" />
+                    </div>
+                    <hr>
+                    <div class="secondRow">
+                        <div class="live">
+                            <i class="fas fa-video" id="liveIcon"></i>
+                            <i class="fas fa-microphone-alt"></i>
+                            <i class="fas fa-paperclip"></i>
+                            <input class="postButt col-12" type="button" value="Post">
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

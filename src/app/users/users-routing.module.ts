@@ -12,6 +12,9 @@ import { UsersComponent } from './users.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'messages', component: HomeComponent },
+  { path: 'bookmarks', component: HomeComponent },
+  { path: 'settings', component: HomeComponent },
   { path: 'talents', component: TalentsComponent },
   { path: 'discover', component: DiscoverComponent },
   { path: 'profile', component: ProfileComponent },

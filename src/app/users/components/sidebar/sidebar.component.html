@@ -1,57 +1,41 @@
-<nav id="sidebarMenu" class="col-xl-3 col-lg-3 col-sm-1 col-md-4 col-1 leftSide" style="background-color: #F5F7F8;margin-left: 0.5%">
+<nav id="sidebarMenu" class="col-xl-12 col-lg-12 col-sm-3 col-md-6 col-3 leftSide" style="background-color: #F5F7F8;margin-left: 0.5%">
     <div class="position-sticky my-3 d-flex justify-content-center d-md-block">
         <ul class="nav flex-column   pt-3">
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " [routerLink]="[ '/users/profile' ]" routerLinkActive="active">
                         <img src="../../../../assets/avatar.png" style="width: 50px;border-radius: 50%"><span class="d-none d-md-inline-block" style="margin-left: 18px;font-weight: 500">{{name}}</span>
                     </a>
                 </li>
                 <hr>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
                         <i class="fas fa-bell"></i><span class="d-none d-md-inline-block">
-                                        Notifications</span>
+                                        Notifications<span class="badge badge-pill badge-danger">{{notificationsNo}}</span></span>
                     </a>
                 </li>
                 <hr>
             </div>
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
                         <i class="fas fa-envelope"></i><span class="d-none d-md-inline-block">
-                                        Messages</span>
+                                        Messages <span class="badge badge-pill badge-danger">{{messagesNo}}</span></span>
                     </a>
                 </li>
                 <hr>
             </div>
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
-                        <i class="fas fa-home"></i><span class="d-none d-md-inline-block"> Home</span>
+                    <a class="nav-link " [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
+                        <i class="fas fa-music"></i><span class="d-none d-md-inline-block"> Talents</span>
                     </a>
                 </li>
                 <hr>
             </div>
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
-                        <i class="fas fa-music"></i><span class="d-none d-md-inline-block"> Talent</span>
-                    </a>
-                </li>
-                <hr>
-            </div>
-            <div>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">
-                        <i class="fas fa-book"></i><span class="d-none d-md-inline-block"> Summary</span>
-                    </a>
-                </li>
-                <hr>
-            </div>
-            <div>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
                         <i class="fas fa-hashtag"></i><span class="d-none d-md-inline-block">
                                         Discover</span>
                     </a>
@@ -60,15 +44,16 @@
             </div>
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
                         <i class="fas fa-cog"></i><span class="d-none d-md-inline-block"> Settings</span>
+                        <!-- wait for fatma -->
                     </a>
                 </li>
                 <hr>
             </div>
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " [routerLink]="[ '/users/interests' ]" routerLinkActive="active">
                         <i class="fas fa-bahai"></i><span class="d-none d-md-inline-block"> Interests</span>
 
                     </a>
@@ -76,8 +61,9 @@
                 <hr>
             </div>
             <li class="nav-item">
-                <a class="nav-link " href="#">
+                <a class="nav-link " [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
                     <i class="fas fa-bookmark"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
+                    <!-- wait for fatma -->
                 </a>
             </li>
         </ul>
