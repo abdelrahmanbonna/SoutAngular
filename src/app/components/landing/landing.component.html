@@ -20,10 +20,96 @@
         <div class="col-6 col-md-5">
             <div class="box">
                 <form>
-                    <button id="but1" type="submit" class="btn btn-danger">Sign UP</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" id="but1" class="btn btn-danger" data-toggle="modal" data-target="#Regmodel">
+                      Sign up
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="Regmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Sign up</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="FNameReg" id="FNameReg" aria-describedby="#FNHelpReg" placeholder="First Name" required>
+                                        <small id="FNHelpReg" class="form-text text-danger">Enter your first name</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="SNameReg" id="SNameReg" aria-describedby="#SNHelpReg" placeholder="Second Name" required>
+                                        <small id="SNHelpReg" class="form-text text-danger">Enter your Second name</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="EmailReg" id="EmailReg" aria-describedby="#EmailHelpReg" placeholder="Email" required>
+                                        <small id="EmailHelpReg" class="form-text text-danger">Enter your Email</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="MobileReg" id="MobileReg" aria-describedby="#MobileHelpReg" placeholder="Mobile" required>
+                                        <small id="MobileHelpReg" class="form-text text-danger">Enter your Mobile</small>
+                                    </div>
+                                    <h6>Gender</h6>
+                                    <div class="form-check w-50 p-0">
+                                        <label class="form-check-label mx-5">
+                                        <input type="radio" class="form-check-input" name="GenderReg" id="GenderReg" value="Male" >
+                                        Male
+                                      </label>
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="GenderReg" id="GenderReg" value="Female" >
+                                        Female
+                                      </label>
+                                    </div>
+                                    <small id="GenderHelpReg" class="form-text text-danger w-50 display-inline">Choose your Gender</small>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="PassReg" id="PassReg" aria-describedby="#PassHelpReg" placeholder="Password">
+                                        <small id="PassHelpReg" class="form-text text-danger">Enter a password</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="ConfPassReg" id="ConfPassReg" aria-describedby="#ConfPassHelpReg" placeholder="Confirm Password">
+                                        <small id="ConfPassHelpReg" class="form-text text-danger">Confirm your password</small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Sign up</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 <form>
-                    <input type="button" id="but2" class="btn btn-outline-danger" value="Log in">
+                    <!-- Button trigger modal -->
+                    <button type="button" id="but2" class="btn btn-outline-danger" data-toggle="modal" data-target="#loginmodel">
+                      Login
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="loginmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Login</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="LoginEmail" id="LoginEmail" placeholder="Email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="LoginPass" id="LoginPass" placeholder="Password" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 <div class="dropdown-divider"></div>
                 <span style="color: black;font-size:medium;padding-left: 2vw;">
@@ -41,12 +127,12 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="femailHelpId" placeholder="Email">
+                    <input type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" placeholder="Email" required>
                     <small id="emailHelpId" class="form-text text-muted">Enter your email to reset password</small>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Reset</button>
+                <button type="submit" class="btn btn-primary">Reset</button>
             </div>
         </div>
     </div>
