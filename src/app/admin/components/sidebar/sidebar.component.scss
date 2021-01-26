@@ -1,19 +1,4 @@
-$sidebar-icons-color: #ac341e;
+$sidebar-icons-colr: #ac341e;
 .fas,.fab{
-    color: $sidebar-icons-color;
-}
-
-a{
-    display: flex;
-    justify-content: center;
-}
-
-i{
-    position: relative;
-    top:4px;
-}
-
-.list-group{
-    border-radius: 20px ;
-    box-shadow: 3px 4px 5px gray;
+    color: $sidebar-icons-colr;
 }
