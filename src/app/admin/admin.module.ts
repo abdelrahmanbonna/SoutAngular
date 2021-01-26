@@ -17,6 +17,7 @@ import { BlockComponent } from './components/block/block.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../../environments/environment';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 
@@ -28,7 +29,8 @@ import { environment } from '../../environments/environment';
     CommonModule,
     AdminRoutingModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    AngularFireStorageModule
   ]
 })
 export class AdminModule { }
