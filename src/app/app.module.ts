@@ -8,6 +8,7 @@ import { BookmarkComponent } from './components/bookmark/bookmark.component';
 import { SettingComponent } from './components/setting/setting.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { LandingComponent } from './components/landing/landing.component';
     BookmarkComponent,
     SettingComponent,
     NotfoundComponent,
+    FooterComponent,
     LandingComponent
   ],
   imports: [

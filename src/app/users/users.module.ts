@@ -17,9 +17,6 @@ import {
   HeaderComponent
 } from './components/header/header.component';
 import {
-  FooterComponent
-} from './components/footer/footer.component';
-import {
   DiscoverComponent
 } from './components/discover/discover.component';
 import {
@@ -53,7 +50,6 @@ import {
     HeaderComponent,
     HomeComponent,
     TalentsComponent,
-    FooterComponent,
     DiscoverComponent,
     ProfileComponent,
     OtherProfileComponent,
