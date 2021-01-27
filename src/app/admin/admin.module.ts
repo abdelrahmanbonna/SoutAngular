@@ -11,7 +11,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { TalentsComponent } from './components/talents/talents.component';
-import { MonitoringComponent } from './components/monitoring/monitoring.component';
 import { BlockComponent } from './components/block/block.component';
 
 import { AngularFireModule } from '@angular/fire';
@@ -22,7 +21,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 @NgModule({
-  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, DashboardComponent, ReportsComponent, TalentsComponent, MonitoringComponent, BlockComponent],
+  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, DashboardComponent, ReportsComponent, TalentsComponent,  BlockComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,

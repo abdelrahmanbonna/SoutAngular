@@ -4,6 +4,8 @@ import { FireService } from '../../services/fire.service';
 import { SoutplayerService } from '../../services/soutplayer.service';
 import { Observable, Subscription } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { ReportBlockService } from '../../services/report-block.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reports',
@@ -28,7 +30,9 @@ export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private soutPlayer : SoutplayerService,
               private fire : FireService,
-              private storage : AngularFireStorage) {
+              private storage : AngularFireStorage,
+              private report_block : ReportBlockService,
+              private router : Router) {
    }
 
   ngOnInit(): void {
@@ -60,6 +64,12 @@ export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   pauseAudio(){
     this.soutPlayer.pauseAudio(this.audio);
+  }
+
+  goToBlock(id : any){
+    console.log(id);
+    this.report_block.setId(id);
+    this.router.navigate(['admin/block']);
   }
 
   ngOnDestroy(): void {

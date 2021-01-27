@@ -1,5 +1,5 @@
 h1{
-    border-bottom: 2px solidd black;
+    border-bottom: 1px solid black;
     color: #ac341e;
     text-align: center;
 
@@ -56,3 +56,11 @@ h1{
     background: #d8352b;
     cursor: pointer;
   }
+
+ .report-header{
+    background-color: #cac5c5;
+    font-size: 20px;
+ } 
+ .report-header > *{
+  color: #ac341e;
+ }

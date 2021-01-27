@@ -2,15 +2,15 @@
 <h1>Reports</h1>
 <br><br>
 
-<div class="card my-5" *ngFor="let report of reports; let i = index">
-    <div class="card-header d-flex justify-content-between">
-        <span>Title: {{report.title}}</span>
-        <span>Type: {{report.type}}</span>
-        <small class="text-muted ">{{report.date.toDate() | date: 'dd MM yy hh:mm' }}</small>
+<div class="container my-5" *ngFor="let report of reports; let i = index">
+    <div class="row d-flex justify-content-between align-items-center report-header">
+        <span class="col">Title: {{report.title}}</span>
+        <span class="col">Type: {{report.type}}</span>
+        <small class="col text-muted ">{{report.date.toDate() | date: 'dd MM yy hh:mm' }}</small>
     </div>
-    <div class="card-body">
-        <h4 class="card-title">Description: {{report.description}}</h4>
-        <p class="card-text">
+    <div class="container">
+        <h4 class="row card-title">Description: {{report.description}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi tempore dignissimos veritatis vero unde, minus numquam eligendi sit delectus sunt, enim rem eos, error commodi iusto eum repellat cumque temporibus?</h4>
+        <p class="row">
             <span class="soutplayer">
                 <audio #audio [src]="myaudio[i] | async" ></audio>
                 <div>
@@ -34,12 +34,12 @@
             </span>
             
         </p>
-        <p class="card-text">
+        <p class="row">
             <img class="img-fluid" [src]="myimg[i] | async" alt="img">
         </p>
     </div>
-    <div class="card-footer d-flex  flex-column ">
-        <button class="btn btn-primary col-6 mx-auto">Reporter: {{report.userId}}</button><br>
-        <button class="btn btn-danger col-6 mx-auto">Repoerted: {{report.reportedId}}</button>
+    <div class="row justify-content-center pb-5 border-bottom border-dark">
+        <button class="btn btn-primary col mx-auto" (click)="goToBlock(report.userId)">Reporter: {{report.userId}}</button><br>
+        <button class="btn btn-danger col mx-auto" (click)="goToBlock(report.reportedId)">Repoerted: {{report.reportedId}}</button>
     </div>
 </div> 
