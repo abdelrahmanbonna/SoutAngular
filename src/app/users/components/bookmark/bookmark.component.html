@@ -1,0 +1,260 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <app-sidebar></app-sidebar>
+        <div class="col-9 col-md-8" style="margin-top:1.2%">
+            <div class="btn-group btn-group-lg" role="group" aria-label="bookmarksType">
+                <button type="button" class="btn btn-dark">Later</button>
+                <button type="button" class="btn btn-secondary"><i class="fas fa-plus-circle"></i></button>
+            </div>
+
+            <div id="Later">
+                <div class="bookmark" data-toggle="modal" data-target="#darkPost">
+                    <span aria-hidden="true" class="closeBtn">&times;</span>
+                    <div class="row">
+
+                        <div class="col-3">
+                            <div class="imageContainer">
+                                <img src="../../../../assets/Tent.jpg" class="rounded float-left bookmarkIcon" alt="dark">
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <strong class="FontConfig">Blonde Martha (or long haired Jonas) from DARK spotted in Tenet 😲<br> Everything is connected</strong><br>
+                            <small style="color:gray;">Bookmark • Section: later</small><br>
+                            <small style="color:gray;"><img class="smallPic" src="../../../../assets/clipart2931307.png"> Saved from Heba El2mr</small>
+
+                        </div>
+                        <div class="modal fade" id="darkPost" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div style="padding: 5px;">
+                                    <div>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:whitesmoke;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="post">
+                                            <div class="poster">
+                                                <img src="../../../../assets/avatar.png">
+                                                <div id="posterName">Heba El2mr</div>
+                                                <div id="time">2hr . <i class="fas fa-globe-africa"></i></div>
+                                            </div>
+
+                                            <span>Blonde Martha (or long haired Jonas) from DARK spotted in Tenet 😲<br> Everything is connected </span>
+                                            <img src="../../../../assets/Tent.jpg" class="rounded float-left bookmarkIcon" style="margin: 2% 2% 2% 0%" alt="dark">
+                                            <div class="dropdown-divider"></div>
+
+                                            <div class="lastRowPost">
+
+                                                <div id="like" onclick="addLike()">
+                                                    <i class="far fa-thumbs-up" id="likeIcon"></i>
+                                                    <span id="likeCont">
+                                                        Like
+                                                    </span>
+                                                </div>
+                                                <div id="comment" onclick="addComment()">
+                                                    <i class="fas fa-microphone-alt"></i>
+                                                    <span id="commentCont">
+                                                        Voice
+                                                    </span>
+                                                </div>
+                                                <div id="comment" onclick="addComment()">
+                                                    <i class="far fa-comment-alt" id="commentIcon"></i>
+                                                    <span id="commentCont">
+                                                        Comment
+                                                    </span>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="writecomnt">
+                                                <hr style="margin-top: 55px;margin-bottom: 10px">
+                                                <div class="firstRow">
+                                                    <img src="../../../../assets/avatar.png">
+                                                    <input type="text" placeholder="Write a comment..." id="cmntInput" />
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fas fa-share-square float-right" style="margin-top:-1rem;"></i>
+                </div>
+                <div class="bookmark" data-toggle="modal" data-target="#soulPost">
+                    <span aria-hidden="true" class="closeBtn">&times;</span>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="imageContainer">
+                                <img src="../../../../assets/soul.jpg" class="rounded float-left bookmarkIcon" alt="soul">
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <strong class="FontConfig">You can't crush a soul here, that's what life on earth is for 💙</strong><br>
+                            <small style="color:gray;">Bookmark • Section: later</small><br>
+                            <small style="color:gray;"><img class="smallPic" src="../../../../assets/clipart2931307.png">  Saved from Fatma Elwasify</small>
+                        </div>
+                        <div class="modal fade" id="soulPost" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div style="padding: 5px;">
+                                    <div>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:whitesmoke;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="post">
+                                            <div class="poster">
+                                                <img src="../../../../assets/avatar.png">
+                                                <div id="posterName">Fatma Elwasify</div>
+                                                <div id="time">2hr . <i class="fas fa-globe-africa"></i></div>
+                                            </div>
+
+                                            <span>You can't crush a soul here, that's what life on earth is for 💙 </span>
+                                            <img src="../../../../assets/soul.jpg" class="rounded float-left bookmarkIcon" style="margin: 2% 2% 2% 0%" alt="dark">
+                                            <div class="dropdown-divider"></div>
+
+                                            <div class="lastRowPost">
+
+                                                <div id="like" onclick="addLike()">
+                                                    <i class="far fa-thumbs-up" id="likeIcon"></i>
+                                                    <span id="likeCont">
+                                                        Like
+                                                    </span>
+                                                </div>
+                                                <div id="comment" onclick="addComment()">
+                                                    <i class="fas fa-microphone-alt"></i>
+                                                    <span id="commentCont">
+                                                        Voice
+                                                    </span>
+                                                </div>
+                                                <div id="comment" onclick="addComment()">
+                                                    <i class="far fa-comment-alt" id="commentIcon"></i>
+                                                    <span id="commentCont">
+                                                        Comment
+                                                    </span>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="writecomnt">
+                                                <hr style="margin-top: 55px;margin-bottom: 10px">
+                                                <div class="firstRow">
+                                                    <img src="../../../../assets/avatar.png">
+                                                    <input type="text" placeholder="Write a comment..." id="cmntInput" />
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fas fa-share-square float-right" style="margin-top:-1rem;"></i>
+
+                </div>
+
+                <div class="bookmark" id="post3" data-toggle="modal" data-target="#An8amPost">
+
+                    <span aria-hidden="true" class="closeBtn">&times;</span>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="imageContainer">
+                                <img src="../../../../assets/Hamza.jpg" class="rounded float-left bookmarkIcon" alt="soul">
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <strong class="FontConfig">Angham F Etgah Wahed!</strong><br>
+                            <small style="color:gray;">Bookmark • Section: later</small><br>
+                            <small style="color:gray;"><img class="smallPic" src="../../../../assets/clipart2931307.png"> Saved from Mai Ahmed</small>
+                        </div>
+
+
+                        <div class="container">
+                            <div class="modal fade" id="An8amPost" data-backdrop="static" data-keyboard="false" href="#">
+
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="padding: 5px;">
+
+                                        <div class="modal-body">
+                                            <div>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:grey; margin-top:2%;">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <div class="poster">
+                                                    <img src="../../../../assets/avatar.png">
+                                                    <div id="posterName">Mai Ahmed</div>
+                                                    <div id="time">2hr . <i class="fas fa-globe-africa"></i></div>
+                                                </div>
+
+                                                <span class="soutplayer">
+                                                    <audio id="player" src="../../../../assets/02 Atgah Wahed.mp3"></audio>
+                                                    <div>
+                                                        <i onclick="document.getElementById('player').play()" class="fas fa-2x fa-play-circle" style="color: #d8352b"></i>
+                                                        <i onclick="document.getElementById('player').pause()" class="fas fa-2x fa-pause-circle" style="color: #d8352b"></i>
+                                                        <span id="audtime"></span>
+
+                                                        <input type="range" class="slider" id="myRange1" min="0">
+
+                                                        <span id="auddur"></span>
+                                                        <span class="btn-group dropright">
+                                                            <i class="fas fa-2x fa-volume-up" style="color: #d8352b" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="volicon"></i>
+                                                            <div class="dropdown-menu">
+                                                                <input type="range" id="vol" min="0" max="100">
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </span>
+
+
+                                                <hr style="margin-top: 15px;">
+                                                <div class="lastRowPost">
+                                                <div id="like" onclick="addLike()">
+                                                    <i class="far fa-thumbs-up" id="likeIcon"></i>
+                                                    <span id="likeCont">
+                                                            Like
+                                                    </span>
+                                                </div>
+                                                <div id="comment" onclick="addComment()">
+                                                    <i class="fas fa-microphone-alt"></i>
+                                                    <span id="commentCont">
+                                                            Voice
+                                                        </span>
+                                                </div>
+                                                <div id="comment" onclick="addComment()">
+                                                    <i class="far fa-comment-alt" id="commentIcon"></i>
+                                                    <span id="commentCont">
+                                                            Comment
+                                                    </span>
+                                                </div>
+                                                </div>
+
+
+                                                <div id="writecomnt">
+                                                <hr style="margin-top: 55px;margin-bottom: 10px">
+                                                <div class="firstRow">
+                                                    <img src="../../../../assets/avatar.png">
+                                                    <input type="text" placeholder="Write a comment..." id="cmntInput" />
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fas fa-share-square float-right" style="margin-top:-1rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
