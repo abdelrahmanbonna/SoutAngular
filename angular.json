@@ -133,6 +133,6 @@
   },
   "defaultProject": "Sout",
   "cli": {
-    "analytics": "4b42e789-4d8c-49f5-ae26-15af13e25666"
+    "analytics": false
   }
 }
