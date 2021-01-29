@@ -40,6 +40,9 @@ import {
 import {
   ReportsComponent
 } from './components/reports/reports.component';
+import {
+  SettingComponent
+} from './components/setting/setting.component';
 
 
 
@@ -48,6 +51,7 @@ import {
     UsersComponent,
     SidebarComponent,
     HeaderComponent,
+    SettingComponent,
     HomeComponent,
     TalentsComponent,
     DiscoverComponent,

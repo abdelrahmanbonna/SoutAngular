@@ -1,1 +1,92 @@
-<p>setting works!</p>
+<div id="sidebarMenu" class="col-8 col-md-5 col-sm-8 content" style="background-color: #F5F7F8;margin-left: 0.5%">
+    <div id="privacySetting" class="displaySettings mt-5">
+        <form>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="switch1" onclick="privacy(this.checked)">
+                <label class="custom-control-label" for="switch1" id="privacytext">Public</label>
+            </div>
+        </form>
+    </div>
+    <div id="themeSetting" class="displaySettings">
+        <div class="dropdown-divider"></div>
+
+        <div>
+            <div style="margin-top:2rem; margin-left:1rem; color:rgb(88, 82, 82);">
+                <p class="h2 darkFont"> Icons Color <button type="button" class="btn btn-secondary reset">Reset</button></p>
+            </div>
+            <div id="orange" class="theme theme-0" style="margin-left: 1rem;">
+            </div>
+            <div id="frawly" class="theme theme-1">
+            </div>
+            <div id="darkAmar" class="theme theme-2">
+            </div>
+            <div id="litViolt" class="theme theme-3">
+            </div>
+            <div id="nsViolt" class="theme theme-4">
+            </div>
+            <div id="darkViolt" class="theme theme-5">
+            </div>
+            <div id="mov" class="theme theme-6">
+            </div>
+            <div id="darkMov" class="theme theme-7">
+            </div>
+            <div id="sky" class="theme theme-8">
+            </div>
+            <div class="defaultColor" style="margin-top:5px;">
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+
+        <div>
+            <div style="margin-top:2rem; margin-left: 1rem; color:rgb(88, 82, 82);">
+                <p class="h2 darkFont"> Enable Dark Mode </p>
+                <div class="form-check form-check-inline" style="margin-top:1rem;">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="OFF" onclick="if(this.checked){defaultMode()}" value="option1" checked>
+                    <label class="form-check-label h6 darkFont" for="OFF">
+                        OFF
+                    </label>
+
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="ON" onclick="if(this.checked){OnDark()}" value="option2">
+                    <label class="form-check-label h6 darkFont" for="ON">
+                        ON
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="changePassSetting" class="displaySettings" style=" padding-left:1rem;">
+        <div class="dropdown-divider"></div>
+
+        <form>
+            <div class="form-group">
+                <label for="oldPass" class="h6 darkFont" style="margin-top:2rem; color:rgb(88, 82, 82);">Old Password</label>
+                <input type="password" class="form-control" placeholder="Old Password" id="oldPass">
+            </div>
+            <div class="form-group">
+                <label for="newPass" class="h6 darkFont" style="color:rgb(88, 82, 82);">New Password</label>
+                <input type="password" class="form-control" placeholder="New Password" id="newPass">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+    <div id="deactivateAccSetting" class="displaySettings" style=" padding-left:1rem;">
+        <div class="dropdown-divider"></div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" onclick="if(this.checked){deactivate()}" id=" deAct ">
+            <label class="form-check-label h6 darkFont" for="deAct ">
+                Deactivate your account
+            </label>
+        </div>
+        <div class="alert alert-warning alert-dismissible fade" id="alertdeact" role="alert">
+            <button type="button" onclick="unactivate()" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> <strong>Wornning!</strong> After 30-day deactivation, your account'll be deleted.
+            <button type="button" class="btn btn-light btn-sm" onclick="confirmDeactivate()" href="../landing/landing.html">Confirm</button>
+        </div>
+    </div>
+</div>
+
