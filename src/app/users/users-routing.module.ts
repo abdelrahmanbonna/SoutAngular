@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BookmarkComponent } from './components/bookmark/bookmark.component';
+import { ChatComponent } from './components/chat/chat.component';
 import { DiscoverComponent } from './components/discover/discover.component';
 import { HomeComponent } from './components/home/home.component';
 import { NotoficationComponent } from './components/notofication/notofication.component';
@@ -13,8 +15,8 @@ import { UsersComponent } from './users.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'messages', component: HomeComponent },
-  { path: 'bookmarks', component: HomeComponent },
+  { path: 'messages', component: ChatComponent },
+  { path: 'bookmarks', component: BookmarkComponent },
   { path: 'settings', component: SettingComponent },
   { path: 'talents', component: TalentsComponent },
   { path: 'discover', component: DiscoverComponent },

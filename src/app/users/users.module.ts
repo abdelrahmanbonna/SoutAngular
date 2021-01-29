@@ -43,15 +43,23 @@ import {
 import {
   SettingComponent
 } from './components/setting/setting.component';
+import {
+  BookmarkComponent
+} from './components/bookmark/bookmark.component';
+import {
+  ChatComponent
+} from './components/chat/chat.component';
 
 
 
 @NgModule({
   declarations: [
+    BookmarkComponent,
     UsersComponent,
     SidebarComponent,
     HeaderComponent,
     SettingComponent,
+    ChatComponent,
     HomeComponent,
     TalentsComponent,
     DiscoverComponent,
