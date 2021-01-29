@@ -1,3 +1,4 @@
+
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Report } from '../../models/report';
 import { FireService } from '../../services/fire.service';
@@ -7,12 +8,16 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { ReportBlockService } from '../../services/report-block.service';
 import { Router } from '@angular/router';
 
+import { Component, OnInit } from '@angular/core';
+
+
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ReportsComponent implements OnInit {
+
 
   @ViewChild ('audio')    audio : ElementRef | undefined;
   @ViewChild ('slider')   slider : ElementRef | undefined;
@@ -35,23 +40,8 @@ export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
               private router : Router) {
    }
 
-  ngOnInit(): void {
-    this.subs.push(this.fire.getCollection('Reports').subscribe((resp)=>{
-      this.reports = resp;
 
-      this.reports.forEach(report => {
-        const ref = this.storage.refFromURL(report.image);
-        this.myimg.push(ref.getDownloadURL());
-        const ref2 = this.storage.refFromURL(report.audio);
-        this.myaudio.push(ref2.getDownloadURL());
-        this.meta = ref2.getMetadata();
-        this.meta.subscribe((resp)=>{
-          
-        console.log(resp);
-        })
-      });
-      
-    }));
+  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -77,6 +67,7 @@ export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
       sub.unsubscribe();
     });
   }
+
 
 
 }

@@ -1,0 +1,167 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <app-sidebar></app-sidebar>
+        <nav id="sidebarMenu" class="col-2 col-md-3 sidebar middleSetting" style="margin:1.2%; background-color: #F5F7F8;">
+            <div class="position-sticky my-3 d-flex justify-content-center d-md-block">
+                <ul class="nav flex-column">
+                    <h1 style="margin-left: 3%;">Settings</h1>
+                    <div class="dropdown-divider"></div>
+                    <div>
+                        <li class="nav-item active" id="accountPrivacy">
+                            <a class="nav-link " href="#">
+                                <i class="fas fa-user-lock "></i><span class="d-md-inline-block"> Account Privacy</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" style="float:right; margin-top:5px;" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="theme">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-palette"></i><span class="d-flex d-md-inline-block"> Theme</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" style="float:right; margin-top:5px;" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="changePassword">
+                            <a class="nav-link side" href="#">
+                                <i class="fas fa-key"></i><span class="d-none d-md-inline-block"> Change Password</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" style="float:right; margin-top:5px;" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="notifications">
+                            <a class="nav-link side" href="#">
+                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block"> Notifications</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" style="float:right; margin-top:5px;" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="report">
+                            <a class="nav-link side" href="#">
+                                <i class="fas fa-bug"></i><span class="d-none d-md-inline-block"> Report</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" style="float:right; margin-top:5px;" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="manageAccount">
+                            <a class="nav-link side" href="#">
+                                <i class="fas fa-shield-alt"></i><span class="d-none d-md-inline-block"> Manage Account</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" style="float:right; margin-top:5px;" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                    </div>
+
+                </ul>
+
+            </div>
+        </nav>
+        <div id="sidebarMenu" class="col-8 col-md-5 col-sm-8 content" style="background-color: #F5F7F8;margin-left: 0.5%">
+            <div id="themeSetting" class="displaySettings">
+                <div class="dropdown-divider"></div>
+
+                <div>
+                    <div style="margin-top:2rem; margin-left:1rem; color:rgb(88, 82, 82);">
+                        <p class="h2 darkFont"> Icons Color <button type="button" class="btn btn-secondary reset">Reset</button></p>
+                    </div>
+                    <div id="orange" class="theme theme-0" style="margin-left: 1rem;">
+                    </div>
+                    <div id="frawly" class="theme theme-1">
+                    </div>
+                    <div id="darkAmar" class="theme theme-2">
+                    </div>
+                    <div id="litViolt" class="theme theme-3">
+                    </div>
+                    <div id="nsViolt" class="theme theme-4">
+                    </div>
+                    <div id="darkViolt" class="theme theme-5">
+                    </div>
+                    <div id="mov" class="theme theme-6">
+                    </div>
+                    <div id="darkMov" class="theme theme-7">
+                    </div>
+                    <div id="sky" class="theme theme-8">
+                    </div>
+                    <div class="defaultColor" style="margin-top:5px;">
+                    </div>
+                </div>
+                <div class="dropdown-divider"></div>
+
+                <div>
+                    <div style="margin-top:2rem; margin-left: 1rem; color:rgb(88, 82, 82);">
+                        <p class="h2 darkFont"> Enable Dark Mode </p>
+                        <div class="form-check form-check-inline" style="margin-top:1rem;">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="OFF" onclick="if(this.checked){defaultMode()}" value="option1" checked>
+                            <label class="form-check-label h6 darkFont" for="OFF">
+                          OFF
+                        </label>
+
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="ON" onclick="if(this.checked){OnDark()}" value="option2">
+                            <label class="form-check-label h6 darkFont" for="ON">
+                          ON
+                        </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="changePassSetting" class="displaySettings" style=" padding-left:1rem;">
+                <div class="dropdown-divider"></div>
+
+                <form>
+                    <div class="form-group">
+                        <label for="oldPass" class="h6 darkFont" style="margin-top:2rem; color:rgb(88, 82, 82);">Old Password</label>
+                        <input type="password" class="form-control" placeholder="Old Password" id="oldPass">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPass" class="h6 darkFont" style="color:rgb(88, 82, 82);">New Password</label>
+                        <input type="password" class="form-control" placeholder="New Password" id="newPass">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div id="deactivateAccSetting" class="displaySettings" style=" padding-left:1rem;">
+                <div class="dropdown-divider"></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" onclick="if(this.checked){deactivate()}" id=" deAct ">
+                    <label class="form-check-label h6 darkFont" for="deAct ">
+                      Deactivate your account
+                    </label>
+                </div>
+                <div class="alert alert-warning alert-dismissible fade" id="alertdeact" role="alert">
+                    <button type="button" onclick="unactivate()" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button> <strong>Wornning!</strong> After 30-day deactivation, your account'll be deleted.
+                    <button type="button" class="btn btn-light btn-sm" onclick="confirmDeactivate()">Confirm</button>
+                </div>
+            </div>
+            <div id="accPrivacySetting" class="displaySettings" style=" padding-left:1rem;">
+                <div class="dropdown-divider"></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" onclick="if(this.checked){deactivate()}" id=" deAct ">
+                    <label class="form-check-label h6 darkFont" for="deAct ">
+                      Public
+                    </label>
+                </div>
+                <div class="alert alert-warning alert-dismissible fade" id="alertdeact" role="alert">
+                    <button type="button" onclick="unactivate()" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button> <strong>Wornning!</strong> Anyone can see your posts.
+                    <button type="button" class="btn btn-light btn-sm" onclick="confirmPublic()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
