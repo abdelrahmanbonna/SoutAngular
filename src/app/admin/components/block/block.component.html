@@ -1,1 +1,28 @@
-<p>block works!</p>
+<br><br>
+<h1>Block</h1>
+<br><br>
+<form>
+    <div class="form-group">
+      <label for="userID">UserId:</label>
+      <input type="text" class="form-control" name="id" id="userID" placeholder="Enter user ID" [(ngModel)]="userId">
+    </div>
+    <div class="text-center">
+        <button type="button"  class="btn btn-warning" (click)="getUserInfo()">Get User Info</button><br><br>
+        <div #userInfo class="user-info" hidden="true">
+            <div class="card" style="width: 18rem;"> 
+                <img class="card-img-top" [src]="userProfilePic | async" alt="Card image cap"> 
+                <div class="card-body"> 
+                  <h5 class="card-title">{{user?.first_name}} {{user?.second_name}}</h5>
+                  <p class="card-text">Birth Date: {{user?.birth_date
+                    .toDate() | date: 'dd MM yyyy' 
+                  }}</p>
+                  <p class="card-text">Gender: {{user?.gender}}</p>
+                  <p class="card-text">Mobile: {{user?.mobile}}</p>
+                  <p class="card-text">Blocked: {{user?.blocked}}</p>
+                  <a  class="btn btn-primary">Go to Profile</a>
+                </div>
+              </div>
+        </div><br><br>
+        <button type="button"  class="btn btn-danger" (click)="blockUser()">Block</button>
+    </div>
+</form>
