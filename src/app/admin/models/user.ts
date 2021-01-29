@@ -19,4 +19,5 @@ export interface User {
     profile_pic : string
     reports : string[]
     second_name : string
+    date_created : any
 }
