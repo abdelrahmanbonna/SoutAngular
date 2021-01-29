@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 import { UserInfoService } from 'src/app/services/user-info.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -32,8 +32,7 @@ export class LandingComponent implements OnInit {
     confirmPassword: ['', [Validators.required]],
   }, { validators: this.checkPasswords })
 
-  @ViewChild('childModal') public childModal!: ModalDirective;
-  @ViewChild('childModal1') public childModal1!: ModalDirective;
+
   constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
@@ -60,7 +59,7 @@ export class LandingComponent implements OnInit {
     this.loading = true;
     await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(() => {
       this.loading = false;
-      this.hideChildModal1();
+
       this.route.navigate(['/users/home'])
     }).catch((err) => {
       this.loading = false;
@@ -81,7 +80,7 @@ export class LandingComponent implements OnInit {
       this.registerfrm.value.birthdate
     ).then(() => {
       this.loading = false;
-      this.hideChildModal();
+
       this.route.navigate(['/users/home'])
     }).catch((err) => {
       this.loading = false;
@@ -89,20 +88,5 @@ export class LandingComponent implements OnInit {
     })
   }
 
-  public showChildModal(): void {
-    this.childModal.show();
-  }
-
-  public hideChildModal(): void {
-    this.childModal.hide();
-  }
-
-  public showChildModal1(): void {
-    this.childModal1.show();
-  }
-
-  public hideChildModal1(): void {
-    this.childModal1.hide();
-  }
 
 }
