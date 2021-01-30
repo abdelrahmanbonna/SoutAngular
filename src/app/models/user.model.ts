@@ -13,6 +13,9 @@ export class User {
         public notifications: any[] = [],
         public bookmarks: any[] = [],
         public followers: any[] = [],
-        public following: any[] = [],) { }
+        public following: any[] = [],
+        public createdDate: Date = new Date(),
+        public updatedDate: Date = new Date(),
+    ) { }
 
 }

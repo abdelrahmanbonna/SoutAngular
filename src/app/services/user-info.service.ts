@@ -3,8 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { User } from '../models/user.model';
 import auth from 'firebase/app'
-import { Observable } from 'rxjs';
-
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +13,9 @@ export class UserInfoService {
 
 
   //Variables
-  loggedin: boolean = false;
-  user: User = new User();
+  public loggedin: boolean = false;
+  public user: User = new User();
+  subscribtion: Subscription[] = [];
   constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore) {
 
     // this.fireAuth.onAuthStateChanged(async (User) => {
@@ -33,14 +34,13 @@ export class UserInfoService {
 
   //Methods
   async login(email: string, password: string) {
-    await this.fireAuth.signInWithEmailAndPassword(email, password).then(async res => {
+    await this.fireAuth.signInWithEmailAndPassword(email, password).then(res => {
       this.loggedin = true;
       if (res.user) {
         localStorage.setItem('userauth', JSON.stringify(res.user))
-        //TODO: Request the user data
-        await this.firestore.collection(`users`).doc(res.user.uid).valueChanges().subscribe(data => {
-          console.log(data)
-        })
+        this.subscribtion.push(this.firestore.collection(`users`).doc(res.user.uid).valueChanges().subscribe((data: any) => {
+          this.user = new User(data.id, data.firstName, data.secondName, data.gender, data.mobile, data.picURL, data.coverPicURL, data.birthDate, data.privateAcc, data.favColor, data.favMode, data.notifications, data.bookmarks, data.followers, data.following, data.dateCreated, data.dateUpdated);
+        }))
       } else {
         throw `User not found`
       }
@@ -61,7 +61,7 @@ export class UserInfoService {
           } else {
             gen = "./../../../../assets/avatar2.png"
           }
-          this.user = new User(res.user.uid, fname, sname, gender, mobile);
+          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light", [], [], [], []);
           this.firestore.collection(`Users`).doc(res.user.uid).set({
             id: res.user.uid,
             firstName: fname,
@@ -110,7 +110,46 @@ export class UserInfoService {
 
   async editProfile(user: User) {
     //TODO: add method to edit profile using User only
-    this.firestore.collection(`users`).doc(this.user.id);
+    this.firestore.collection(`users`).doc(this.user.id).update({
+      id: this.user.id,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      gender: user.gender,
+      mobile: user.mobile,
+      picURL: user.picURL,
+      coverPicURL: user.coverPicURL,
+      birthDate: user.birthDate,
+      dateUpdated: new Date().toISOString(),
+      privateAcc: user.privateAcc,
+      favColor: user.favColor,
+      favMode: user.favMode,
+      blocked: false,
+      notifications: user.notifications,
+      bookmarks: user.bookmarks,
+      followers: user.followers,
+      following: user.following,
+    }).catch(err => { console.log(err) });
+  }
+
+  async getusrData() {
+    let usr: auth.User;
+    let data;
+    if (localStorage.getItem('userauth')) {
+      console.log(JSON.parse(localStorage.getItem('userauth')!).uid)
+      usr = JSON.parse(localStorage.getItem('userauth')!);
+      data = this.firestore.collection(`users`).doc(JSON.parse(localStorage.getItem('userauth')!).uid).snapshotChanges().pipe(map(actions => {
+        return actions.payload.data();
+      }))
+      console.log(data)
+    }
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscribtion.forEach(element => {
+      element.unsubscribe();
+    });
   }
 
 

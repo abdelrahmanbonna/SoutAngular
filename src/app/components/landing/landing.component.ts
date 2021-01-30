@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 import { UserInfoService } from 'src/app/services/user-info.service';
-
+import auth from 'firebase/app'
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -36,6 +36,10 @@ export class LandingComponent implements OnInit {
   constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
+    if (localStorage.getItem('userauth')) {
+      this.usrInfo.getusrData()
+      this.route.navigate(['/users/home'])
+    }
   }
 
   checkPasswords(group: FormGroup) {
