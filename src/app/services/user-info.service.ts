@@ -42,7 +42,7 @@ export class UserInfoService {
       }
     }).catch((err) => {
       this.loggedin = false;
-      alert(`${err.message}`)
+      console.log(`${err}`)
       location.reload();
     })
   }
@@ -86,7 +86,7 @@ export class UserInfoService {
 
       }).catch((err) => {
         this.loggedin = false;
-        alert(`${err.message}`)
+        console.log(`${err}`)
         location.reload();
       })
     }
@@ -104,13 +104,13 @@ export class UserInfoService {
         localStorage.removeItem('userdata');
         this.user = new User();
       }
-    ).catch((err) => { alert(`${err.message}`) });
+    ).catch((err) => { console.log(`${err}`) });
   }
 
   async forgotPassword(email: string) {
     await this.fireAuth.sendPasswordResetEmail(email).then(res => {
       alert(res);
-    }).catch((err) => { alert(`${err.message}`) })
+    }).catch((err) => { console.log(`${err}`) })
   }
 
 
@@ -129,12 +129,12 @@ export class UserInfoService {
       privateAcc: user.privateAcc,
       favColor: user.favColor,
       favMode: user.favMode,
-      blocked: false,
+      blocked: this.user.blocked,
       notifications: user.notifications,
       bookmarks: user.bookmarks,
       followers: user.followers,
       following: user.following,
-    }).catch(err => { alert(err.message) });
+    }).catch(err => { console.log(`${err}`) });
   }
 
   ngOnDestroy(): void {
