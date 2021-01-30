@@ -13,17 +13,14 @@ export class HomeComponent implements OnInit {
   greating: string;
   constructor(private usrInfo: UserInfoService, private route: Router) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
-    console.log(this.user)
-    this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
+    this.greating = "What's up, " + this.user.firstName! + " " + this.user.secondName! + "?";
 
   }
 
   ngOnInit(): void {
-    if (!localStorage.getItem('userdata')) {
-      this.route.navigate(['/landing'])
+    if (document.querySelector('.modal-backdrop')) {
+      document.querySelector('.modal-backdrop')!.remove();
     }
-    document.querySelector('.modal-backdrop')!.remove();
-
   }
 
 }

@@ -103,12 +103,13 @@ export class UserInfoService {
         localStorage.removeItem('userdata');
         this.user = new User();
       }
-    ).catch((err) => { console.log(err) });
+    ).catch((err) => { alert(`${err.message}`) });
   }
 
   async forgotPassword(email: string) {
     await this.fireAuth.sendPasswordResetEmail(email).then(res => {
-    }).catch((err) => { console.log(err) })
+      alert(res);
+    }).catch((err) => { alert(`${err.message}`) })
   }
 
 

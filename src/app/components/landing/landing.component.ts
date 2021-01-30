@@ -36,10 +36,11 @@ export class LandingComponent implements OnInit {
   constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('userauth') && !JSON.parse(localStorage.getItem('userdata')!).blocked) {
+    let usr = JSON.parse(localStorage.getItem('userdata')!)
+    if (usr && !(usr.blocked!)) {
       this.route.navigate(['/users/home'])
-    } else if (JSON.parse(localStorage.getItem('userdata')!).blocked) {
-      alert(`You are blocked from our social media.`)
+    } else if (usr.blocked) {
+      alert(`you are blocked`)
     }
   }
 
@@ -64,9 +65,10 @@ export class LandingComponent implements OnInit {
     this.loading = true;
     await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(() => {
       this.loading = false;
-      if (localStorage.getItem('userauth') && !JSON.parse(localStorage.getItem('userdata')!).blocked) {
+      let usr = JSON.parse(localStorage.getItem('userdata')!);
+      if (localStorage.getItem('userauth') && !usr.blocked) {
         this.route.navigate(['/users/home'])
-      } else if (JSON.parse(localStorage.getItem('userdata')!).blocked) {
+      } else if (usr.blocked) {
         alert(`You are blocked from our social media.`)
       }
     }).catch((err) => {
@@ -88,9 +90,10 @@ export class LandingComponent implements OnInit {
       this.registerfrm.value.birthdate
     ).then(() => {
       this.loading = false;
-      if (localStorage.getItem('userauth') && !JSON.parse(localStorage.getItem('userdata')!).blocked) {
+      let usr = JSON.parse(localStorage.getItem('userdata')!);
+      if (localStorage.getItem('userauth') && !usr.blocked) {
         this.route.navigate(['/users/home'])
-      } else if (JSON.parse(localStorage.getItem('userdata')!).blocked) {
+      } else if (usr.blocked) {
         alert(`You are blocked from our social media.`)
       }
     }).catch((err) => {
