@@ -36,8 +36,7 @@ export class LandingComponent implements OnInit {
   constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('userauth')) {
-      this.usrInfo.getusrData()
+    if (this.usrInfo.loggedin) {
       this.route.navigate(['/users/home'])
     }
   }

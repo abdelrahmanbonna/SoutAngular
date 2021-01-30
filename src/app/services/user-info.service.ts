@@ -17,19 +17,6 @@ export class UserInfoService {
   public user: User = new User();
   subscribtion: Subscription[] = [];
   constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore) {
-
-    // this.fireAuth.onAuthStateChanged(async (User) => {
-    //   if (User) {
-    //     this.loggedin = true;
-    //     await this.firestore.collection(`users/${User.uid}`).valueChanges().subscribe(data=>{
-    //       this.user = data;
-    //     })
-    //   } else {
-    //     this.loggedin = false;
-    //   }
-
-    // });
-
   }
 
   //Methods
@@ -131,18 +118,6 @@ export class UserInfoService {
     }).catch(err => { console.log(err) });
   }
 
-  async getusrData() {
-    let usr: auth.User;
-    let data;
-    if (localStorage.getItem('userauth')) {
-      console.log(JSON.parse(localStorage.getItem('userauth')!).uid)
-      usr = JSON.parse(localStorage.getItem('userauth')!);
-      data = this.firestore.collection(`users`).doc(JSON.parse(localStorage.getItem('userauth')!).uid).snapshotChanges().pipe(map(actions => {
-        return actions.payload.data();
-      }))
-      console.log(data)
-    }
-  }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
