@@ -66,10 +66,14 @@ export class LandingComponent implements OnInit {
     await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(() => {
       this.loading = false;
       let usr = JSON.parse(localStorage.getItem('userdata')!);
-      if (localStorage.getItem('userauth') && !usr.blocked) {
-        this.route.navigate(['/users/home'])
-      } else if (usr.blocked) {
-        alert(`You are blocked from our social media.`)
+      if (localStorage.getItem('userauth') !== null) {
+        if (!usr.blocked) {
+          this.route.navigate(['/users/home'])
+        } else if (usr.blocked) {
+          alert(`You are blocked from our social media.`)
+        }
+      } else {
+        alert(`Error occured please relogin`)
       }
     }).catch((err) => {
       this.loading = false;

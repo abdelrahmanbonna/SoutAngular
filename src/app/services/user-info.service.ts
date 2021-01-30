@@ -30,8 +30,9 @@ export class UserInfoService {
         this.subscribtion.push(await this.firestore.collection(`Users`).doc(res.user.uid).get().subscribe(res => {
           if (res.data()) {
             x = res.data();
+            console.log(res.data())
             localStorage.setItem('userdata', JSON.stringify(res.data()))
-            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked)
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!)
           } else if (!res.exists) {
             throw `User not found`
           }
@@ -115,7 +116,7 @@ export class UserInfoService {
 
   async editProfile(user: User) {
     //TODO: add method to edit profile using User only
-    this.firestore.collection(`users`).doc(this.user.id).update({
+    this.firestore.collection(`Users`).doc(this.user.id).update({
       id: this.user.id,
       firstName: user.firstName,
       secondName: user.secondName,
