@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 import { UserInfoService } from 'src/app/services/user-info.service';
 import auth from 'firebase/app'
+import { ModalDirective } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -32,12 +33,13 @@ export class LandingComponent implements OnInit {
     confirmPassword: ['', [Validators.required]],
   }, { validators: this.checkPasswords })
 
-
   constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
-    if (this.usrInfo.loggedin) {
+    if (localStorage.getItem('userauth') && !JSON.parse(localStorage.getItem('userdata')!).blocked) {
       this.route.navigate(['/users/home'])
+    } else if (JSON.parse(localStorage.getItem('userdata')!).blocked) {
+      alert(`You are blocked from our social media.`)
     }
   }
 
@@ -62,8 +64,11 @@ export class LandingComponent implements OnInit {
     this.loading = true;
     await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(() => {
       this.loading = false;
-
-      this.route.navigate(['/users/home'])
+      if (localStorage.getItem('userauth') && !JSON.parse(localStorage.getItem('userdata')!).blocked) {
+        this.route.navigate(['/users/home'])
+      } else if (JSON.parse(localStorage.getItem('userdata')!).blocked) {
+        alert(`You are blocked from our social media.`)
+      }
     }).catch((err) => {
       this.loading = false;
       alert(err)
@@ -83,8 +88,11 @@ export class LandingComponent implements OnInit {
       this.registerfrm.value.birthdate
     ).then(() => {
       this.loading = false;
-
-      this.route.navigate(['/users/home'])
+      if (localStorage.getItem('userauth') && !JSON.parse(localStorage.getItem('userdata')!).blocked) {
+        this.route.navigate(['/users/home'])
+      } else if (JSON.parse(localStorage.getItem('userdata')!).blocked) {
+        alert(`You are blocked from our social media.`)
+      }
     }).catch((err) => {
       this.loading = false;
       alert(err)

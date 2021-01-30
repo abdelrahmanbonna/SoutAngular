@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireStorage } from '@angular/fire/storage'
 import { User } from '../models/user.model';
 import auth from 'firebase/app'
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,22 +17,33 @@ export class UserInfoService {
   public loggedin: boolean = false;
   public user: User = new User();
   subscribtion: Subscription[] = [];
-  constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore) {
+  constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore, private firestorage: AngularFireStorage) {
   }
 
   //Methods
   async login(email: string, password: string) {
-    await this.fireAuth.signInWithEmailAndPassword(email, password).then(res => {
+    await this.fireAuth.signInWithEmailAndPassword(email, password).then(async res => {
       this.loggedin = true;
+      let x: any;
       if (res.user) {
         localStorage.setItem('userauth', JSON.stringify(res.user))
-        this.subscribtion.push(this.firestore.collection(`users`).doc(res.user.uid).valueChanges().subscribe((data: any) => {
-          this.user = new User(data.id, data.firstName, data.secondName, data.gender, data.mobile, data.picURL, data.coverPicURL, data.birthDate, data.privateAcc, data.favColor, data.favMode, data.notifications, data.bookmarks, data.followers, data.following, data.dateCreated, data.dateUpdated);
+        this.subscribtion.push(await this.firestore.collection(`Users`).doc(res.user.uid).get().subscribe(res => {
+          if (res.data()) {
+            x = res.data();
+            localStorage.setItem('userdata', JSON.stringify(res.data()))
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked)
+          } else if (!res.exists) {
+            throw `User not found`
+          }
         }))
       } else {
         throw `User not found`
       }
-    }).catch((err) => { console.log(err) })
+    }).catch((err) => {
+      this.loggedin = false;
+      alert(`${err.message}`)
+      location.reload();
+    })
   }
 
   async signUp(email: string, password: string, fname: string, sname: string, mobile: string, gender: string, confirmPass: string, birthdate: Date) {
@@ -44,9 +56,9 @@ export class UserInfoService {
           localStorage.setItem('userauth', JSON.stringify(res.user))
           //TODO: Save the user data
           if (gender === "Male") {
-            gen = "./../../../../assets/avatar.png"
-          } else {
             gen = "./../../../../assets/avatar2.png"
+          } else {
+            gen = "./../../../../assets/avatar.png"
           }
           this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light", [], [], [], []);
           this.firestore.collection(`Users`).doc(res.user.uid).set({
@@ -71,7 +83,11 @@ export class UserInfoService {
           })
         }
 
-      }).catch((err) => { throw err.message; })
+      }).catch((err) => {
+        this.loggedin = false;
+        alert(`${err.message}`)
+        location.reload();
+      })
     }
     else {
       throw `Password should be same as confirm password.`;
@@ -84,6 +100,7 @@ export class UserInfoService {
         console.log(res)
         this.loggedin = false;
         localStorage.removeItem('userauth');
+        localStorage.removeItem('userdata');
         this.user = new User();
       }
     ).catch((err) => { console.log(err) });
@@ -115,13 +132,10 @@ export class UserInfoService {
       bookmarks: user.bookmarks,
       followers: user.followers,
       following: user.following,
-    }).catch(err => { console.log(err) });
+    }).catch(err => { alert(err.message) });
   }
 
-
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.subscribtion.forEach(element => {
       element.unsubscribe();
     });
