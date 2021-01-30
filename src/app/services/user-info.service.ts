@@ -30,8 +30,9 @@ export class UserInfoService {
         this.subscribtion.push(await this.firestore.collection(`Users`).doc(res.user.uid).get().subscribe(res => {
           if (res.data()) {
             x = res.data();
+            console.log(res.data())
             localStorage.setItem('userdata', JSON.stringify(res.data()))
-            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked)
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!)
           } else if (!res.exists) {
             throw `User not found`
           }
@@ -41,7 +42,7 @@ export class UserInfoService {
       }
     }).catch((err) => {
       this.loggedin = false;
-      alert(`${err.message}`)
+      console.log(`${err}`)
       location.reload();
     })
   }
@@ -85,7 +86,7 @@ export class UserInfoService {
 
       }).catch((err) => {
         this.loggedin = false;
-        alert(`${err.message}`)
+        console.log(`${err}`)
         location.reload();
       })
     }
@@ -103,18 +104,19 @@ export class UserInfoService {
         localStorage.removeItem('userdata');
         this.user = new User();
       }
-    ).catch((err) => { console.log(err) });
+    ).catch((err) => { console.log(`${err}`) });
   }
 
   async forgotPassword(email: string) {
     await this.fireAuth.sendPasswordResetEmail(email).then(res => {
-    }).catch((err) => { console.log(err) })
+      alert(res);
+    }).catch((err) => { console.log(`${err}`) })
   }
 
 
   async editProfile(user: User) {
     //TODO: add method to edit profile using User only
-    this.firestore.collection(`users`).doc(this.user.id).update({
+    this.firestore.collection(`Users`).doc(this.user.id).update({
       id: this.user.id,
       firstName: user.firstName,
       secondName: user.secondName,
@@ -127,12 +129,12 @@ export class UserInfoService {
       privateAcc: user.privateAcc,
       favColor: user.favColor,
       favMode: user.favMode,
-      blocked: false,
+      blocked: this.user.blocked,
       notifications: user.notifications,
       bookmarks: user.bookmarks,
       followers: user.followers,
       following: user.following,
-    }).catch(err => { alert(err.message) });
+    }).catch(err => { console.log(`${err}`) });
   }
 
   ngOnDestroy(): void {

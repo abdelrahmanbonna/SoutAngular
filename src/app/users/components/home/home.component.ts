@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserInfoService } from 'src/app/services/user-info.service';
 
@@ -11,19 +11,14 @@ export class HomeComponent implements OnInit {
 
   user: any;
   greating: string;
-  constructor(private usrInfo: UserInfoService, private route: Router) {
+  constructor(private usrInfo: UserInfoService, private route: Router, private el: ElementRef) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
-    console.log(this.user)
-    this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
+    this.greating = "What's up, " + this.user.firstName! + " " + this.user.secondName! + "?";
 
   }
 
   ngOnInit(): void {
-    if (!localStorage.getItem('userdata')) {
-      this.route.navigate(['/landing'])
-    }
-    document.querySelector('.modal-backdrop')!.remove();
-
+    this.el.nativeElement.querySelector('.modal-backdrop').remove()
   }
 
 }

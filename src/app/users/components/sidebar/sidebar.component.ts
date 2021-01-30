@@ -14,9 +14,8 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!localStorage.getItem('userdata')) {
-      this.route.navigate(['/landing'])
-    }
   }
+
+
 
 }
