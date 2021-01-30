@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark bg-dark justify-content-between px-5 sticky-top sticky-offset">
     <img src="../../../assets/sout.jpeg" style="width: 100px">
 </nav>
-
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
 <div class="container-fluid">
     <div class="row">
         <div class="col-6 col-md-7">
@@ -19,7 +19,7 @@
         </div>
         <div class="col-6 col-md-5">
             <div class="box">
-                <form>
+                <form [formGroup]="registerfrm" (ngSubmit)="register()">
                     <!-- Button trigger modal -->
                     <button type="button" id="but1" class="btn btn-danger" data-toggle="modal" data-target="#Regmodel">
                       Sign up
@@ -37,57 +37,54 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="FNameReg" id="FNameReg" aria-describedby="#FNHelpReg" placeholder="First Name" required>
-                                        <small id="FNHelpReg" class="form-text text-danger">Enter your first name</small>
+                                        <input formControlName="fname" type="text" class="form-control" name="FNameReg" id="FNameReg" aria-describedby="#FNHelpReg" placeholder="First Name" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="SNameReg" id="SNameReg" aria-describedby="#SNHelpReg" placeholder="Second Name" required>
-                                        <small id="SNHelpReg" class="form-text text-danger">Enter your Second name</small>
+                                        <input formControlName="sname" type="text" class="form-control" name="SNameReg" id="SNameReg" aria-describedby="#SNHelpReg" placeholder="Second Name" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" class="form-control" name="EmailReg" id="EmailReg" aria-describedby="#EmailHelpReg" placeholder="Email" required>
-                                        <small id="EmailHelpReg" class="form-text text-danger">Enter your Email</small>
+                                        <input formControlName="email" type="email" class="form-control" name="EmailReg" id="EmailReg" aria-describedby="#EmailHelpReg" placeholder="Email" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="MobileReg" id="MobileReg" aria-describedby="#MobileHelpReg" placeholder="Mobile" required>
-                                        <small id="MobileHelpReg" class="form-text text-danger">Enter your Mobile</small>
+                                      <input formControlName="birthdate" type="date" class="form-control" name="BirthdateReg" id="BirthdateReg"  placeholder="" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input formControlName="mobile" type="text" class="form-control" name="MobileReg" id="MobileReg" aria-describedby="#MobileHelpReg" placeholder="Mobile" required>
                                     </div>
                                     <h6>Gender</h6>
-                                    <div class="form-check w-50 p-0">
+                                    <div class="form-check w-50 p-1 mx-1">
                                         <label class="form-check-label mx-5">
-                                        <input type="radio" class="form-check-input" name="GenderReg" id="GenderReg" value="Male" >
+                                        <input formControlName="gender" type="radio" class="form-check-input" name="GenderReg" value="Male" >
                                         Male
                                       </label>
                                         <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="GenderReg" id="GenderReg" value="Female" >
+                                        <input formControlName="gender" type="radio" class="form-check-input" name="GenderReg"  value="Female" >
                                         Female
                                       </label>
                                     </div>
-                                    <small id="GenderHelpReg" class="form-text text-danger w-50 display-inline">Choose your Gender</small>
+                                    <br>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" name="PassReg" id="PassReg" aria-describedby="#PassHelpReg" placeholder="Password">
-                                        <small id="PassHelpReg" class="form-text text-danger">Enter a password</small>
+                                        <input formControlName="password" type="password" class="form-control" name="PassReg" id="PassReg" aria-describedby="#PassHelpReg" placeholder="Password" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" name="ConfPassReg" id="ConfPassReg" aria-describedby="#ConfPassHelpReg" placeholder="Confirm Password">
-                                        <small id="ConfPassHelpReg" class="form-text text-danger">Confirm your password</small>
+                                        <input formControlName="confirmPassword" type="password" class="form-control" name="ConfPassReg" id="ConfPassReg" aria-describedby="#ConfPassHelpReg" placeholder="Confirm Password" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Sign up</button>
+                                    <button [disabled]="registerfrm.invalid" type="submit" class="btn btn-primary">Sign up</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-                <form>
+                <form [formGroup]="loginfrm" (ngSubmit)="login()">
                     <!-- Button trigger modal -->
                     <button type="button" id="but2" class="btn btn-outline-danger" data-toggle="modal" data-target="#loginmodel">
                       Login
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="loginmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div  class="modal fade" id="loginmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -98,14 +95,14 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input type="email" class="form-control" name="LoginEmail" id="LoginEmail" placeholder="Email" required>
+                                        <input formControlName="email" type="email" class="form-control" name="LoginEmail" id="LoginEmail" placeholder="Email" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" name="LoginPass" id="LoginPass" placeholder="Password" required>
+                                        <input formControlName="password" type="password" class="form-control" name="LoginPass" id="LoginPass" placeholder="Password" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Login</button>
+                                    <button type="submit" class="btn btn-primary" [disabled]="loginfrm.invalid">Login</button>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +111,7 @@
                 <div class="dropdown-divider"></div>
                 <span style="color: black;font-size:medium;padding-left: 2vw;">
                     <a data-toggle="modal" data-target="#ForgotpassModal" style="cursor: pointer;text-decoration: underline;">Forgot Password.??</a>
-                    <form>
+                    <form [formGroup]="forgotpassfrm" (ngSubmit)="forgetpassword()">
                         <!-- Modal -->
                         <div class="modal fade" id="ForgotpassModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -127,12 +124,12 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" placeholder="Email" required>
+                    <input formControlName="email" type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" placeholder="Email" required>
                     <small id="emailHelpId" class="form-text text-muted">Enter your email to reset password</small>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Reset</button>
+                <button type="submit" class="btn btn-primary" [disabled]="forgotpassfrm.invalid">Reset</button>
             </div>
         </div>
     </div>
