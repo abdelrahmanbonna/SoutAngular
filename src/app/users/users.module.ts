@@ -15,6 +15,10 @@ import { TalentsComponent } from './components/talents/talents.component';
 import { SearchComponent } from './components/search/search.component';
 import { NotoficationComponent } from './components/notofication/notofication.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../../environments/environment';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 
@@ -22,7 +26,11 @@ import { ReportsComponent } from './components/reports/reports.component';
   declarations: [UsersComponent, SidebarComponent, HeaderComponent, HomeComponent, LoginComponent, RegisterComponent, TalentsComponent, FooterComponent, DiscoverComponent, ProfileComponent, OtherProfileComponent, SearchComponent, NotoficationComponent, ReportsComponent],
   imports: [
     CommonModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+
   ]
 })
 export class UsersModule { }
