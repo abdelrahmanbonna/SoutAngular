@@ -30,10 +30,10 @@ export class DashBoardService {
    usersChart(chartId : string) {
     this.subs.push(this.fire.getCollection('Users').subscribe((resp)=>{
       resp.forEach(user => {
-        //console.log(user)
-        if (user.dateCreated.toDate().getFullYear() == this.yearNow){
+        //console.log(Number(user.dateCreated.split("-")[1]))
+        if (Number(user.dateCreated.split("-")[0]) == this.yearNow){
           
-            this.usersData[user.dateCreated.toDate().getMonth()]++;
+            this.usersData[(Number(user.dateCreated.split("-")[1])-1) ]++;
         }
 
       });
@@ -93,18 +93,18 @@ export class DashBoardService {
                 label: `Posts in ${this.yearNow} (Total: ${this.postsData.reduce((a, b) => a + b, 0)})`,
                 data: [...this.postsData],
                 backgroundColor: [
-                  '#e6194b',
-                  '#3cb44b',
-                  '#ffe119', 
-                  '#4363d8', 
-                  '#f58231', 
-                  '#911eb4', 
                   '#46f0f0', 
                   '#f032e6', 
                   '#bcf60c', 
                   '#fabebe', 
                   '#aaffc3', 
-                  '#e6beff'
+                  '#e6beff',
+                  '#e6194b',
+                  '#3cb44b',
+                  '#ffe119', 
+                  '#4363d8', 
+                  '#f58231', 
+                  '#911eb4'
                 ],
                 maxBarThickness: 100,
                 borderWidth: 1
@@ -125,53 +125,79 @@ export class DashBoardService {
    };
    
    //not completed
-  //  talentsChart(chartId : string) {
-  //   this.subs.push(this.fire.getCollection('post').subscribe((resp)=>{
-  //     resp.forEach(post => {
-  //       console.log(post.talent.toString())
-  //       // let talent : string = post.talent;
-  //       //   this.subs.push(this.fire.getDocument(talent).subscribe((resp)=>{
-  //       //     console.log(resp);
-  //       //   }))
-  //     });
-  //     new Chart(chartId, {
-  //       type: 'bar',
-  //       data: {
-  //           labels: this.labels,
-  //           datasets: [{
-  //               label: `Posts in ${this.yearNow} (Total: ${this.postsData.reduce((a, b) => a + b, 0)})`,
-  //               data: [...this.postsData],
-  //               backgroundColor: [
-  //                 '#e6194b',
-  //                 '#3cb44b',
-  //                 '#ffe119', 
-  //                 '#4363d8', 
-  //                 '#f58231', 
-  //                 '#911eb4', 
-  //                 '#46f0f0', 
-  //                 '#f032e6', 
-  //                 '#bcf60c', 
-  //                 '#fabebe', 
-  //                 '#aaffc3', 
-  //                 '#e6beff'
-  //               ],
-  //               maxBarThickness: 100,
-  //               borderWidth: 1
-  //           }]
-  //       },
-  //       options: {
-  //         scales: {
-  //           yAxes: [{
-  //               ticks: {
-  //                   beginAtZero: true,
-  //                   stepSize : 1
-  //               }
-  //           }]
-  //       }
-  //       }
-  //     });
-  //   }));
-  // }
+   talentsChart(chartId : string) {
+
+    //talents
+    let talents : any[] =[];
+    let talentsIds : any[] =[];
+    let associativeTalents :any[] =[];
+    let talentsNumbers : any[] =[];
+
+    this.subs.push(this.fire.getCollection('talents').subscribe((resp)=>{
+      resp.forEach(talent => { 
+        talents.push(talent.name);
+        talentsIds.push(talent.ID);
+        associativeTalents[talent.ID] = 0;
+      });
+      //console.log(talents)
+      //console.log(talentsIds)
+    
+
+    //posts-talent
+    this.subs.push(this.fire.getCollection('post').subscribe((resp)=>{
+      resp.forEach(post => {
+        //console.log(post.talent[0]._.S_.path.segments[6])
+        for(let i = 0;i<post.talent.length;i++){
+          //console.log(post.talent[i]._.S_.path.segments[6])
+          associativeTalents[post.talent[i]._.S_.path.segments[6]]++
+        }
+        // let talent : string = post.talent;
+        //   this.subs.push(this.fire.getDocument(talent).subscribe((resp)=>{
+        //     console.log(resp);
+        //   }))
+      });
+      for (let i=0;i<talents.length;i++){
+        talentsNumbers.push(associativeTalents[talentsIds[i]])
+      }
+      new Chart(chartId, {
+        type: 'bar',
+        data: {
+            labels: talents,
+            datasets: [{
+                label: `Talents in ${this.yearNow} (Total: ${talentsNumbers.reduce((a, b) => a + b, 0)})`,
+                data: [...talentsNumbers],
+                backgroundColor: [
+                  '#fabebe', 
+                  '#aaffc3', 
+                  '#e6beff',
+                  '#e6194b',
+                  '#3cb44b',
+                  '#ffe119', 
+                  '#4363d8', 
+                  '#f58231', 
+                  '#911eb4', 
+                  '#46f0f0', 
+                  '#f032e6', 
+                  '#bcf60c'
+                ],
+                maxBarThickness: 100,
+                borderWidth: 1
+            }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize : 1
+                }
+            }]
+        }
+        }
+      });
+    }));
+  }));
+  }
 
    unsubscribe() {
      this.subs.forEach(sub => {

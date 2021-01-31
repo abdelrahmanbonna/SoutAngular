@@ -14,9 +14,9 @@ export class DashboardComponent implements OnInit,OnDestroy {
  
 
   ngOnInit(): void {
-    this.dash.usersChart('myChart');
-    this.dash.postsChart('myChart2');
-    //this.dash.talentsChart('myChart3');
+    this.dash.usersChart('usersChart');
+    this.dash.postsChart('postsChart');
+    this.dash.talentsChart('talentsChart');
   }
 
   ngOnDestroy(): void {
