@@ -13,6 +13,12 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal'
 
+// declare module "@angular/core" {
+//   interface ModuleWithProviders<T = any> {
+//     ngModule: Type<T>;
+//     providers?: Provider[];
+//   }
+// }
 
 @NgModule({
   declarations: [
@@ -42,4 +48,6 @@ import { ModalModule } from 'ngx-bootstrap/modal'
   providers: [UserInfoService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

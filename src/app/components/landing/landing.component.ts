@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 import { UserInfoService } from 'src/app/services/user-info.service';
-
+import auth from 'firebase/app'
+import { ModalDirective } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -31,11 +32,21 @@ export class LandingComponent implements OnInit {
     password: ['', [Validators.required]],
     confirmPassword: ['', [Validators.required]],
   }, { validators: this.checkPasswords })
-
+  @ViewChild('closeloginbutton') closeloginbutton: any;
+  @ViewChild('closeregisterbutton') closeregisterbutton: any;
+  @ViewChild('closeforgetbutton') closeforgetbutton: any;
 
   constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
+    let usr = JSON.parse(localStorage.getItem('userdata')!)
+    if (usr !== null) {
+      if (!(usr.blocked))
+        this.route.navigate(['/users/home'])
+      else if (usr.blocked) {
+        alert(`you are blocked`)
+      }
+    }
   }
 
   checkPasswords(group: FormGroup) {
@@ -48,26 +59,38 @@ export class LandingComponent implements OnInit {
     this.loading = true;
     await this.usrInfo.forgotPassword(this.forgotpassfrm.value.email).then(() => {
       this.loading = false;
+      this.closeforgetbutton.nativeElement.click();
     }).catch((err) => {
       this.loading = false;
-      alert(err)
+      console.log(`${err}`)
     })
   }
 
 
   async login() {
+    event!.preventDefault()
     this.loading = true;
     await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(() => {
       this.loading = false;
-
-      this.route.navigate(['/users/home'])
+      this.closeloginbutton.nativeElement.click();
+      let usr = JSON.parse(localStorage.getItem('userdata')!);
+      if (usr !== null) {
+        if (!usr.blocked) {
+          this.route.navigate(['/users/home'])
+        } else if (usr.blocked) {
+          alert(`You are blocked from our social media.`)
+        }
+      } else {
+        alert(`Error occured please login again`)
+      }
     }).catch((err) => {
       this.loading = false;
-      alert(err)
+      console.log(`${err}`)
     })
   }
 
   async register() {
+    event!.preventDefault()
     this.loading = true;
     await this.usrInfo.signUp(
       this.registerfrm.value.email,
@@ -80,11 +103,16 @@ export class LandingComponent implements OnInit {
       this.registerfrm.value.birthdate
     ).then(() => {
       this.loading = false;
-
-      this.route.navigate(['/users/home'])
+      this.closeregisterbutton.nativeElement.click();
+      let usr = JSON.parse(localStorage.getItem('userdata')!);
+      if (localStorage.getItem('userauth') && !usr.blocked) {
+        this.route.navigate(['/users/home'])
+      } else if (usr.blocked) {
+        alert(`You are blocked from our social media.`)
+      }
     }).catch((err) => {
       this.loading = false;
-      alert(err)
+      console.log(`${err}`)
     })
   }
 
