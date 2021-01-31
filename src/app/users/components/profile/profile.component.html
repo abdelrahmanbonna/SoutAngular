@@ -3,10 +3,10 @@
 
     <div class="row no-padding" class="col-md-12" id="cover" style="margin-bottom: 2.5%">
         <div id="coverPhotoParent">
-            <img src="./assets/cover1.jpg" id="coverPhoto">
+            <img [src]="coverPicURL" id="coverPhoto">
             <div id="avatar">
-                <img src="./assets/avatar.png">
-                <h3 style="text-align: center;margin-top: 15px">Mai Ahmed</h3>
+                <img [src]="picURL">
+                <h3 style="text-align: center;margin-top: 15px">{{userName}}</h3>
             </div>
             <hr style="margin-top: 10%;">
         </div>
@@ -113,8 +113,8 @@
         <div class="col-sm-11 col-md-9 rightSide" style="height: 100%">
             <div id="writePst">
                 <div class="firstRow">
-                    <img src="./assets/avatar.png" style="width: 6%">
-                    <input type="text" placeholder="What's on your mind, Mai?" />
+                    <img [src]="picURL" style="width: 6%">
+                    <input type="text" placeholder={{postMind}} #desc value="" style="cursor:pointer;"/>
                 </div>
                 <hr>
                 <div class="secondRow">
@@ -122,20 +122,34 @@
                         <i class="fas fa-video" id="liveIcon"></i>
                         <i class="fas fa-microphone-alt"></i>
                         <i class="fas fa-paperclip"></i>
-                        <input id="postButt" type="button" value="Post">
+                        <button class="btn" id="postButt" (click)="addPost(desc.value);desc.value=''" >Post</button>
                     </div>
 
                 </div>
             </div>
 
-            <div id="post1">
+            <div id="post1"  *ngFor="let post of postList">
+                <div class="dropdown " style="float: right">
+                    <button class="btn dropdown-toggle points" id="menu1" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                            class="fas fa-ellipsis-h" style="color: #d8352b;font-size: 16px"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" style="padding-left:9px;">
+                            <button (click)="deletePost(post.id)" style="color: black;background-color: transparent;border: none;">
+                                <i class="fas fa-trash"
+                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                Delete Post</button>
+                        </li>
+                    </ul>
+                </div>
                 <div class="poster">
-                    <img src="./assets/avatar.png">
-                    <div id="posterName">Mai Ahmed</div>
-                    <div id="time">2hr . <i class="fas fa-globe-africa"></i></div>
+                    <img [src]="picURL">
+                    <div id="posterName">{{userName}}</div>
+                    <div id="time">{{post.date.toDate()|date:"MMM d, y"}} <i class="fas fa-globe-africa"></i></div>
                 </div>
 
-                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+                <span>{{post.description}}</span>
 
 
                 <hr style="margin-top: 15px;">
@@ -164,7 +178,7 @@
                 <div id="writecomnt">
                     <hr style="margin-top: 55px;margin-bottom: 10px">
                     <div class="firstRow">
-                        <img src="./assets/avatar.png">
+                        <img [src]="picURL">
                         <input type="text" placeholder="Write a comment..." id="cmntInput" />
                     </div>
 
@@ -172,49 +186,6 @@
 
             </div>
 
-            <div id="post1">
-                <div class="poster">
-                    <img src="./assets/avatar.png">
-                    <div id="posterName">Mai Ahmed</div>
-                    <div id="time">9hr . <i class="fas fa-globe-africa"></i></div>
-                </div>
-
-                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
-
-
-                <hr style="margin-top: 15px;">
-                <div class="lastRowPost">
-                    <div id="like">
-                        <i class="far fa-thumbs-up" id="likeIcon"></i>
-                        <span id="likeCont">
-                            Like
-                        </span>
-                    </div>
-                    <div id="comment">
-                        <i class="fas fa-microphone-alt"></i>
-                        <span id="commentCont">
-                            Voice
-                        </span>
-                    </div>
-                    <div id="comment">
-                        <i class="far fa-comment-alt" id="commentIcon"></i>
-                        <span id="commentCont">
-                            Comment
-                        </span>
-                    </div>
-                </div>
-
-
-                <div id="writecomnt">
-                    <hr style="margin-top: 55px;margin-bottom: 10px">
-                    <div class="firstRow">
-                        <img src="./assets/avatar.png">
-                        <input type="text" placeholder="Write a comment..." id="cmntInput" />
-                    </div>
-
-                </div>
-
-            </div>
         </div>
     </div>
 </div>
