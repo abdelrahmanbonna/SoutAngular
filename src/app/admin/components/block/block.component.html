@@ -12,10 +12,8 @@
             <div class="card" style="width: 18rem;"> 
                 <img class="card-img-top" [src]="userProfilePic | async" alt="Card image cap"> 
                 <div class="card-body"> 
-                  <h5 class="card-title">{{user?.first_name}} {{user?.second_name}}</h5>
-                  <p class="card-text">Birth Date: {{user?.birth_date
-                    .toDate() | date: 'dd MM yyyy' 
-                  }}</p>
+                  <h5 class="card-title">{{user?.firstName}} {{user?.secondName}}</h5>
+                  <p class="card-text">Birth Date: {{user?.birthDate | date: 'dd MM yyyy' }}</p>
                   <p class="card-text">Gender: {{user?.gender}}</p>
                   <p class="card-text">Mobile: {{user?.mobile}}</p>
                   <p class="card-text">Blocked: {{user?.blocked}}</p>

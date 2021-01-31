@@ -36,7 +36,7 @@ export class BlockComponent implements OnInit ,OnDestroy{
     this.subs = this.fire.getDocument(`Users/${this.userId}`).subscribe((resp)=>{
       this.user = resp;
       console.log(this.user);
-      const ref = this.storage.refFromURL(resp.profile_pic);
+      const ref = this.storage.refFromURL(resp.picURL);
       this.userProfilePic = ref.getDownloadURL();
       this.renderUserInfo();
     })
