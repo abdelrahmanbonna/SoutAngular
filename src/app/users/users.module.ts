@@ -22,8 +22,24 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 
+
 @NgModule({
-  declarations: [UsersComponent, SidebarComponent, HeaderComponent, HomeComponent, LoginComponent, RegisterComponent, TalentsComponent, FooterComponent, DiscoverComponent, ProfileComponent, OtherProfileComponent, SearchComponent, NotoficationComponent, ReportsComponent],
+  declarations: [
+    BookmarkComponent,
+    UsersComponent,
+    SidebarComponent,
+    HeaderComponent,
+    SettingComponent,
+    ChatComponent,
+    HomeComponent,
+    TalentsComponent,
+    DiscoverComponent,
+    ProfileComponent,
+    OtherProfileComponent,
+    SearchComponent,
+    NotoficationComponent,
+    ReportsComponent
+  ],
   imports: [
     CommonModule,
     UsersRoutingModule,
