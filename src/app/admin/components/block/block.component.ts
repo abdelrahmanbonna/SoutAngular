@@ -1,15 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { User } from '../../models/user';
+import { FireService } from '../../services/fire.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { ReportBlockService } from '../../services/report-block.service';
 
 @Component({
   selector: 'app-block',
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
-export class BlockComponent implements OnInit {
+export class BlockComponent implements OnInit ,OnDestroy{
 
-  constructor() { }
+  @ViewChild ('userInfo')  userInfo : ElementRef | undefined;
+
+  userId : string = "";
+  blockObject : any = {
+    blocked : true
+  }
+  subs : Subscription | undefined;
+  user : User | undefined;
+  userProfilePic : any;
+
+  constructor(private fire : FireService,
+              private storage : AngularFireStorage,
+              private report_block : ReportBlockService) { }
 
   ngOnInit(): void {
+    if(this.report_block.getId()){
+      this.userId = this.report_block.getId();
+    }
+  }
+
+  getUserInfo() : void{
+    this.subs = this.fire.getDocument(`Users/${this.userId}`).subscribe((resp)=>{
+      this.user = resp;
+      console.log(this.user);
+      const ref = this.storage.refFromURL(resp.profile_pic);
+      this.userProfilePic = ref.getDownloadURL();
+      this.renderUserInfo();
+    })
+  }
+
+  blockUser() :void{
+    this.fire.updateDocument(`Users/${this.userId}`,this.blockObject);
+  }
+
+  renderUserInfo() {
+    this.userInfo? this.userInfo.nativeElement.hidden = false
+     : console.log("element undefined");
+  }
+
+  ngOnDestroy(): void {
+    this.subs?.unsubscribe();
   }
 
 }

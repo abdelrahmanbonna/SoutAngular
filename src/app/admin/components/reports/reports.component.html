@@ -1,1 +1,45 @@
-<p>reports works!</p>
+<br><br>
+<h1>Reports</h1>
+<br><br>
+
+<div class="container my-5" *ngFor="let report of reports; let i = index">
+    <div class="row d-flex justify-content-between align-items-center report-header">
+        <span class="col">Title: {{report.title}}</span>
+        <span class="col">Type: {{report.type}}</span>
+        <small class="col text-muted ">{{report.date.toDate() | date: 'dd MM yy hh:mm' }}</small>
+    </div>
+    <div class="container">
+        <h4 class="row card-title">Description: {{report.description}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi tempore dignissimos veritatis vero unde, minus numquam eligendi sit delectus sunt, enim rem eos, error commodi iusto eum repellat cumque temporibus?</h4>
+        <p class="row">
+            <span class="soutplayer">
+                <audio #audio [src]="myaudio[i] | async" ></audio>
+                <div>
+                    <i (click)="playAudio()" class="fas fa-2x fa-play-circle" 
+                    style="color: #d8352b;position: relative;top: 3px;"></i>
+                    <i (click)="pauseAudio()" class="fas fa-2x fa-pause-circle" 
+                    style="color: #d8352b;position: relative;top: 3px;"></i>
+                    <span #audtime style="position: relative;top: -2px;"></span>
+            
+                    <input #slider type="range" class="slider" min="0">
+            
+                    <span #auddur style="position: relative;top: -2px;"></span>
+                    <span class="btn-group dropright">
+                        <i #volicon class="fas fa-2x  fa-volume-up" style="color: #d8352b;position: relative;top: -4px;" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ></i>
+                        <div class="dropdown-menu">
+                            <input #vol type="range" class="slider2" min="0" max="100">
+                        </div>
+                    </span>
+                </div>
+            </span>
+            
+        </p>
+        <p class="row">
+            <img class="img-fluid" [src]="myimg[i] | async" alt="img">
+        </p>
+    </div>
+    <div class="row justify-content-center pb-5 border-bottom border-dark">
+        <button class="btn btn-primary col mx-auto" (click)="goToBlock(report.userId)">Reporter: {{report.userId}}</button><br>
+        <button class="btn btn-danger col mx-auto" (click)="goToBlock(report.reportedId)">Repoerted: {{report.reportedId}}</button>
+    </div>
+</div> 
