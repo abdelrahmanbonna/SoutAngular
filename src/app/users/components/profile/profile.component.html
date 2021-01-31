@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div id="post1"  *ngFor="let post of postList">
+            <div id="post1"  *ngFor="let post of postList;">
                 <div class="dropdown " style="float: right">
                     <button class="btn dropdown-toggle points" id="menu1" type="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
@@ -136,7 +136,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation" style="padding-left:9px;">
-                            <button (click)="deletePost(post.id)" style="color: black;background-color: transparent;border: none;">
+                            <button (click)="deletePost(post.id)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                 <i class="fas fa-trash"
                                     style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
                                 Delete Post</button>
@@ -146,7 +146,7 @@
                 <div class="poster">
                     <img [src]="picURL">
                     <div id="posterName">{{userName}}</div>
-                    <div id="time">{{post.date.toDate()|date:"MMM d, y"}} <i class="fas fa-globe-africa"></i></div>
+                    <div id="time">{{post.date}} <i class="fas fa-globe-africa"></i></div>
                 </div>
 
                 <span>{{post.description}}</span>
