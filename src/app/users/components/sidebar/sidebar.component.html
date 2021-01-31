@@ -4,14 +4,16 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/profile' ]" routerLinkActive="active">
-                        <img src="../../../../assets/avatar.png" style="width: 50px;border-radius: 50%"><span class="d-none d-md-inline-block" style="margin-left: 18px;font-weight: 500">{{name}}</span>
+                        <img [src]="user.picURL" style="width: 50px;border-radius: 50%"><span class="d-none d-md-inline-block" style="margin-left: 18px;font-weight: 500">{{user.firstName}} {{user.secondName}}</span>
                     </a>
+                    
+                    
                 </li>
                 <hr>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
-                        <i class="fas fa-bell" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block">
-                                        Notifications<span class="badge badge-pill badge-danger">{{notificationsNo}}</span></span>
+                        <i class="fas fa-bell"  [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
+                                        Notifications<span *ngIf="!user.notifications.length===0" class="badge badge-pill badge-danger">{{user.notifications.length}}</span></span>
                     </a>
                 </li>
                 <hr>
@@ -19,8 +21,8 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
-                        <i class="fas fa-envelope" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block">
-                                        Messages <span class="badge badge-pill badge-danger">{{messagesNo}}</span></span>
+                        <i class="fas fa-envelope" [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
+                                        Messages <span class="badge badge-pill badge-danger"></span></span>
                     </a>
                 </li>
                 <hr>
