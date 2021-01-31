@@ -16,12 +16,12 @@ export class ProfileComponent implements OnInit {
   picURL: string = "";
   coverPicURL: string = "";
   public user: User = new User();
-  postList: unknown[] = [];
+  postList: Post[] = [];
   public post: Post = new Post();
   postMind: string = "";
   postDesc: string = "";
 
-  constructor(private postsService: PostsService, private route: Router,private firestore: AngularFirestore) { }
+  constructor(private postsService: PostsService, private route: Router, private firestore: AngularFirestore) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
@@ -38,7 +38,10 @@ export class ProfileComponent implements OnInit {
   }
 
   getAllPosts() {
-    this.postList = this.postsService.getAllUserPosts(this.user)
+    this.postsService.getAllUserPosts(this.user).subscribe(res => {
+      this.postList = res
+    });
+    // return this.postList;
     console.log(this.postList)
 
   }
@@ -53,9 +56,15 @@ export class ProfileComponent implements OnInit {
     this.ngOnInit()
   }
 
-  deletePost(id:string){
-    this.postsService.deletePost(id)
-    this.ngOnInit()
+  deletePost(id: string) {
+    this.postsService.deletePost(id).then( 
+      (data) =>{
+        console.log(data);
+
+        this.ngOnInit();
+
+      }) 
+  
   }
 
 }
