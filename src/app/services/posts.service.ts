@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 
@@ -8,27 +10,30 @@ import { User } from '../models/user.model';
 })
 export class PostsService {
   postsRef: AngularFirestoreCollection<Post>;
-  public allPosts: Array<unknown> = []
+  public allPosts: Post[] = []
   public talentsPosts: Array<unknown> = []
   private dbPath = '/post';
+  public dataPost: any;
+  public dataTalentPost: any;
 
   constructor(private firestore: AngularFirestore) {
     this.postsRef = firestore.collection(this.dbPath);
   }
 
-  getAllUserPosts(user: User): Array<unknown> {
-    this.allPosts=[];
-    this.firestore.collection("/post", ref => ref.where('owner', '==', user.id)).get().subscribe(res => {
-      if (res) {
-        res.docs.forEach(element =>
-          this.allPosts.push(element.data())
-        );
-        // console.log(this.allPosts)
-      } else if (!res) {
-        throw `Post not found`
-      }
-    });
-    return this.allPosts;
+  getAllUserPosts(user: User): Observable<any> {
+    this.allPosts = [];
+    var docs;
+
+    return this.firestore.collection("/post", ref => ref.where('owner', '==', user.id)).get().pipe(map(res => {
+      docs = res.docs
+      docs.forEach(el => {
+        this.dataPost = el.data()
+        this.allPosts.push(this.dataPost)
+      })
+      console.log(this.allPosts)
+      return this.allPosts;
+
+    }))
   }
 
   addPost(post: Post): any {
@@ -36,22 +41,23 @@ export class PostsService {
     return this.postsRef.doc(post.id).set({ ...post });
   }
 
-  deletePost(id:string): Promise<void> {
+  deletePost(id: string) {
     return this.postsRef.doc(id).delete();
   }
 
-  getPostsOfTalent(talent:string): Array<unknown> {
+  getPostsOfTalent(talent: string): Observable<any> {
     this.talentsPosts = [];
-    this.firestore.collection("/post", ref => ref.where('talent', '==', talent)).get().subscribe(res => {
-      if (res) {
-        res.docs.forEach(element =>
-          this.talentsPosts.push(element.data())
-        );
-        // console.log(this.talentsPosts)
-      } else if (!res) {
-        throw `Post not found`
-      }
-    });
-    return this.talentsPosts;
+    var docs;
+    
+    return this.firestore.collection("/post", ref => ref.where('talent', '==', talent)).get().pipe(map(res => {
+      docs = res.docs
+      docs.forEach(el => {
+        this.dataTalentPost = el.data()
+        this.talentsPosts.push(this.dataTalentPost)
+      })
+      console.log(this.talentsPosts)
+      return this.talentsPosts;
+
+    }))
   }
 }
