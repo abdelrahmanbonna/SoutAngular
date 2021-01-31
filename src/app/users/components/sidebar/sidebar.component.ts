@@ -11,7 +11,6 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 })
 export class SidebarComponent implements OnInit {
 
-  @Input() iconColor:string="#ee4c22";
   user: any;
   constructor(private usrInfo: UserInfoService, private route: Router) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);

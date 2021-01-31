@@ -17,7 +17,7 @@ import { UsersComponent } from './users.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  //{ path: 'reports', component: ReportsComponent },
+
   { path: 'messages', component: ChatComponent },
   { path: 'bookmarks', component: BookmarkComponent },
   { path: 'settings', component: SettingComponent },
@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'profile/:UID', component: OtherProfileComponent },
   { path: 'notifications', component: NotoficationComponent },
   { path: 'search/:Sq', component: SearchComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 
 ];
 

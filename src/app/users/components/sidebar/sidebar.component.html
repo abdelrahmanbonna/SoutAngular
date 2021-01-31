@@ -12,8 +12,8 @@
                 <hr>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
-                        <i class="fas fa-bell"  [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
-                                        Notifications<span *ngIf="!user.notifications.length===0" class="badge badge-pill badge-danger">{{user.notifications.length}}</span></span>
+                        <i class="fas fa-bell"  [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block">
+                                        Notifications<span [ngStyle]="{'color': user.favColor}"  class="badge badge-pill">{{user.notifications.length}}</span></span>
                     </a>
                 </li>
                 <hr>
@@ -21,8 +21,8 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
-                        <i class="fas fa-envelope" [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
-                                        Messages <span class="badge badge-pill badge-danger"></span></span>
+                        <i class="fas fa-envelope" [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block">
+                                        Messages <span [ngStyle]="{'color': user.favColor}" class="badge badge-pill"></span></span>
                     </a>
                 </li>
                 <hr>
@@ -30,7 +30,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
-                        <i class="fas fa-music" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Talents</span>
+                        <i class="fas fa-music" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Talents</span>
                     </a>
                 </li>
                 <hr>
@@ -38,7 +38,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
-                        <i class="fas fa-hashtag" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block">
+                        <i class="fas fa-hashtag" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block">
                                         Discover</span>
                     </a>
                 </li>
@@ -47,7 +47,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
-                        <i class="fas fa-cog" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Settings</span>
+                        <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Settings</span>
                         <!-- wait for fatma -->
                     </a>
                 </li>
@@ -56,7 +56,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/interests' ]" routerLinkActive="active">
-                        <i class="fas fa-bahai" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Interests</span>
+                        <i class="fas fa-bahai" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Interests</span>
 
                     </a>
                 </li>
@@ -64,7 +64,7 @@
             </div>
             <li class="nav-item">
                 <a class="nav-link " [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
-                    <i class="fas fa-bookmark" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
+                    <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
                     <!-- wait for fatma -->
                 </a>
             </li>
