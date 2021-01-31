@@ -10,7 +10,7 @@ export class Post {
         public description: string = "",
         public image: string[] = [],
         public comment: IComment[] = [],
-        public talent: string[] = [],
+        public talent: string = "",
         public like: string[] = [],
         public mention: string[] = []
     ) { }

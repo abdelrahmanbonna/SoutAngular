@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
@@ -15,37 +16,46 @@ export class ProfileComponent implements OnInit {
   picURL: string = "";
   coverPicURL: string = "";
   public user: User = new User();
-  postList: Post[] = [];
+  postList: unknown[] = [];
   public post: Post = new Post();
+  postMind: string = "";
+  postDesc: string = "";
 
-  constructor(private usrInfo: UserInfoService, private postsService: PostsService, private route: Router) { }
+  constructor(private postsService: PostsService, private route: Router,private firestore: AngularFirestore) { }
 
   ngOnInit(): void {
-    if (this.usrInfo.loggedin) {
-      this.user = this.usrInfo.user;
+    this.user = JSON.parse(localStorage.getItem('userdata')!)
+    if (this.user) {
       // console.log(this.usrInfo.loggedin)
       this.userName = this.user.firstName + " " + this.user.secondName;
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
-
+      this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
-
     }
     else
       this.route.navigate(['/landing'])
   }
 
-  async getAllPosts() {
-    await this.postsService.getAllUserPosts(this.user).then((pstList) => {
-      this.postList = pstList;
-    }).catch((err) => {
-      console.log(err)
-    })
+  getAllPosts() {
+    this.postList = this.postsService.getAllUserPosts(this.user)
+    console.log(this.postList)
+
   }
 
-  addPost() {
-    this.postsService.addPost(this.post)
-    this.route.navigate(['/users/profile'])
+  addPost(desc: string) {
+    this.post.description = desc;
+    this.post.owner = this.user.id;
+    this.post.id = this.firestore.createId();
+    this.postsService.addPost(this.post).then(() => {
+      console.log(this.post)
+    });
+    this.ngOnInit()
+  }
+
+  deletePost(id:string){
+    this.postsService.deletePost(id)
+    this.ngOnInit()
   }
 
 }
