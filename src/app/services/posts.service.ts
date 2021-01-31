@@ -51,11 +51,12 @@ export class PostsService {
     
     return this.firestore.collection("/post", ref => ref.where('talent', '==', talent)).get().pipe(map(res => {
       docs = res.docs
+      console.log(res.docs)
       docs.forEach(el => {
         this.dataTalentPost = el.data()
         this.talentsPosts.push(this.dataTalentPost)
       })
-      console.log(this.talentsPosts)
+      // console.log(this.talentsPosts)
       return this.talentsPosts;
 
     }))

@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Talent } from '../models/talent.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TalentService {
 
-  public allTalents: Array<unknown> = []
+  public allTalents: Talent[] = []
+  public dataTalent: any;
   constructor(private firestore: AngularFirestore) { }
 
-  getAllTalents(): Array<unknown> {
+  getAllTalents(): Observable<any> {
     this.allTalents = [];
-    this.firestore.collection("/talents").get().subscribe(res => {
-      if (res) {
-        res.docs.forEach(element =>
-          this.allTalents.push(element.data())
-        );
-        // console.log(this.allTalents)
-      } else if (!res) {
-        throw `Talent not found`
-      }
-    });
-    return this.allTalents;
+    var docs;
+
+    return this.firestore.collection("/talents").get().pipe(map(res => {
+      docs = res.docs
+      docs.forEach(el => {
+        this.dataTalent = el.data()
+        this.allTalents.push(this.dataTalent)
+      })
+      console.log(this.allTalents)
+      return this.allTalents;
+
+    }))
   }
+
+
 }
