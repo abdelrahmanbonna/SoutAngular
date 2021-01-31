@@ -143,5 +143,20 @@ export class UserInfoService {
     });
   }
 
+  async getUserbyID(id: string) {
+    let x: any;
+    let usrresult: User;
+    this.subscribtion.push(this.firestore.collection(`Users`).doc(id).get().subscribe(res => {
+      if (res.data()) {
+        x = res.data();
+        console.log(res.data());
+        usrresult = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!);
+      } else if (!res.exists) {
+        throw `User not found`;
+      }
+    }))
+
+  }
+
 
 }
