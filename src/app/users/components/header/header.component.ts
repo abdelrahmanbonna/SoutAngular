@@ -9,12 +9,12 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 })
 export class HeaderComponent implements OnInit {
 
-
+  usr = JSON.parse(localStorage.getItem('userdata')!)
   constructor(private usrInfo: UserInfoService, private route: Router) { }
 
   ngOnInit(): void {
-    let usr = JSON.parse(localStorage.getItem('userdata')!)
-    if (usr.id === "") {
+
+    if (this.usr.id === "") {
       this.route.navigate(['/landing'])
     }
   }

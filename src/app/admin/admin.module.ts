@@ -10,11 +10,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { TalentsComponent } from './components/talents/talents.component';
 import { BlockComponent } from './components/block/block.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, DashboardComponent, ReportsComponent, TalentsComponent,  BlockComponent],
+  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, DashboardComponent, ReportsComponent, TalentsComponent, BlockComponent],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     AdminRoutingModule
   ]
