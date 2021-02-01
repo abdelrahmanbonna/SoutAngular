@@ -11,7 +11,8 @@ import { UserInfoService } from './services/user-info.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxLoadingModule } from 'ngx-loading';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ModalModule } from 'ngx-bootstrap/modal'
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ModalModule } from 'ngx-bootstrap/modal'
     TooltipModule,
     ModalModule,
     NgxLoadingModule,
+    BrowserAnimationsModule,
   ],
   providers: [UserInfoService],
   bootstrap: [AppComponent]
