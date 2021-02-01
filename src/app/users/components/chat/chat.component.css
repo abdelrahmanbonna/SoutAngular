@@ -8,6 +8,14 @@
   }
 }
 
+.active {
+  background-color: #BBBBBA;
+}
+
+.inactive {
+  background-color: #F0F2F5;
+}
+
 .theme {
   font-family: ProximaNova, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;

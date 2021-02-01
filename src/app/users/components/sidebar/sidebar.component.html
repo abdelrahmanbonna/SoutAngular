@@ -10,10 +10,10 @@
                     
                 </li>
                 <hr>
-                <li class="nav-item">
+                <li class="nav-item"> <!--*ngIf="!user.notifications.length===0"-->
                     <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
                         <i class="fas fa-bell"  [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
-                                        Notifications<span *ngIf="!user.notifications.length===0" class="badge badge-pill badge-danger">{{user.notifications.length}}</span></span>
+                                        Notifications<span class="badge badge-pill badge-danger">{{user.notifications.length}}</span></span>
                     </a>
                 </li>
                 <hr>

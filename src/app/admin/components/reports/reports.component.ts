@@ -1,14 +1,14 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Report } from '../../models/report';
-import { FireService } from '../../services/fire.service';
-import { SoutplayerService } from '../../services/soutplayer.service';
+// import { Report } from '../../models/report';
+// import { FireService } from '../../services/fire.service';
+// import { SoutplayerService } from '../../services/soutplayer.service';
 import { Observable, Subscription } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ReportBlockService } from '../../services/report-block.service';
 import { Router } from '@angular/router';
 
-import { Component, OnInit } from '@angular/core';
+// import { Component, OnInit } from '@angular/core';
 
 
 @Component({
@@ -27,14 +27,14 @@ export class ReportsComponent implements OnInit {
   @ViewChild ('volicon')  volicon : ElementRef | undefined;
 
   subs : Subscription[] =[];
-  reports : Report[] = [];
+  // reports : Report[] = [];
   myimg : any[] = [];
   myaudio : any[] = [];
   meta: Observable<any> | undefined;
 
 
-  constructor(private soutPlayer : SoutplayerService,
-              private fire : FireService,
+  constructor(//private soutPlayer : SoutplayerService,
+              //private fire : FireService,
               private storage : AngularFireStorage,
               private report_block : ReportBlockService,
               private router : Router) {
@@ -45,15 +45,15 @@ export class ReportsComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-     this.soutPlayer.start(this.audio,this.slider,this.auddur,this.audtime,this.vol,this.volicon);
+    //  this.soutPlayer.start(this.audio,this.slider,this.auddur,this.audtime,this.vol,this.volicon);
   }
 
   playAudio(){
-    this.soutPlayer.playAudio(this.audio);
+    // this.soutPlayer.playAudio(this.audio);
   }
 
   pauseAudio(){
-    this.soutPlayer.pauseAudio(this.audio);
+    // this.soutPlayer.pauseAudio(this.audio);
   }
 
   goToBlock(id : any){

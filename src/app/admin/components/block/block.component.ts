@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from '../../models/user';
-import { FireService } from '../../services/fire.service';
+// import { FireService } from '../../services/fire.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ReportBlockService } from '../../services/report-block.service';
 
@@ -22,7 +22,7 @@ export class BlockComponent implements OnInit ,OnDestroy{
   user : User | undefined;
   userProfilePic : any;
 
-  constructor(private fire : FireService,
+  constructor(//private fire : FireService,
               private storage : AngularFireStorage,
               private report_block : ReportBlockService) { }
 
@@ -33,17 +33,17 @@ export class BlockComponent implements OnInit ,OnDestroy{
   }
 
   getUserInfo() : void{
-    this.subs = this.fire.getDocument(`Users/${this.userId}`).subscribe((resp)=>{
-      this.user = resp;
-      console.log(this.user);
-      const ref = this.storage.refFromURL(resp.profile_pic);
-      this.userProfilePic = ref.getDownloadURL();
-      this.renderUserInfo();
-    })
+    // this.subs = this.fire.getDocument(`Users/${this.userId}`).subscribe((resp)=>{
+    //   this.user = resp;
+    //   console.log(this.user);
+    //   const ref = this.storage.refFromURL(resp.profile_pic);
+    //   this.userProfilePic = ref.getDownloadURL();
+    //   this.renderUserInfo();
+    // })
   }
 
   blockUser() :void{
-    this.fire.updateDocument(`Users/${this.userId}`,this.blockObject);
+    // this.fire.updateDocument(`Users/${this.userId}`,this.blockObject);
   }
 
   renderUserInfo() {
