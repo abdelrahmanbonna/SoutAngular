@@ -1,4 +1,8 @@
+
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserInfoService } from 'src/app/services/user-info.service';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -6,13 +10,17 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  name: string = "Mai Ahmed";
-  messagesNo: number = 10;
-  notificationsNo: number = 13;
+
   @Input() iconColor:string="#ee4c22";
-  constructor() { }
+  user: any;
+  constructor(private usrInfo: UserInfoService, private route: Router) {
+    this.user = JSON.parse(localStorage.getItem('userdata')!);
+  }
+
 
   ngOnInit(): void {
   }
+
+
 
 }

@@ -1,0 +1,139 @@
+#time {
+    color: #616871;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+}
+
+#time i {
+    font-size: 12px;
+}
+
+.poster img {
+    float: left;
+    margin: 0 0% 0 0px;
+    width: 55px;
+    border-radius: 50%;
+}
+
+#posterName {
+    color: #050505;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 5px;
+    cursor: pointer
+}
+
+.lastRowPost i {
+    font-size: 20px;
+    margin-right: 5px;
+    padding-top: 0px;
+    color: #616871;
+}
+
+#like,
+#comment,
+#share {
+    float: left;
+    width: 33.2%;
+    height: 40px;
+    text-align: center;
+    border-radius: 8px;
+
+}
+
+#likeCont,
+#shareCont,
+#commentCont {
+    color: #79737a;
+    font-size: 14px;
+    padding-bottom: 150px;
+    font-weight: 600;
+}
+
+#like:hover,
+#comment:hover,
+#share:hover {
+    cursor: pointer;
+    text-decoration-color: #d8352b
+}
+
+.dropdown-toggle {
+    border-radius: 55%;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-toggle:hover {
+    background-color: #BBBBBA;
+}
+
+.nav2 {
+    border-radius: 0px;
+    margin-right: 0px;
+}
+
+.nav2 span {
+    border-radius: 2px;
+
+}
+
+.nav2 span:hover {
+    color: #d8352b;
+    cursor: pointer;
+    border-bottom: 2px solid;
+    border-bottom-color: #d8352b;
+
+}
+
+.nav2 span:hover {
+    /*    background-color: #BBBBBA;*/
+    background-color: #F5F7F8;
+
+}
+
+.nav2 a {
+    color: #444444;
+   
+}
+
+img {
+    cursor: pointer;
+}
+
+.points i {
+    color: #d8352b;
+}
+
+.firstRow {
+    display: inline-block;
+    width: 100%
+}
+
+.firstRow img {
+    float: left;
+    /*    margin: 2 2.5% 0 0px;*/
+    height: 50px;
+    /*35*/
+    width: 6%;
+    /*35*/
+    border-radius: 50%;
+}
+
+.firstRow input {
+    width: 91.2%;
+    /*488*/
+    height: 35px;
+    /*    padding-left: 5px;*/
+    font-size: 16px;
+    border: 0px;
+    background: #F0F2F5;
+    border-radius: 18px;
+    margin-top: 1%;
+    padding-left: 12px;
+    float: left;
+    margin-bottom: 0px;
+    display: inline-block
+}

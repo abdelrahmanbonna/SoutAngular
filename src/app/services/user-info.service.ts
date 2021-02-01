@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireStorage } from '@angular/fire/storage'
 import { User } from '../models/user.model';
 import auth from 'firebase/app'
-import { Observable } from 'rxjs';
-
+import { Observable, Subscription } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,38 +14,37 @@ export class UserInfoService {
 
 
   //Variables
-  loggedin: boolean = false;
-  user: User = new User();
-  constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore) {
-
-    // this.fireAuth.onAuthStateChanged(async (User) => {
-    //   if (User) {
-    //     this.loggedin = true;
-    //     await this.firestore.collection(`users/${User.uid}`).valueChanges().subscribe(data=>{
-    //       this.user = data;
-    //     })
-    //   } else {
-    //     this.loggedin = false;
-    //   }
-
-    // });
-
+  public loggedin: boolean = false;
+  public user: User = new User();
+  subscribtion: Subscription[] = [];
+  constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore, private firestorage: AngularFireStorage) {
   }
 
   //Methods
   async login(email: string, password: string) {
     await this.fireAuth.signInWithEmailAndPassword(email, password).then(async res => {
       this.loggedin = true;
+      let x: any;
       if (res.user) {
         localStorage.setItem('userauth', JSON.stringify(res.user))
-        //TODO: Request the user data
-        await this.firestore.collection(`users`).doc(res.user.uid).valueChanges().subscribe(data => {
-          console.log(data)
-        })
+        this.subscribtion.push(await this.firestore.collection(`Users`).doc(res.user.uid).get().subscribe(res => {
+          if (res.data()) {
+            x = res.data();
+            console.log(res.data())
+            localStorage.setItem('userdata', JSON.stringify(res.data()))
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!)
+          } else if (!res.exists) {
+            throw `User not found`
+          }
+        }))
       } else {
         throw `User not found`
       }
-    }).catch((err) => { console.log(err) })
+    }).catch((err) => {
+      this.loggedin = false;
+      console.log(`${err}`)
+      location.reload();
+    })
   }
 
   async signUp(email: string, password: string, fname: string, sname: string, mobile: string, gender: string, confirmPass: string, birthdate: Date) {
@@ -57,11 +57,11 @@ export class UserInfoService {
           localStorage.setItem('userauth', JSON.stringify(res.user))
           //TODO: Save the user data
           if (gender === "Male") {
-            gen = "./../../../../assets/avatar.png"
-          } else {
             gen = "./../../../../assets/avatar2.png"
+          } else {
+            gen = "./../../../../assets/avatar.png"
           }
-          this.user = new User(res.user.uid, fname, sname, gender, mobile);
+          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light", [], [], [], []);
           this.firestore.collection(`Users`).doc(res.user.uid).set({
             id: res.user.uid,
             firstName: fname,
@@ -84,7 +84,11 @@ export class UserInfoService {
           })
         }
 
-      }).catch((err) => { throw err.message; })
+      }).catch((err) => {
+        this.loggedin = false;
+        console.log(`${err}`)
+        location.reload();
+      })
     }
     else {
       throw `Password should be same as confirm password.`;
@@ -97,20 +101,46 @@ export class UserInfoService {
         console.log(res)
         this.loggedin = false;
         localStorage.removeItem('userauth');
+        localStorage.removeItem('userdata');
         this.user = new User();
       }
-    ).catch((err) => { console.log(err) });
+    ).catch((err) => { console.log(`${err}`) });
   }
 
   async forgotPassword(email: string) {
     await this.fireAuth.sendPasswordResetEmail(email).then(res => {
-    }).catch((err) => { console.log(err) })
+      alert(res);
+    }).catch((err) => { console.log(`${err}`) })
   }
 
 
   async editProfile(user: User) {
     //TODO: add method to edit profile using User only
-    this.firestore.collection(`users`).doc(this.user.id);
+    this.firestore.collection(`Users`).doc(this.user.id).update({
+      id: this.user.id,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      gender: user.gender,
+      mobile: user.mobile,
+      picURL: user.picURL,
+      coverPicURL: user.coverPicURL,
+      birthDate: user.birthDate,
+      dateUpdated: new Date().toISOString(),
+      privateAcc: user.privateAcc,
+      favColor: user.favColor,
+      favMode: user.favMode,
+      blocked: this.user.blocked,
+      notifications: user.notifications,
+      bookmarks: user.bookmarks,
+      followers: user.followers,
+      following: user.following,
+    }).catch(err => { console.log(`${err}`) });
+  }
+
+  ngOnDestroy(): void {
+    this.subscribtion.forEach(element => {
+      element.unsubscribe();
+    });
   }
 
 

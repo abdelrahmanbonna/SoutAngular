@@ -14,6 +14,12 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
+// declare module "@angular/core" {
+//   interface ModuleWithProviders<T = any> {
+//     ngModule: Type<T>;
+//     providers?: Provider[];
+//   }
+// }
 
 @NgModule({
   declarations: [
@@ -44,4 +50,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
   providers: [UserInfoService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}
