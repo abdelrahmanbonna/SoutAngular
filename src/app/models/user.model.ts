@@ -10,9 +10,14 @@ export class User {
         public privateAcc: boolean = false,
         public favColor: string = "",
         public favMode: string = "",
-        public notifications: any[] = [],
-        public bookmarks: any[] = [],
-        public followers: any[] = [],
-        public following: any[] = [],) { }
+        // public notifications: any[] = [],
+        // public bookmarks: any[] = [],
+        // public followers: any[] = [],
+        // public following: any[] = [],
+        public createdDate: Date = new Date(),
+        public updatedDate: Date = new Date(),
+        public blocked: boolean = false
+    ) { }
+
 
 }

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark bg-dark justify-content-between px-5 sticky-top sticky-offset">
     <img src="../../../assets/sout.jpeg" style="width: 100px">
 </nav>
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" ></ngx-loading>
 <div class="container-fluid">
     <div class="row">
         <div class="col-6 col-md-7">
@@ -26,12 +26,12 @@
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="Regmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal text-danger  fade" id="Regmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Sign up</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button #closeregisterbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                 </div>
@@ -54,11 +54,11 @@
                                     <h6>Gender</h6>
                                     <div class="form-check w-50 p-1 mx-1">
                                         <label class="form-check-label mx-5">
-                                        <input formControlName="gender" type="radio" class="form-check-input" name="GenderReg" value="Male" >
+                                        <input formControlName="gender" type="radio" class="form-check-input" name="gender" value="Male" >
                                         Male
                                       </label>
                                         <label class="form-check-label">
-                                        <input formControlName="gender" type="radio" class="form-check-input" name="GenderReg"  value="Female" >
+                                        <input formControlName="gender" type="radio" class="form-check-input" name="gender"  value="Female" >
                                         Female
                                       </label>
                                     </div>
@@ -84,12 +84,12 @@
                     </button>
 
                     <!-- Modal -->
-                    <div  class="modal fade" id="loginmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal text-danger fade" id="loginmodel" tabindex="99" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Login</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button #closeloginbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                 </div>
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" [disabled]="loginfrm.invalid">Login</button>
+                                    <button type="submit" class="btn btn-primary"  [disabled]="loginfrm.invalid">Login</button>
                                 </div>
                             </div>
                         </div>
@@ -113,12 +113,12 @@
                     <a data-toggle="modal" data-target="#ForgotpassModal" style="cursor: pointer;text-decoration: underline;">Forgot Password.??</a>
                     <form [formGroup]="forgotpassfrm" (ngSubmit)="forgetpassword()">
                         <!-- Modal -->
-                        <div class="modal fade" id="ForgotpassModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal text-danger fade" id="ForgotpassModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Forgot Password</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button #closeforgetbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>

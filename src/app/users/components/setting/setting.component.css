@@ -6,6 +6,18 @@
   background-color: #BBBBBA;
 }
 
+.inactive {
+  background-color: #F0F2F5;
+}
+
+.dark {
+  color: white;
+}
+
+.light {
+  color: #444444;
+}
+
 @media screen and (max-width: 1220px) {
   .middleSetting {
     display: none;
