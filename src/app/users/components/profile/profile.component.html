@@ -15,19 +15,25 @@
     </div>
     <div class="row" style="margin-top: 40px">
         <input type="file" id="myFileInput" />
-        <div class="nav  nav2" id="nav-tab" style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%">
+        <div class="nav  nav2" id="nav-tab"
+            style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%">
 
             <span class="nav-item col">
-                <div class="dropdown edit" style="box-shadow: 0px 0.5px 5px grey;border-radius: 5px;width: 21%;float: right">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="width: 100%"><i class="fas fa-edit" style="color: #D93746;font-size: 20px"></i> <span style="margin-right: 2%">Edit</span>
+                <div class="dropdown edit"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius: 5px;width: 21%;float: right">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"
+                        style="width: 100%"><i class="fas fa-edit" style="color: #D93746;font-size: 20px"></i> <span
+                            style="margin-right: 2%">Edit</span>
                     </button>
                     <ul class="dropdown-menu" style="width: 100%;border: none" role="menu" aria-labelledby="menu1">
                         <li role="presentation" style="padding-left:7px;">
-                            <a role="menuitem" tabindex="-1"  onclick="document.getElementById('myFileInput').click()">
+                            <a role="menuitem" tabindex="-1" type="file" >
                                 <i class="fas fa-camera" style="font-size: 15px"></i> Edit Profile Picture</a>
                         </li>
                         <hr>
-                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1" onclick="document.getElementById('myFileInput').click()"> <i class="fas fa-image" style="font-size: 15px"></i> Edit Cover</a></li>
+                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1"
+                                onclick="document.getElementById('myFileInput').click()"> <i class="fas fa-image"
+                                    style="font-size: 15px"></i> Edit Cover</a></li>
                     </ul>
                 </div>
             </span>
@@ -50,7 +56,8 @@
                     </div>
                     <div>
                         <li class="nav-item">
-                            <a class="nav-link side" [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
+                            <a class="nav-link side" [routerLink]="[ '/users/notifications' ]"
+                                routerLinkActive="active">
                                 <i class="fas fa-bell"></i><span class="d-none d-md-inline-block"> Notifications</span>
                             </a>
                         </li>
@@ -64,7 +71,7 @@
                         </li>
                         <hr>
                     </div>
-                    
+
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
@@ -114,8 +121,8 @@
             <div id="writePst">
                 <div class="firstRow">
                     <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner.id"
-                    routerLinkActive="active" style="cursor: pointer;">
-                    <input type="text" placeholder={{postMind}} #desc value="" style="cursor:auto;"/>
+                        routerLinkActive="active" style="cursor: pointer;">
+                    <input type="text" placeholder={{postMind}} #desc value="" style="cursor:auto;" />
                 </div>
                 <hr>
                 <div class="secondRow">
@@ -123,44 +130,43 @@
                         <i class="fas fa-video" id="liveIcon" style="cursor: pointer;"></i>
                         <i class="fas fa-microphone-alt" style="cursor: pointer;"></i>
                         <i class="fas fa-paperclip" style="cursor: pointer;"></i>
-                        <button class="btn" id="postButt" (click)="addPost(desc.value);desc.value=''" >Post</button>
+                        <button class="btn" id="postButt" (click)="addPost(desc.value);desc.value=''">Post</button>
                     </div>
 
                 </div>
             </div>
 
-            <div id="post1"  *ngFor="let post of postList;let i=index">
+            <div id="post1" *ngFor="let post of postList;let i=index">
                 <div class="dropdown " style="float: right">
-                    <button class="btn dropdown-toggle points" id="menu1" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                            class="fas fa-ellipsis-h" style="color: #d8352b;font-size: 16px"></i>
+                    <button class="btn dropdown-toggle points" id="menu1" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"
+                            style="color: #d8352b;font-size: 16px"></i>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation" style="padding-left:9px;">
-                            <button (click)="deletePost(post.id)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
-                                <i class="fas fa-trash"
-                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                            <button (click)="deletePost(post.id)"
+                                style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <i class="fas fa-trash" style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
                                 Delete Post</button>
                         </li>
                     </ul>
                 </div>
                 <div class="poster">
-                    <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id"
-                    routerLinkActive="active" style="cursor: pointer;">
-                    <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id"
-                    routerLinkActive="active" style="cursor: pointer;">{{userName}}</div>
-                    <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i class="fas fa-globe-africa"></i></div>
+                    <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active"
+                        style="cursor: pointer;">
+                    <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active"
+                        style="cursor: pointer;">{{userName}}</div>
+                    <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}} <i
+                            class="fas fa-globe-africa"></i></div>
                 </div>
 
                 <span class="ml-2">{{post.description}}</span>
-                <br/>
+                <br />
                 <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
                 <span *ngIf="post.audio">
                     <div class="container-audio">
                         <audio controls loop autoplay>
-                            <source 
-                            [src]="post.audio" 
-                                type="audio/ogg">
+                            <source [src]="post.audio" type="audio/ogg">
                             Your browser dose not Support the audio Tag
                         </audio>
                     </div>
@@ -192,9 +198,23 @@
                 <div id="writecomnt">
                     <hr style="margin-top: 55px;margin-bottom: 10px">
                     <div class="firstRow">
-                        <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id"
-                        routerLinkActive="active" style="cursor: pointer;">
-                        <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..." id="cmntInput" />
+                        <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active"
+                            style="cursor: pointer;">
+                        <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..."
+                            id="cmntInput" />
+                    </div>
+
+                </div>
+                <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3" style="width: 70%;margin-left: 3.5%;">
+
+                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="item.writer.picURL">
+
+                    <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
+                        <div><small id="posterName">{{item.writer.name}}</small>
+                            <small style="display: block;font-size: 10px;">
+                                {{item.date | date:'dd-MM-yyyy hh:mm'}}</small>
+                        </div>
+                        <span style="font-weight: 400;">{{item.description}}</span>
                     </div>
 
                 </div>

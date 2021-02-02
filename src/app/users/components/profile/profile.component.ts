@@ -26,7 +26,15 @@ export class ProfileComponent implements OnInit {
   commentsList: any[] = [];
 
   constructor(private postsService: PostsService, private route: Router,
-    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) { }
+    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) {
+      
+     }
+
+    //  uploadFile(event:any) {
+    //   const file = event.target.files[0];
+    //   const filePath = '/Users/profile_pics';
+    //   const task = this.storage.upload(filePath, file);
+    // }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
