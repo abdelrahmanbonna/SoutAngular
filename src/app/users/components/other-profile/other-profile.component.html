@@ -3,10 +3,10 @@
 
     <div class="row no-padding" class="col-md-12" id="cover" style="margin-bottom: 2.5%">
         <div id="coverPhotoParent">
-            <img src="./assets/cover2.jpeg" id="coverPhoto">
+            <img [src]="userInfo.coverPicURL" id="coverPhoto">
             <div id="avatar">
-                <img src="./assets/avatar2.png">
-                <h3 style="text-align: center;margin-top: 15px">Name</h3>
+                <img [src]="userInfo.picURL">
+                <h3 style="text-align: center;margin-top: 15px">{{userInfo.firstName+" "+userInfo.secondName}}</h3>
             </div>
             <hr style="margin-top: 10%;">
         </div>
@@ -16,30 +16,65 @@
     <div class="row" style="margin-top: 40px">
         <input type="file" id="myFileInput" />
 
-        <div class="nav  nav2 justify-content-end" id="nav-tab" style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%;">
+        <div class="nav  nav2 justify-content-end" id="nav-tab"
+            style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%;">
             <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Add Friend">
-                <div class="dropdown edit dropleft" style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
-                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown" style="width: 100%"><i class="fas fa-user-plus" style="font-size: 16px;text-align: center"></i>
+                <div class="dropdown edit dropleft"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
+                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown"
+                        style="width: 100%"><i class="fas fa-user-plus" style="font-size: 16px;text-align: center"></i>
                     </button>
                 </div>
             </span>
             <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Send Message">
-                <div class="edit dropleft" style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
-                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown" style="width: 100%"><i class="fas fa-envelope" style="font-size: 16px;text-align: center"></i>
+                <div class="edit dropleft"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
+                    <button [routerLink]="[ '/users/messages' ]" routerLinkActive="active" class="btn btn-default "
+                        type="button" id="menu1" data-toggle="dropdown" style="width: 100%"><i class="fas fa-envelope"
+                            style="font-size: 16px;text-align: center"></i>
                     </button>
                 </div>
             </span>
+
+
             <span class="nav-item">
-                <div class="dropdown edit" style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
-                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown" style="width: 100%"><i class="fas fa-ellipsis-h" style="font-size: 16px;text-align: center"></i>
+                <div class="dropdown edit"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
+                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown"
+                        style="width: 100%"><i class="fas fa-ellipsis-h" style="font-size: 16px;text-align: center"></i>
                     </button>
                     <ul class="dropdown-menu" style="width: 25%;border: none" role="menu" aria-labelledby="menu1">
                         <li role="presentation" style="padding-left:7px;">
-                            <a role="menuitem" tabindex="-1" onclick="document.getElementById('myFileInput').click()">
-                                <i class="fas fa-exclamation-triangle" style="font-size: 15px"></i> Report Profile</a>
+                            <a role="menuitem" tabindex="-1" (click)="open(content)">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 15px"></i>
+                                Report Profile
+                            </a>
+
+                            <!-- Modal -->
+                            <ng-template #content let-c="close" let-d="dismiss">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="modal-basic-title">Report {{userInfo.firstName}} !</h4>
+                                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control"  #title placeholder="Title">
+                                    <br/>
+                                    <input type="text" class="form-control"  #desc placeholder="Description">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-dark"
+                                        (click)="c('Save click');reportUser(title.value,desc.value)">Report</button>
+                                </div>
+                            </ng-template>
+                            <!-- End Modal -->
+
                         </li>
                         <hr>
-                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1" onclick="document.getElementById('myFileInput').click()"> <i class="fas fa-ban" style="font-size: 15px"></i> Block</a></li>
+                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1"
+                                onclick="document.getElementById('myFileInput').click()"> <i class="fas fa-ban"
+                                    style="font-size: 15px"></i> Block</a></li>
                     </ul>
                 </div>
             </span>
@@ -63,7 +98,8 @@
                     </div>
                     <div>
                         <li class="nav-item">
-                            <a class="nav-link side" [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
+                            <a class="nav-link side" [routerLink]="[ '/users/notifications' ]"
+                                routerLinkActive="active">
                                 <i class="fas fa-bell"></i><span class="d-none d-md-inline-block"> Notifications</span>
                             </a>
                         </li>
@@ -77,7 +113,7 @@
                         </li>
                         <hr>
                     </div>
-                    
+
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
@@ -126,8 +162,8 @@
         <div class="col-sm-11 col-md-9 rightSide" style="height: 100%">
             <div id="writePst">
                 <div class="firstRow">
-                    <img src="./assets/avatar2.png" style="width: 6%">
-                    <input type="text" placeholder="Write something to Name..." />
+                    <img [src]="userInfo.picURL" style="width: 6%;cursor: pointer;">
+                    <input type="text" placeholder={{postMind}} />
                 </div>
                 <hr>
                 <div class="secondRow">
@@ -141,16 +177,28 @@
                 </div>
             </div>
 
-            <div id="post1">
+            <div id="post1" *ngFor="let post of postList;">
                 <div class="poster">
-                    <img src="./assets/avatar2.png">
-                    <div id="posterName">Name</div>
-                    <div id="time">2hr . <i class="fas fa-globe-africa"></i></div>
+                    <img [src]="userInfo.picURL" style="cursor: pointer;">
+                    <div id="posterName" style="cursor: pointer;">{{userInfo.firstName+" "+userInfo.secondName}}</div>
+                    <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i
+                            class="fas fa-globe-africa"></i></div>
                 </div>
 
-                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
-
-
+                <span class="ml-2">{{post.description}}</span>
+                <br/>
+                <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
+                <span *ngIf="post.audio">
+                    <div class="container-audio">
+                        <audio controls loop autoplay>
+                            <source 
+                            [src]="post.audio" 
+                                type="audio/ogg">
+                            Your browser dose not Support the audio Tag
+                        </audio>
+                    </div>
+                </span>
+                
                 <hr style="margin-top: 15px;">
                 <div class="lastRowPost">
                     <div id="like" onclick="addLike()">
@@ -177,7 +225,8 @@
                 <div id="writecomnt">
                     <hr style="margin-top: 55px;margin-bottom: 10px">
                     <div class="firstRow">
-                        <img src="./assets/avatar2.png">
+                        <img [src]="user.picURL" [routerLink]="'/users/profile'"
+                        routerLinkActive="active" style="cursor: pointer;">
                         <input type="text" placeholder="Write a comment..." id="cmntInput" />
                     </div>
 
@@ -185,49 +234,7 @@
 
             </div>
 
-            <div id="post1">
-                <div class="poster">
-                    <img src="./assets/avatar2.png">
-                    <div id="posterName">Name</div>
-                    <div id="time">9hr . <i class="fas fa-globe-africa"></i></div>
-                </div>
 
-                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
-
-
-                <hr style="margin-top: 15px;">
-                <div class="lastRowPost">
-                    <div id="like">
-                        <i class="far fa-thumbs-up" id="likeIcon"></i>
-                        <span id="likeCont">
-                            Like
-                        </span>
-                    </div>
-                    <div id="comment">
-                        <i class="fas fa-microphone-alt"></i>
-                        <span id="commentCont">
-                            Voice
-                        </span>
-                    </div>
-                    <div id="comment">
-                        <i class="far fa-comment-alt" id="commentIcon"></i>
-                        <span id="commentCont">
-                            Comment
-                        </span>
-                    </div>
-                </div>
-
-
-                <div id="writecomnt">
-                    <hr style="margin-top: 55px;margin-bottom: 10px">
-                    <div class="firstRow">
-                        <img src="./assets/avatar2.png">
-                        <input type="text" placeholder="Write a comment..." id="cmntInput" />
-                    </div>
-
-                </div>
-
-            </div>
         </div>
     </div>
 </div>

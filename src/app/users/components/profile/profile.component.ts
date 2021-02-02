@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
-import { UserInfoService } from 'src/app/services/user-info.service';
+import { FireService } from 'src/app/services/fire.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,22 +14,38 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 })
 export class ProfileComponent implements OnInit {
   userName: string = "";
-  picURL: string = "";
+  picURL: any;
   coverPicURL: string = "";
   public user: User = new User();
   postList: Post[] = [];
   public post: Post = new Post();
   postMind: string = "";
   postDesc: string = "";
+  postcomfields: string[] = [];
+  LikesList: any[] = [];
+  commentsList: any[] = [];
 
-  constructor(private postsService: PostsService, private route: Router, private firestore: AngularFirestore) { }
+  constructor(private postsService: PostsService, private route: Router,
+    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) {
+      
+     }
+
+    //  uploadFile(event:any) {
+    //   const file = event.target.files[0];
+    //   const filePath = '/Users/profile_pics';
+    //   const task = this.storage.upload(filePath, file);
+    // }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
       // console.log(this.usrInfo.loggedin)
       this.userName = this.user.firstName + " " + this.user.secondName;
+
+      // const ref = this.storage.refFromURL(this.user.picURL);
+      // this.picURL = ref.getDownloadURL();
       this.picURL = this.user.picURL;
+
       this.coverPicURL = this.user.coverPicURL;
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
@@ -38,8 +55,14 @@ export class ProfileComponent implements OnInit {
   }
 
   getAllPosts() {
-    this.postsService.getAllUserPosts(this.user).subscribe(res => {
+    this.postsService.getAllUserPosts(this.user.id).subscribe(res => {
       this.postList = res
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
     });
     // return this.postList;
     console.log(this.postList)
@@ -50,8 +73,8 @@ export class ProfileComponent implements OnInit {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName,
-      this.post.owner.picURL = this.user.picURL,
-      this.post.id = this.firestore.createId();
+    this.post.owner.picURL = this.user.picURL,
+    this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });
@@ -67,6 +90,52 @@ export class ProfileComponent implements OnInit {
 
       })
 
+  }
+
+  addLike(postid: string) {
+    this.firestore.collection('post').doc(postid).collection("like").add({
+      userid: this.user.id
+    })
+    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+  }
+
+  addComment(postid: string, index: number) {
+    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+      writer: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      },
+      description: this.postcomfields[index],
+      date: new Date().toISOString(),
+    })
+    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+  }
+
+  async getComments(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      console.log(data)
+    })
+  }
+
+  async getLikes(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+      console.log(data)
+    })
+  }
+
+  async notifyUser(usrId: string, msg: string) {
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+      date: new Date().toISOString(),
+      description: msg,
+      maker: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      }
+    })
   }
 
 }
