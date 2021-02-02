@@ -33,6 +33,12 @@ export class NotoficationComponent implements OnInit {
       console.log(res)
     })
   }
+
+  removeN(id: string) {
+    this.firestore.collection('Users').doc(this.user.id).collection('notifications').doc(id).delete();
+  }
+
+
 }
 
 

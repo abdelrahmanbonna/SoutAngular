@@ -5,17 +5,24 @@ import { Post } from 'src/app/models/post.model';
 import { FireService } from 'src/app/services/fire.service';
 import { PostsService } from 'src/app/services/posts.service';
 import { Subscription } from 'rxjs';
+import * as RecordRTC from 'recordrtc';
+import { DomSanitizer } from "@angular/platform-browser";
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  isRecordingVideo: boolean = false;
+  urlsVideo: any[] = [];
 
   styleObject(): Object {
     return { color: this.user.favColor }
   }
-
+  isRecording = false; //audio recorder item
+  private record: any; //audio recorder item
+  public urls: any[] = []; //audio recorder audios
+  private error: any; //audio recorder error
   subscribtion: Subscription[] = [];
   postList: any[] = [];
   LikesList: any[] = [];
@@ -26,7 +33,7 @@ export class HomeComponent implements OnInit {
   user: any;
   postcomfields: string[] = [];
   greating: string;
-  constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private route: Router) {
+  constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private route: Router, private domSanitizer: DomSanitizer) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
@@ -62,7 +69,9 @@ export class HomeComponent implements OnInit {
   }
 
   async notifyUser(usrId: string, msg: string) {
-    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+    let id = this.firestore.createId();
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').doc(id).set({
+      id: id,
       date: new Date().toISOString(),
       description: msg,
       maker: {
@@ -142,5 +151,79 @@ export class HomeComponent implements OnInit {
       console.log(data)
     }))
   }
+
+
+  startRecording() {
+    this.isRecording = true;
+    let mediaConstraints = {
+      video: false,
+      audio: true
+    };
+    navigator.mediaDevices
+      .getUserMedia(mediaConstraints)
+      .then(this.successCallback.bind(this), this.errorCallback.bind(this));
+  }
+
+
+  startVideoRecording() {
+    this.isRecordingVideo = true;
+    let mediaConstraints = {
+      video: true,
+      audio: true
+    };
+    navigator.mediaDevices
+      .getUserMedia(mediaConstraints)
+      .then(this.successCallbackVideo.bind(this), this.errorCallback.bind(this));
+  }
+
+  successCallbackVideo(stream: any) {
+    var options = {
+      mimeType: "video/mp4",
+    };
+
+    //Start Actuall Recording
+    var MediaStreamRecorder = RecordRTC.MediaStreamRecorder;
+    this.record = new MediaStreamRecorder(stream, options);
+    this.record.record();
+  }
+
+  successCallback(stream: any) {
+    var options = {
+      mimeType: "audio/wav",
+      numberOfAudioChannels: 1
+    };
+
+    //Start Actuall Recording
+    var StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
+    this.record = new StereoAudioRecorder(stream, options);
+    this.record.record();
+  }
+
+  stopRecording() {
+    this.isRecording = false;
+    this.record.stop(this.processRecording.bind(this));
+  }
+
+  stopRecordingVideo() {
+    this.isRecordingVideo = false;
+    this.record.stop(this.processRecordingVideo.bind(this));
+  }
+
+  processRecording(blob: any) {
+    this.urls.push(URL.createObjectURL(blob)!);
+  }
+
+  processRecordingVideo(blob: any) {
+    this.urlsVideo.push(URL.createObjectURL(blob)!);
+  }
+
+  sanitize(url: string) {
+    return this.domSanitizer.bypassSecurityTrustUrl(url);
+  }
+
+  errorCallback(error: any) {
+    this.error = 'Can not play audio in your browser';
+  }
+
 
 }
