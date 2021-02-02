@@ -21,9 +21,12 @@ export class ProfileComponent implements OnInit {
   public post: Post = new Post();
   postMind: string = "";
   postDesc: string = "";
+  postcomfields: string[] = [];
+  LikesList: any[] = [];
+  commentsList: any[] = [];
 
   constructor(private postsService: PostsService, private route: Router,
-     private firestore: AngularFirestore,private storage : AngularFireStorage, private FireService: FireService) { }
+    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
@@ -46,6 +49,12 @@ export class ProfileComponent implements OnInit {
   getAllPosts() {
     this.postsService.getAllUserPosts(this.user.id).subscribe(res => {
       this.postList = res
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
     });
     // return this.postList;
     console.log(this.postList)
@@ -56,8 +65,8 @@ export class ProfileComponent implements OnInit {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName,
-      this.post.owner.picURL = this.user.picURL,
-      this.post.id = this.firestore.createId();
+    this.post.owner.picURL = this.user.picURL,
+    this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });
@@ -73,6 +82,52 @@ export class ProfileComponent implements OnInit {
 
       })
 
+  }
+
+  addLike(postid: string) {
+    this.firestore.collection('post').doc(postid).collection("like").add({
+      userid: this.user.id
+    })
+    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+  }
+
+  addComment(postid: string, index: number) {
+    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+      writer: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      },
+      description: this.postcomfields[index],
+      date: new Date().toISOString(),
+    })
+    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+  }
+
+  async getComments(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      console.log(data)
+    })
+  }
+
+  async getLikes(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+      console.log(data)
+    })
+  }
+
+  async notifyUser(usrId: string, msg: string) {
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+      date: new Date().toISOString(),
+      description: msg,
+      maker: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      }
+    })
   }
 
 }

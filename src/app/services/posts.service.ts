@@ -26,7 +26,7 @@ export class PostsService {
     this.allPosts = [];
     var docs;
 
-    return this.firestore.collection("/post", ref => ref.where('owner', '==', id)).get().pipe(map(res => {
+    return this.firestore.collection("/post", ref => ref.where('owner.id', '==', id)).get().pipe(map(res => {
       docs = res.docs
       docs.forEach(el => {
         this.dataPost = el.data()

@@ -26,7 +26,7 @@
 
                 <!-- post -->
 
-                <div id="post1" *ngFor="let post of postList ;let i = index;" class="ml-3">
+                <div id="post1" *ngFor="let post of postList " class="ml-3">
                     <!-- <div *ngFor="let user1 of users;"> -->
 
                     <div class="dropdown " style="float: right">
@@ -86,11 +86,11 @@
                         </ul>
                     </div>
                     <div class="poster">
-                        <img [src]="userList[i].picURL" [routerLink]="'/users/profile/'+post.owner.id"
+                        <img [src]="post.owner.picURL" [routerLink]="'/users/profile/'+post.owner.id"
                             routerLinkActive="active">
                         <!-- <div id="posterName" >{{getUserById(post.owner).firstName}}</div> -->
                         <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active">
-                            {{userList[i].firstName+" "+ userList[i].secondName}}
+                            {{post.owner.name}}
                         </div>
                         <div id="time" cl>{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i
                                 class="fas fa-globe-africa"></i></div>
@@ -135,7 +135,7 @@
                         <hr style="margin-top: 55px;margin-bottom: 10px">
                         <div class="firstRow">
                             <img [src]="user.picURL" [routerLink]="'/users/profile'" routerLinkActive="active">
-                            <input type="text" placeholder="Write a comment..." id="cmntInput" />
+                            <input type="text" placeholder="Write a comment..."  />
                         </div>
 
                     </div>

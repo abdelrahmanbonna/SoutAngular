@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <div id="post1"  *ngFor="let post of postList;">
+            <div id="post1"  *ngFor="let post of postList;let i=index">
                 <div class="dropdown " style="float: right">
                     <button class="btn dropdown-toggle points" id="menu1" type="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
@@ -168,22 +168,22 @@
 
                 <hr style="margin-top: 15px;">
                 <div class="lastRowPost">
-                    <div id="like" onclick="addLike()">
+                    <div id="like" (click)="addLike(post.id)">
                         <i class="far fa-thumbs-up" id="likeIcon"></i>
                         <span id="likeCont">
-                            Like
+                            Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
                         </span>
                     </div>
-                    <div id="comment" onclick="addComment()">
+                    <div id="comment">
                         <i class="fas fa-microphone-alt"></i>
                         <span id="commentCont">
                             Voice
                         </span>
                     </div>
-                    <div id="comment" onclick="addComment()">
+                    <div id="comment" (click)="addComment(post.id,i)">
                         <i class="far fa-comment-alt" id="commentIcon"></i>
                         <span id="commentCont">
-                            Comment
+                            Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>
                         </span>
                     </div>
                 </div>
@@ -194,7 +194,7 @@
                     <div class="firstRow">
                         <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id"
                         routerLinkActive="active" style="cursor: pointer;">
-                        <input type="text" placeholder="Write a comment..." id="cmntInput" />
+                        <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..." id="cmntInput" />
                     </div>
 
                 </div>
