@@ -17,11 +17,14 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../../environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, DashboardComponent, ReportsComponent, TalentsComponent,  BlockComponent],
+  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, DashboardComponent, ReportsComponent, TalentsComponent,  BlockComponent, AdminLoginComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -29,6 +32,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     AdminRoutingModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     AngularFireStorageModule
   ]
 })
