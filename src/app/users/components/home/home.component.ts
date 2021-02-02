@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
 
   subscribtion: Subscription[] = [];
   postList: any[] = [];
-  postsUsers: any[] = [];
   public post: Post = new Post();
   postMind: string = "";
   postDesc: string = "";
@@ -27,10 +26,8 @@ export class HomeComponent implements OnInit {
   greating: string;
   constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private route: Router) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
-    console.log(this.user)
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
-      console.log(res)
       this.postList = res;
     }))
 
@@ -42,7 +39,6 @@ export class HomeComponent implements OnInit {
     }
     document.querySelector('.modal-backdrop')!.remove();
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
-      console.log(res)
       this.postList = res;
     }))
 
@@ -60,7 +56,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  addPost(desc: string, audio: any, images: any[]) {
+  addPost(desc: string, audio: any = null, images: any[] = []) {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName;
@@ -91,19 +87,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.subscribtion.forEach(element => {
       element.unsubscribe();
     })
   }
 
-  // getPostUser(id: string) {
-  //   this.fireService.getDocument(`Users/${id}`).subscribe((data) => {
-  //     console.log(data)
-  //     this.postsUsers.push(data);
-  //   })
-  // }
 
   addLike(postid: string) {
     this.firestore.collection('post').doc(postid).collection("like").add({
