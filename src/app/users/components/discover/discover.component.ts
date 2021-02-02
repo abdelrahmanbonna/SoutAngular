@@ -64,7 +64,7 @@ export class DiscoverComponent implements OnInit {
       this.postList = res
 
       this.postList.forEach(p => {
-        this.getUserById(p.owner)
+        this.getUserById(p.owner.id)
       });
       console.log(this.postList)
     });
@@ -77,7 +77,7 @@ export class DiscoverComponent implements OnInit {
       this.postList = res
 
       this.postList.forEach(p => {
-        this.getUserById(p.owner)
+        this.getUserById(p.owner.id)
       });
 
     });

@@ -113,7 +113,7 @@
         <div class="col-sm-11 col-md-9 rightSide" style="height: 100%">
             <div id="writePst">
                 <div class="firstRow">
-                    <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner"
+                    <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner.id"
                     routerLinkActive="active" style="cursor: pointer;">
                     <input type="text" placeholder={{postMind}} #desc value="" style="cursor:auto;"/>
                 </div>
@@ -145,9 +145,9 @@
                     </ul>
                 </div>
                 <div class="poster">
-                    <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner"
+                    <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id"
                     routerLinkActive="active" style="cursor: pointer;">
-                    <div id="posterName" [routerLink]="'/users/profile/'+post.owner"
+                    <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id"
                     routerLinkActive="active" style="cursor: pointer;">{{userName}}</div>
                     <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i class="fas fa-globe-africa"></i></div>
                 </div>
@@ -192,7 +192,7 @@
                 <div id="writecomnt">
                     <hr style="margin-top: 55px;margin-bottom: 10px">
                     <div class="firstRow">
-                        <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner"
+                        <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id"
                         routerLinkActive="active" style="cursor: pointer;">
                         <input type="text" placeholder="Write a comment..." id="cmntInput" />
                     </div>

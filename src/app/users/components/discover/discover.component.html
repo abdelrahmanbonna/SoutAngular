@@ -86,10 +86,10 @@
                         </ul>
                     </div>
                     <div class="poster">
-                        <img [src]="userList[i].picURL" [routerLink]="'/users/profile/'+post.owner"
+                        <img [src]="userList[i].picURL" [routerLink]="'/users/profile/'+post.owner.id"
                             routerLinkActive="active">
                         <!-- <div id="posterName" >{{getUserById(post.owner).firstName}}</div> -->
-                        <div id="posterName" [routerLink]="'/users/profile/'+post.owner" routerLinkActive="active">
+                        <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active">
                             {{userList[i].firstName+" "+ userList[i].secondName}}
                         </div>
                         <div id="time" cl>{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i

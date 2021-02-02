@@ -54,8 +54,10 @@ export class ProfileComponent implements OnInit {
 
   addPost(desc: string) {
     this.post.description = desc;
-    this.post.owner = this.user.id;
-    this.post.id = this.firestore.createId();
+    this.post.owner.id = this.user.id;
+    this.post.owner.name = this.user.firstName + " " + this.user.secondName,
+      this.post.owner.picURL = this.user.picURL,
+      this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });
@@ -63,26 +65,14 @@ export class ProfileComponent implements OnInit {
   }
 
   deletePost(id: string) {
-    this.postsService.deletePost(id).then( 
-      (data) =>{
+    this.postsService.deletePost(id).then(
+      (data) => {
         console.log(data);
 
         this.ngOnInit();
 
-      }) 
-  }
+      })
 
-  // updateProfilePic(pic:string){
-  //   this.storage.upload("/Users/profile_pics",pic)
-    
-  //   this.user.picURL = pic;
-  //   this.FireService.updateDocument("Users/" + this.user.id,this.user)
-  // }
-
-  uploadFile(event:any) {
-    const file = event.target.files[0];
-    const filePath = 'name-your-file-path-here';
-    const task = this.storage.upload(filePath, file);
   }
 
 }

@@ -1,4 +1,4 @@
-
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
   notificationsNo: number = 0
   subs: Subscription[] = []
   user: any;
-  constructor(private usrInfo: FireService, private route: Router) {
+  constructor(private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
   }
 
@@ -33,8 +33,9 @@ export class SidebarComponent implements OnInit {
   }
 
   getnotificationsno() {
-    this.subs.push(this.usrInfo.getDocument(`Users/${this.user.id}`).subscribe((data) => {
-      this.notificationsNo = data.notifications.length
+    this.subs.push(this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
+      console.log(`notifications: ${data}`)
+      this.notificationsNo = data.length
     }))
   }
 
