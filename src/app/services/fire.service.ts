@@ -42,4 +42,5 @@ export class FireService {
     this.document = this.afs.doc<any>(documentPath);
     this.document.delete();
   }
+
 }

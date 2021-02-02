@@ -32,9 +32,9 @@ export class UserInfoService {
             x = res.data();
             console.log(res.data())
             localStorage.setItem('userdata', JSON.stringify(res.data()))
-            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!)
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.dateCreated, x.dateUpdated, x.blocked!)
           } else if (!res.exists) {
-            throw `User not found`
+            throw `User not found.`
           }
         }))
       } else {
@@ -61,7 +61,7 @@ export class UserInfoService {
           } else {
             gen = "./../../../../assets/avatar.png"
           }
-          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light", [], [], [], []);
+          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light");
           this.firestore.collection(`Users`).doc(res.user.uid).set({
             id: res.user.uid,
             firstName: fname,
@@ -116,32 +116,60 @@ export class UserInfoService {
 
   async editProfile(user: User) {
     //TODO: add method to edit profile using User only
-    this.firestore.collection(`Users`).doc(this.user.id).update({
-      id: this.user.id,
-      firstName: user.firstName,
-      secondName: user.secondName,
-      gender: user.gender,
-      mobile: user.mobile,
-      picURL: user.picURL,
-      coverPicURL: user.coverPicURL,
-      birthDate: user.birthDate,
-      dateUpdated: new Date().toISOString(),
-      privateAcc: user.privateAcc,
-      favColor: user.favColor,
-      favMode: user.favMode,
-      blocked: this.user.blocked,
-      notifications: user.notifications,
-      bookmarks: user.bookmarks,
-      followers: user.followers,
-      following: user.following,
-    }).catch(err => { console.log(`${err}`) });
+    if (this.user.id !== "") {
+      console.log(`first if statement`)
+      this.firestore.collection(`Users`).doc(this.user.id).update({
+        id: this.user.id,
+        firstName: user.firstName,
+        secondName: user.secondName,
+        gender: user.gender,
+        mobile: user.mobile,
+        picURL: user.picURL,
+        coverPicURL: user.coverPicURL,
+        birthDate: user.birthDate,
+        dateUpdated: new Date().toISOString(),
+        privateAcc: user.privateAcc,
+        favColor: user.favColor,
+        favMode: user.favMode,
+        blocked: this.user.blocked,
+        // notifications: user.notifications,
+        // bookmarks: user.bookmarks,
+        // followers: user.followers,
+        // following: user.following,
+      }).catch(err => { console.log(`${err}`) });
+    } else if (this.user.id === "") {
+      let userlocal = JSON.parse(localStorage.getItem('userdata')!)
+      this.firestore.collection(`Users`).doc(userlocal.id).update({
+        id: userlocal.id,
+        firstName: user.firstName,
+        secondName: user.secondName,
+        gender: user.gender,
+        mobile: user.mobile,
+        picURL: user.picURL,
+        coverPicURL: user.coverPicURL,
+        birthDate: user.birthDate,
+        dateUpdated: new Date().toISOString(),
+        privateAcc: user.privateAcc,
+        favColor: user.favColor,
+        favMode: user.favMode,
+        blocked: userlocal.blocked,
+        // notifications: user.notifications,
+        // bookmarks: user.bookmarks,
+        // followers: user.followers,
+        // following: user.following,
+      }).catch(err => { console.log(`${err}`) });
+    }
   }
 
   ngOnDestroy(): void {
     this.subscribtion.forEach(element => {
       element.unsubscribe();
     });
+
   }
 
 
+
 }
+
+

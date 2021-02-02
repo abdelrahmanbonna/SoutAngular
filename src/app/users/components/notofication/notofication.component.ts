@@ -7,8 +7,8 @@ import { FireService } from 'src/app/services/fire.service';
   styleUrls: ['./notofication.component.scss']
 })
 export class NotoficationComponent implements OnInit {
-  notoficationArr: string[] = [];
-  userName: string = "";
+  notoficationArr: any[] = [];
+  user: any = JSON.parse(localStorage.getItem('userdata')!)
 
   constructor(private FireService: FireService
   ) {
@@ -27,10 +27,9 @@ export class NotoficationComponent implements OnInit {
 
     // }
 
-    this.FireService.getDocument("Users/BNWRPQjBX8caFDp2LzBJQJeLgFc2").subscribe((res) => {
+    this.FireService.getDocument(`Users/${this.user.id}`).subscribe((res) => {
       console.log(res)
       this.notoficationArr = res.notifications
-      this.userName = res.firstName
       console.log(this.notoficationArr)
 
     })

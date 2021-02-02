@@ -83,7 +83,7 @@ export class LandingComponent implements OnInit {
       } else {
         alert(`Error occured please login again`)
       }
-    }).catch((err) => {
+    }).catch((err: any) => {
       this.loading = false;
       console.log(`${err}`)
     })

@@ -39,7 +39,7 @@
 .post1 {
   margin-top: 3%;
   margin-left: 3%;
-  width: inherit;
+  width: 100%;
   background-color: white;
   padding: 1.5%;
   border-radius: 11px;
@@ -451,7 +451,7 @@ audio:nth-child(6) {
 .firstRow img {
   float: left;
   margin: 2 2.5% 0 0px;
-  height: 40%;
+  height: 2%;
   width: 5%;
   border-radius: 50%;
 }
@@ -583,4 +583,15 @@ audio:nth-child(6) {
   .firstRow input {
     width: 90%;
   }
+}
+
+.Post {
+  margin-top: 2%;
+  margin-left: 3%;
+  width: 99%;
+  background-color: white;
+  padding: 12px;
+  border-radius: 11px;
+  box-shadow: 0px 0.5px 5px grey;
+  transition: all 1s ease-in-out;
 }

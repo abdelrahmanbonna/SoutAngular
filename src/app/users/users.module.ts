@@ -19,6 +19,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { BookmarkComponent } from './components/bookmark/bookmark.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { SettingComponent } from './components/setting/setting.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -53,6 +54,7 @@ import { SettingComponent } from './components/setting/setting.component';
       measurementId: "G-5R8JHQGN68"
     }),
     AngularFirestoreModule,
+    FormsModule,
     AngularFireStorageModule,
 
   ]

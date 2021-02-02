@@ -9,10 +9,7 @@ export class Post {
         public date: Date = new Date(),
         public description: string = "",
         public image: string[] = [],
-        public comment: IComment[] = [],
         public talent: string = "",
-        public like: string[] = [],
-        public mention: string[] = []
     ) { }
 
 }
