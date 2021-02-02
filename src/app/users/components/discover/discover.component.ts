@@ -72,7 +72,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   getAllPosts() {
-
+    this.postList=[]
     this.FireService.getCollection("post/").subscribe(res => {
       this.postList = res
 

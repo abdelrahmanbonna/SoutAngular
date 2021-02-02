@@ -72,11 +72,17 @@ export class ProfileComponent implements OnInit {
       }) 
   }
 
-  updateProfilePic(pic:string){
-    this.storage.upload("/Users/profile_pics",pic)
+  // updateProfilePic(pic:string){
+  //   this.storage.upload("/Users/profile_pics",pic)
     
-    this.user.picURL = pic;
-    this.FireService.updateDocument("Users/" + this.user.id,this.user)
+  //   this.user.picURL = pic;
+  //   this.FireService.updateDocument("Users/" + this.user.id,this.user)
+  // }
+
+  uploadFile(event:any) {
+    const file = event.target.files[0];
+    const filePath = 'name-your-file-path-here';
+    const task = this.storage.upload(filePath, file);
   }
 
 }

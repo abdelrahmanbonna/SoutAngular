@@ -115,14 +115,14 @@
                 <div class="firstRow">
                     <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner"
                     routerLinkActive="active" style="cursor: pointer;">
-                    <input type="text" placeholder={{postMind}} #desc value="" style="cursor:pointer;"/>
+                    <input type="text" placeholder={{postMind}} #desc value="" style="cursor:auto;"/>
                 </div>
                 <hr>
                 <div class="secondRow">
                     <div class="live">
-                        <i class="fas fa-video" id="liveIcon"></i>
-                        <i class="fas fa-microphone-alt"></i>
-                        <i class="fas fa-paperclip"></i>
+                        <i class="fas fa-video" id="liveIcon" style="cursor: pointer;"></i>
+                        <i class="fas fa-microphone-alt" style="cursor: pointer;"></i>
+                        <i class="fas fa-paperclip" style="cursor: pointer;"></i>
                         <button class="btn" id="postButt" (click)="addPost(desc.value);desc.value=''" >Post</button>
                     </div>
 
