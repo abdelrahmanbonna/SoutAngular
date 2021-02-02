@@ -13,10 +13,10 @@
                     <hr>
                     <div class="secondRow">
                         <div class="live">
-                            <i class="fas fa-video" id="liveIcon"></i>
-                            <i class="fas fa-microphone-alt"></i>
-                            <i class="fas fa-paperclip"></i>
-                            <input class="postButt col-12" type="button" value="Post">
+                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-video" id="liveIcon"></i>
+                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-microphone-alt"></i>
+                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-paperclip"></i>
+                            <input [ngStyle]="{'background-color': user.favColor}" class="postButt col-12" type="button" value="Post">
                         </div>
 
                     </div>

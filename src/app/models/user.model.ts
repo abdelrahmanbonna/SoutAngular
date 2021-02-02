@@ -16,7 +16,8 @@ export class User {
         public following: any[] = [],
         public createdDate: Date = new Date(),
         public updatedDate: Date = new Date(),
-        public blocked: boolean = false
+        public blocked: boolean = false,
+        public deactive: boolean = false
     ) { }
 
 

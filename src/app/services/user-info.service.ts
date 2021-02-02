@@ -32,7 +32,7 @@ export class UserInfoService {
             x = res.data();
             console.log(res.data())
             localStorage.setItem('userdata', JSON.stringify(res.data()))
-            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!)
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!,x.deactive)
           } else if (!res.exists) {
             throw `User not found`
           }
@@ -81,6 +81,7 @@ export class UserInfoService {
             bookmarks: [],
             followers: [],
             following: [],
+            deactive: false,
           })
         }
 
@@ -134,6 +135,7 @@ export class UserInfoService {
       bookmarks: user.bookmarks,
       followers: user.followers,
       following: user.following,
+      deactive: user.deactive,
     }).catch(err => { console.log(`${err}`) });
   }
 
@@ -141,6 +143,21 @@ export class UserInfoService {
     this.subscribtion.forEach(element => {
       element.unsubscribe();
     });
+  }
+
+  async getUserbyID(id: string) {
+    let x: any;
+    let usrresult: User;
+    this.subscribtion.push(this.firestore.collection(`Users`).doc(id).get().subscribe(res => {
+      if (res.data()) {
+        x = res.data();
+        console.log(res.data());
+        usrresult = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!,x.deactive);
+      } else if (!res.exists) {
+        throw `User not found`;
+      }
+    }))
+
   }
 
 

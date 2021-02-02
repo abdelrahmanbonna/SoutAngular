@@ -1,4 +1,4 @@
-<nav id="sidebarMenu" class="col-xl-12 col-lg-12 col-sm-3 col-md-6 col-3 leftSide" style="background-color: #F5F7F8;margin-left: 0.5%">
+<nav id="sidebarMenu" class="col-xl-12 col-lg-12 col-sm-3 col-md-6 col-3 leftSide" [ngStyle]="{'margin-left': '0.5%'}">
     <div class="position-sticky my-3 d-flex justify-content-center d-md-block">
         <ul class="nav flex-column   pt-3">
             <div>
@@ -6,14 +6,13 @@
                     <a class="nav-link " [routerLink]="[ '/users/profile' ]" routerLinkActive="active">
                         <img [src]="user.picURL" style="width: 50px;border-radius: 50%"><span class="d-none d-md-inline-block" style="margin-left: 18px;font-weight: 500">{{user.firstName}} {{user.secondName}}</span>
                     </a>
-                    
-                    
                 </li>
                 <hr>
                 <li class="nav-item"> <!--*ngIf="!user.notifications.length===0"-->
                     <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
-                        <i class="fas fa-bell"  [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
-                                        Notifications<span class="badge badge-pill badge-danger">{{user.notifications.length}}</span></span>
+
+                        <i class="fas fa-bell"  [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block">
+                                        Notifications<span [ngStyle]="{'color': user.favColor}"  class="badge badge-pill">{{user.notifications.length}}</span></span>
                     </a>
                 </li>
                 <hr>
@@ -21,8 +20,8 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
-                        <i class="fas fa-envelope" [ngStyle]="{'color': iconColor}" ></i><span class="d-none d-md-inline-block">
-                                        Messages <span class="badge badge-pill badge-danger"></span></span>
+                        <i class="fas fa-envelope" [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block">
+                                        Messages <span [ngStyle]="{'color': user.favColor}" class="badge badge-pill"></span></span>
                     </a>
                 </li>
                 <hr>
@@ -30,7 +29,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
-                        <i class="fas fa-music" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Talents</span>
+                        <i class="fas fa-music" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Talents</span>
                     </a>
                 </li>
                 <hr>
@@ -38,7 +37,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
-                        <i class="fas fa-hashtag" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block">
+                        <i class="fas fa-hashtag" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block">
                                         Discover</span>
                     </a>
                 </li>
@@ -47,8 +46,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
-                        <i class="fas fa-cog" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Settings</span>
-                        <!-- wait for fatma -->
+                        <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Settings</span>
                     </a>
                 </li>
                 <hr>
@@ -56,7 +54,7 @@
             <div>
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/interests' ]" routerLinkActive="active">
-                        <i class="fas fa-bahai" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Interests</span>
+                        <i class="fas fa-bahai" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Interests</span>
 
                     </a>
                 </li>
@@ -64,7 +62,7 @@
             </div>
             <li class="nav-item">
                 <a class="nav-link " [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
-                    <i class="fas fa-bookmark" [ngStyle]="{'color': iconColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
+                    <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
                     <!-- wait for fatma -->
                 </a>
             </li>
