@@ -109,15 +109,15 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  addLike(postid: string) {
-    this.firestore.collection('post').doc(postid).collection("like").add({
+  addLike(postid: any) {
+    this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
     })
-    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+    this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(postid: string, index: number) {
-    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+  addComment(postid: any, index: number) {
+    this.firestore.collection(`post`).doc(postid.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
-    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+    this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
 
   async getComments(postid: string) {
