@@ -18,7 +18,8 @@ export class HomeComponent implements OnInit {
 
   subscribtion: Subscription[] = [];
   postList: any[] = [];
-  postsUsers: any[] = [];
+  LikesList: any[] = [];
+  commentsList: any[] = [];
   public post: Post = new Post();
   postMind: string = "";
   postDesc: string = "";
@@ -27,11 +28,16 @@ export class HomeComponent implements OnInit {
   greating: string;
   constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private route: Router) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
-    console.log(this.user)
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
-      console.log(res)
       this.postList = res;
+      console.log(res);
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
     }))
 
   }
@@ -42,14 +48,21 @@ export class HomeComponent implements OnInit {
     }
     document.querySelector('.modal-backdrop')!.remove();
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
-      console.log(res)
       this.postList = res;
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
     }))
 
+    console.log(`Likes ${this.LikesList}`)
+    console.log(`Comments ${this.commentsList}`)
   }
 
-  notifyUser(usrId: string, msg: string) {
-    this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+  async notifyUser(usrId: string, msg: string) {
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
       date: new Date().toISOString(),
       description: msg,
       maker: {
@@ -60,7 +73,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  addPost(desc: string, audio: any, images: any[]) {
+  addPost(desc: string, audio: any = null, images: any[] = []) {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName;
@@ -91,28 +104,20 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.subscribtion.forEach(element => {
       element.unsubscribe();
     })
   }
 
-  // getPostUser(id: string) {
-  //   this.fireService.getDocument(`Users/${id}`).subscribe((data) => {
-  //     console.log(data)
-  //     this.postsUsers.push(data);
-  //   })
-  // }
-
   addLike(postid: string) {
     this.firestore.collection('post').doc(postid).collection("like").add({
       userid: this.user.id
     })
+    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
   }
 
-  async addComment(postid: string, index: number) {
-    await this.firestore.collection(`post`).doc(postid).collection('comment').add({
+  addComment(postid: string, index: number) {
+    this.firestore.collection(`post`).doc(postid).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -121,8 +126,21 @@ export class HomeComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
+    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+  }
 
+  async getComments(postid: string) {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      console.log(data)
+    }))
+  }
 
+  async getLikes(postid: string) {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+      console.log(data)
+    }))
   }
 
 }
