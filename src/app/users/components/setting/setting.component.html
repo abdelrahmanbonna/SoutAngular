@@ -1,0 +1,171 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <app-sidebar></app-sidebar>
+        <nav id="sidebarMenu" class="col-2 col-md-3 sidebar middleSetting" [ngStyle]="{'margin':'1.2%', 'background-color': '#F5F7F8'}">
+            <div class="position-sticky my-3 d-flex justify-content-center d-md-block">
+                <ul class="nav flex-column">
+                    <h1 [ngStyle]="{'margin-left': '3%'}">Settings</h1>
+                    <div class="dropdown-divider"></div>
+                    <div>
+                        <li class="nav-item active" [ngClass]="settings.accountPrivacy ? 'active' : 'inactive'">
+                            <a class="nav-link " (click)= "disableOthers('accountPrivacy')">
+                                <i class="fas fa-user-lock " [ngStyle]="{'color': color}"></i><span class="d-md-inline-block" > Account Privacy</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" [ngStyle]="{'float':'right', 'margin-top':'5px'}" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="theme" [ngClass]="settings.themes ? 'active' : 'inactive'">
+                            <a class="nav-link" (click)= "disableOthers('themes')">
+                                <i class="fas fa-palette" [ngStyle]="{'color': color}"></i><span class="d-flex d-md-inline-block"> Theme</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" [ngStyle]="{'float':'right', 'margin-top':'5px'}" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="changePassword" [ngClass]="settings.changePassword ? 'active' : 'inactive'">
+                            <a class="nav-link side" (click)= "disableOthers('changePassword')">
+                                <i class="fas fa-key" [ngStyle]="{'color': color}"></i><span class="d-none d-md-inline-block"> Change Password</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20"  [ngStyle]="{'float':'right', 'margin-top':'5px'}" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="notifications" [ngClass]="settings.notifications ? 'active' : 'inactive'">
+                            <a class="nav-link side" (click)= "disableOthers('notifications')">
+                                <i class="fas fa-bell" [ngStyle]="{'color': color}"></i><span class="d-none d-md-inline-block"> Notifications</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" [ngStyle]="{'float':'right', 'margin-top':'5px'}" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="report" [ngClass]="settings.report ? 'active' : 'inactive'">
+                            <a class="nav-link side" (click)= "disableOthers('report')">
+                                <i class="fas fa-bug" [ngStyle]="{'color': color}"></i><span class="d-none d-md-inline-block"> Report</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" [ngStyle]="{'float':'right', 'margin-top':'5px'}" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    <div>
+                        <li class="nav-item" id="manageAccount" [ngClass]="settings.manageAccount ? 'active' : 'inactive'">
+                            <a class="nav-link side" (click)= "disableOthers('manageAccount')">
+                                <i class="fas fa-shield-alt" [ngStyle]="{'color': color}"></i><span class="d-none d-md-inline-block"> Manage Account</span>
+                                <svg viewBox="0 0 24 24" height="20" width="20" [ngStyle]="{'float':'right', 'margin-top':'5px'}" fill=gray><g><path d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z"></path></g></svg>
+                            </a>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </nav>
+        <div id="sidebarMenu" class="col-8 col-md-5 col-sm-8" [ngStyle]="{'background-color': '#F5F7F8', 'margin': '1.2%'}">
+            <div  *ngIf="settings.themes" id="themeSetting">
+                <h3 [ngStyle]="{'margin-top': '3%', 'text-align':'center'}">Themes</h3>
+                <div class="dropdown-divider"></div>
+                <div>
+                    <div [ngStyle]="{'margin-top':'2rem', 'margin-left':'1rem', 'color':'rgb(88, 82, 82)'}">
+                        <p class="h2 darkFont"> Icons Color <button [ngStyle]="{'background-color': color}" (click)="color='#ee4c22'" class="btn btn-secondary reset">Reset</button></p>
+                    </div>
+                    <div class="theme theme-0" [ngStyle]="{'margin-left': '1rem'}" (click)="color='#ee4c22'">
+                    </div>
+                    <div class="theme theme-1" (click)="color='#ee1144'">
+                    </div>
+                    <div  class="theme theme-2" (click)="color='#4A4A50'">
+                    </div>
+                    <div class="theme theme-3" (click)="color='#bd4381'">
+                    </div>
+                    <div class="theme theme-4" (click)="color='#A0306F'">
+                    </div>
+                    <div class="theme theme-5" (click)="color='#642F42'">
+                    </div>
+                    <div class="theme theme-6" (click)="color='#9b6d98'">
+                    </div>
+                    <div class="theme theme-7" (click)="color='#553655'">
+                    </div>
+                    <div class="theme theme-8" (click)="color='#4080D8'">
+                    </div>
+                    <div class="defaultColor" [ngStyle]="{'margin-top':'5px'}">
+                    </div>
+                </div>
+                <div class="dropdown-divider"></div>
+
+                <div>
+                    <div [ngStyle]="{'margin-top':'2rem', 'margin-left': '1rem', 'color':'rgb(88, 82, 82)'}">
+                        <p class="h2 darkFont"> Enable Dark Mode </p>
+                        <div class="form-check form-check-inline" [ngStyle]="{'margin-top':'1rem'}">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="OFF" (click)="defaultMode()" value="option1" checked>
+                            <label class="form-check-label h6 darkFont" for="OFF">
+                          OFF
+                        </label>
+
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="ON" (click)="OnDark()" value="option2">
+                            <label class="form-check-label h6 darkFont" for="ON">
+                          ON
+                        </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="settings.changePassword" id="changePassSetting" [ngStyle]="{'padding-left':'1rem'}">
+                <h3 [ngStyle]="{'margin-top': '3%', 'text-align':'center'}">Password</h3>
+
+                <div class="dropdown-divider"></div>
+
+                <form>
+                    <div class="form-group">
+                        <label for="oldPass" class="h6 darkFont" [ngStyle]="{'margin-top':'2rem', 'color':'rgb(88, 82, 82)'}">Old Password</label>
+                        <input type="password" class="form-control" placeholder="Old Password" id="oldPass">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPass" class="h6 darkFont" [ngStyle]="{'color':'rgb(88, 82, 82)'}">New Password</label>
+                        <input type="password" class="form-control" placeholder="New Password" id="newPass">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div  *ngIf="settings.manageAccount" id="deactivateAccSetting" [ngStyle]="{'padding-left':'1rem'}">
+                <h3 [ngStyle]="{'margin-top': '3%', 'text-align':'center'}">Deactivation</h3>
+
+                <div class="dropdown-divider"></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" (click)="deactivate()">
+                    <label class="form-check-label h6 darkFont" for="deAct ">
+                      Deactivate your account
+                    </label>
+                </div>
+                <div class="alert alert-warning alert-dismissible"  *ngIf="alertDeact" role="alert">
+                    <button type="button" onclick="unactivate()" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button> <strong>Wornning!</strong> After 30-day deactivation, your account'll be deleted.
+                    <button type="button" class="btn btn-light btn-sm" (click)="confirmDeactivate()">Confirm</button>
+                </div>
+            </div>
+            <div  *ngIf="settings.accountPrivacy" id="accPrivacySetting" [ngStyle]=" {'padding-left':'1rem'}">
+                <h3 [ngStyle]="{'margin-top': '3%', 'text-align':'center'}">Privacy</h3>
+
+                <div class="dropdown-divider"></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" (click)="privacy(this.checked)" >
+                    <label class="form-check-label h6 darkFont" for="deAct ">
+                      Public
+                    </label>
+                </div>
+                <div class="alert alert-warning alert-dismissible fade" role="alert">
+                    <button type="button"  class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button> <strong>Wornning!</strong> Anyone can see your posts.
+                    <button type="button" class="btn btn-light btn-sm" (click)="confirmPublic()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
