@@ -55,7 +55,7 @@
                             Like <span class="badge badge-pill badge-light">{{post.like.length}}</span>
                         </span>
                     </div>
-                    <div id="comment" onclick="addVoiceComment()">
+                    <div id="comment" (click)="notifyUser(post.owner,'test test')">
                         <i class="fas fa-microphone-alt"></i>
                         <span id="commentCont">
                             Voice

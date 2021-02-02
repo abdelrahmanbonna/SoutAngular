@@ -1,13 +1,11 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { FireService } from 'src/app/services/fire.service';
 import { PostsService } from 'src/app/services/posts.service';
 import { UserInfoService } from 'src/app/services/user-info.service';
-import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { User } from 'src/app/models/user.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -62,27 +60,38 @@ export class HomeComponent implements OnInit {
   }
 
   notifyUser(usrId: string, msg: string) {
-    this.subscribtion.push(this.fireService.getDocument(`Users/${usrId}`).subscribe(data => {
-      console.log(`entered notify`)
-      data.notifications.push({
-        description: msg,
-        maker: {
-          id: this.user.id,
-          name: this.user.firstName + " " + this.user.secondName,
-          picURL: this.user.picURL
-        },
-        date: new Date().toISOString()
-      })
-      this.fireService.updateDocument(`Users/${usrId}`, {
-        notifications: data.notifications
-      })
-    }))
+    // this.subscribtion.push(this.fireService.getDocument(`Users/${usrId}`).subscribe(data => {
+    //   console.log(`entered notify`)
+    //   data.notifications.push({
+    //     description: msg,
+    //     maker: {
+    //       id: this.user.id,
+    //       name: this.user.firstName + " " + this.user.secondName,
+    //       picURL: this.user.picURL
+    //     },
+    //     date: new Date().toISOString()
+    //   })
+    //   this.fireService.updateDocument(`Users/${usrId}`, {
+    //     notifications: data.notifications
+    //   })
+    // }))
 
-    setTimeout(() => {
-      this.subscribtion[this.subscribtion.length - 1].unsubscribe()
+    // setTimeout(() => {
+    //   this.subscribtion[this.subscribtion.length - 1].unsubscribe()
+    // }
+    //   , 10);
 
-    }
-      , 1);
+    // this.fireService.updateDocument(`Users/${usrId}`, {
+    //   notifications: [ {
+    //     description: msg,
+    //     maker: {
+    //       id: this.user.id,
+    //       name: this.user.firstName + " " + this.user.secondName,
+    //       picURL: this.user.picURL
+    //     },
+    //     date: new Date().toISOString()
+    //   }]
+    // })
   }
 
   addPost(desc: string) {
@@ -112,7 +121,7 @@ export class HomeComponent implements OnInit {
   }
 
   getPostUser(id: string) {
-    return this.fireService.getDocument(`Users/${id}`).subscribe((data) => {
+    this.fireService.getDocument(`Users/${id}`).subscribe((data) => {
       console.log(data)
       this.postsUsers.push(data);
     })
@@ -120,6 +129,8 @@ export class HomeComponent implements OnInit {
 
   addLike(postid: string) {
     let bol = false
+    let post: string
+    let owner: any
     this.subscribtion.push(this.fireService.getDocument(`post/${postid}`).subscribe((data) => {
       data.like.forEach((element: string) => {
         if (element === this.user.id) {
@@ -131,35 +142,61 @@ export class HomeComponent implements OnInit {
       this.fireService.updateDocument(`post/${postid}`, {
         like: data.like
       })
+
+      owner = data.owner;
+      post = data.description;
     }))
-    setTimeout(() => { this.subscribtion[this.subscribtion.length - 1].unsubscribe() }
-      , 100);
-  }
-
-  addComment(postid: string, index: number) {
-    this.subscribtion.push(this.fireService.getDocument(`post/${postid}`).subscribe(data => {
-      console.log(`Data from addcmt ${data}`)
-      data.comment.push({
-        writer: {
-          id: this.user.id,
-          name: this.user.firstName + " " + this.user.secondName,
-          picURL: this.user.picURL
-        },
-        description: this.postcomfields[index],
-        date: new Date().toISOString(),
-      })
-
-      this.fireService.updateDocument(`post/${postid}`, {
-        comment: data.comment
-      })
-    }))
-
 
     setTimeout(() => {
       this.subscribtion[this.subscribtion.length - 1].unsubscribe()
-
     }
-      , 10);
+      , 100);
+
+    // this.notifyUser(owner!, `${this.user.firstName} liked your post ${post!}`)
+  }
+
+  async addComment(postid: string, index: number) {
+    // let post: string
+    // let owner: any
+    // this.subscribtion.push(this.fireService.getDocument(`post/${postid}`).subscribe(data => {
+    //   console.log(`Data from addcmt ${data}`)
+    //   data.comment.push({
+    //     writer: {
+    //       id: this.user.id,
+    //       name: this.user.firstName + " " + this.user.secondName,
+    //       picURL: this.user.picURL
+    //     },
+    //     description: this.postcomfields[index],
+    //     date: new Date().toISOString(),
+    //   })
+
+    //   this.fireService.updateDocument(`post/${postid}`, {
+    //     comment: data.comment
+    //   })
+
+    // if (data.owner !== this.user.id)
+    // this.notifyUser(data.owner, `${this.user.firstName} commented your post ${data.description}`)
+
+    // }))
+
+
+    // setTimeout(() => {
+    //   this.subscribtion[this.subscribtion.length - 1].unsubscribe()
+
+    // }
+    //   , 100);
+    // this.notifyUser(owner!, `${this.user.firstName} commented your post ${post!}`)
+
+    await this.firestore.collection(`post`).doc(postid).collection('comment').add({
+      writer: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      },
+      description: this.postcomfields[index],
+      date: new Date().toISOString(),
+    })
+
 
   }
 

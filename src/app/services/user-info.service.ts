@@ -32,9 +32,9 @@ export class UserInfoService {
             x = res.data();
             console.log(res.data())
             localStorage.setItem('userdata', JSON.stringify(res.data()))
-            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.notifications, x.bookmarks, x.followers, x.following, x.dateCreated, x.dateUpdated, x.blocked!)
+            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.dateCreated, x.dateUpdated, x.blocked!)
           } else if (!res.exists) {
-            throw `User not found`
+            throw `User not found.`
           }
         }))
       } else {
@@ -61,7 +61,7 @@ export class UserInfoService {
           } else {
             gen = "./../../../../assets/avatar.png"
           }
-          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light", [], [], [], []);
+          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light");
           this.firestore.collection(`Users`).doc(res.user.uid).set({
             id: res.user.uid,
             firstName: fname,
@@ -132,10 +132,10 @@ export class UserInfoService {
         favColor: user.favColor,
         favMode: user.favMode,
         blocked: this.user.blocked,
-        notifications: user.notifications,
-        bookmarks: user.bookmarks,
-        followers: user.followers,
-        following: user.following,
+        // notifications: user.notifications,
+        // bookmarks: user.bookmarks,
+        // followers: user.followers,
+        // following: user.following,
       }).catch(err => { console.log(`${err}`) });
     } else if (this.user.id === "") {
       let userlocal = JSON.parse(localStorage.getItem('userdata')!)
@@ -153,10 +153,10 @@ export class UserInfoService {
         favColor: user.favColor,
         favMode: user.favMode,
         blocked: userlocal.blocked,
-        notifications: user.notifications,
-        bookmarks: user.bookmarks,
-        followers: user.followers,
-        following: user.following,
+        // notifications: user.notifications,
+        // bookmarks: user.bookmarks,
+        // followers: user.followers,
+        // following: user.following,
       }).catch(err => { console.log(`${err}`) });
     }
   }
@@ -165,6 +165,11 @@ export class UserInfoService {
     this.subscribtion.forEach(element => {
       element.unsubscribe();
     });
+
   }
 
+
+
 }
+
+
