@@ -12,7 +12,7 @@ export class ReportsComponent implements OnInit {
   report: IREPORT = {
     audio: "",
     date: "HELLO",
-    description: "JHKJKJKJJKKKKKJJJJJJJJJJJJJ",
+    description: "testing",
     image: "string",
     reportedId: "REPO",
     title: "title one",

@@ -1,1 +1,96 @@
-<p>home works!</p>
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        <app-sidebar></app-sidebar>
+        <div style="width: 80%;" class="col-xs-9 col-sm-9 col-md-7 col-lg-8 my-2 mx-auto">
+            <div class="row mx-auto my-2">
+                <div id="writePst">
+                    <div class="firstRow">
+                        <img [src]="user.picURL">
+                        <input type="text" [(ngModel)]="postDesc" [placeholder]="greating" />
+                    </div>
+                    <hr>
+                    <div class="secondRow">
+                        <div class="live">
+                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-video" id="liveIcon"></i>
+                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-microphone-alt"></i>
+                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-paperclip"></i>
+                            <input [ngStyle]="{'background-color': user.favColor}" (click)="addPost(postDesc)" class="postButt col-12" type="button" value="Post">
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="Post" id="post1"  *ngFor="let post of postList;let i=index">
+                <div class="dropdown " style="float: right">
+                    <button class="btn dropdown-toggle points" id="menu1" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                            class="fas fa-ellipsis-h"  [ngStyle]="{'color': this.user.favColor}"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" style="padding-left:9px;">
+                            <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <i class="fas fa-bookmark"
+                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                Bookmark this post</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="poster">
+                    <img [src]="post.owner.picURL">
+                    <div id="posterName">{{post.owner.name}}</div>
+                    <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy HH-mm'}} <i class="fas fa-globe-africa"></i></div>
+                </div>
+
+                <span style="padding: 2%;" *ngIf="post.description">{{post.description}}</span>
+                <!-- <span style="padding: 2%;" *ngIf="post.image.length>0"><img *ngFor="let item of post.image;" [src]="item." class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt=""></span> -->
+
+                <hr style="margin-top: 15px;">
+                <div class="lastRowPost">
+                    <div id="like" (click)="addLike(post.id)">
+                        <i class="far fa-thumbs-up" id="likeIcon"></i>
+                        <span id="likeCont">
+                            Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
+                        </span>
+                    </div>
+                    <div id="comment" >
+                        <i class="fas fa-microphone-alt"></i>
+                        <span id="commentCont">
+                            Voice
+                        </span>
+                    </div>
+                    <div id="comment" (click)="addComment(post.id,i)">
+                        <i class="far fa-comment-alt" id="commentIcon"></i>
+                        <span id="commentCont">
+                            Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div id="writecomnt">
+                    <hr style="margin-top: 55px;margin-bottom: 10px">
+                    <div class="firstRow">
+                        <img [src]="user.picURL">
+                        <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..." class="cmntInput" />
+                    </div>
+
+                </div>
+
+              <div  *ngFor="let item of commentsList[i]" class="container my-2 mx-3 " style="width: 70%;">
+                        <img style="width: 3%;height: 3%;float: left;" [src]="item.writer.picURL"> 
+                        <div>
+                            <small style="right: 2px;">{{item.writer.name}}</small>
+                            <span class="badge badge-pill badge-light p-1">{{item.description}}</span>
+                        <small style="display: block;">{{item.date | date:'dd-MM-yyyy HH-mm'}}</small>
+                        </div>
+              </div>
+
+            </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
