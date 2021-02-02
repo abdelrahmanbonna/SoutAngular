@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { FireService } from 'src/app/services/fire.service';
 import { PostsService } from 'src/app/services/posts.service';
-import { UserInfoService } from 'src/app/services/user-info.service';
 import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-home',
@@ -17,9 +16,6 @@ export class HomeComponent implements OnInit {
     return { color: this.user.favColor }
   }
 
-
-
-
   subscribtion: Subscription[] = [];
   postList: any[] = [];
   postsUsers: any[] = [];
@@ -29,17 +25,13 @@ export class HomeComponent implements OnInit {
   user: any;
   postcomfields: string[] = [];
   greating: string;
-  constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private usrInfo: UserInfoService, private route: Router) {
+  constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private route: Router) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     console.log(this.user)
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
       console.log(res)
       this.postList = res;
-      this.postList.forEach(element => {
-        this.getPostUser(element.owner);
-        console.log(this.postsUsers)
-      });
     }))
 
   }
@@ -52,51 +44,27 @@ export class HomeComponent implements OnInit {
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
       console.log(res)
       this.postList = res;
-      this.postList.forEach(element => {
-        this.getPostUser(element.owner);
-      });
     }))
 
   }
 
   notifyUser(usrId: string, msg: string) {
-    // this.subscribtion.push(this.fireService.getDocument(`Users/${usrId}`).subscribe(data => {
-    //   console.log(`entered notify`)
-    //   data.notifications.push({
-    //     description: msg,
-    //     maker: {
-    //       id: this.user.id,
-    //       name: this.user.firstName + " " + this.user.secondName,
-    //       picURL: this.user.picURL
-    //     },
-    //     date: new Date().toISOString()
-    //   })
-    //   this.fireService.updateDocument(`Users/${usrId}`, {
-    //     notifications: data.notifications
-    //   })
-    // }))
-
-    // setTimeout(() => {
-    //   this.subscribtion[this.subscribtion.length - 1].unsubscribe()
-    // }
-    //   , 10);
-
-    // this.fireService.updateDocument(`Users/${usrId}`, {
-    //   notifications: [ {
-    //     description: msg,
-    //     maker: {
-    //       id: this.user.id,
-    //       name: this.user.firstName + " " + this.user.secondName,
-    //       picURL: this.user.picURL
-    //     },
-    //     date: new Date().toISOString()
-    //   }]
-    // })
+    this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+      date: new Date().toISOString(),
+      description: msg,
+      maker: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      }
+    })
   }
 
-  addPost(desc: string) {
+  addPost(desc: string, audio: any, images: any[]) {
     this.post.description = desc;
-    this.post.owner = this.user.id;
+    this.post.owner.id = this.user.id;
+    this.post.owner.name = this.user.firstName + " " + this.user.secondName;
+    this.post.owner.picURL = this.user.picURL;
     this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
@@ -104,10 +72,20 @@ export class HomeComponent implements OnInit {
     this.ngOnInit()
   }
 
-  bookmarkpost(id: string) {
-    this.user.bookmarks.push(id)
-    this.fireService.updateDocument(`Users/${this.user.id}`, {
-      bookmarks: this.user.bookmarks,
+  bookmarkpost(post: any) {
+    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+      date: new Date().toISOString(),
+      description: post.description ? post.description : undefined,
+      id: post.id,
+      audio: post.audio ? post.audio : undefined,
+      video: post.video ? post.video : undefined,
+      talent: post.talent ? post.talent : undefined,
+      images: post.images ? post.images : undefined,
+      owner: {
+        id: post.owner.id,
+        name: post.owner.name,
+        picURL: post.owner.picURL
+      }
     })
     alert(`post added`)
   }
@@ -120,73 +98,20 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getPostUser(id: string) {
-    this.fireService.getDocument(`Users/${id}`).subscribe((data) => {
-      console.log(data)
-      this.postsUsers.push(data);
+  // getPostUser(id: string) {
+  //   this.fireService.getDocument(`Users/${id}`).subscribe((data) => {
+  //     console.log(data)
+  //     this.postsUsers.push(data);
+  //   })
+  // }
+
+  addLike(postid: string) {
+    this.firestore.collection('post').doc(postid).collection("like").add({
+      userid: this.user.id
     })
   }
 
-  addLike(postid: string) {
-    let bol = false
-    let post: string
-    let owner: any
-    this.subscribtion.push(this.fireService.getDocument(`post/${postid}`).subscribe((data) => {
-      data.like.forEach((element: string) => {
-        if (element === this.user.id) {
-          bol = true;
-        }
-      });
-      if (!bol)
-        data.like.push(this.user.id)
-      this.fireService.updateDocument(`post/${postid}`, {
-        like: data.like
-      })
-
-      owner = data.owner;
-      post = data.description;
-    }))
-
-    setTimeout(() => {
-      this.subscribtion[this.subscribtion.length - 1].unsubscribe()
-    }
-      , 100);
-
-    // this.notifyUser(owner!, `${this.user.firstName} liked your post ${post!}`)
-  }
-
   async addComment(postid: string, index: number) {
-    // let post: string
-    // let owner: any
-    // this.subscribtion.push(this.fireService.getDocument(`post/${postid}`).subscribe(data => {
-    //   console.log(`Data from addcmt ${data}`)
-    //   data.comment.push({
-    //     writer: {
-    //       id: this.user.id,
-    //       name: this.user.firstName + " " + this.user.secondName,
-    //       picURL: this.user.picURL
-    //     },
-    //     description: this.postcomfields[index],
-    //     date: new Date().toISOString(),
-    //   })
-
-    //   this.fireService.updateDocument(`post/${postid}`, {
-    //     comment: data.comment
-    //   })
-
-    // if (data.owner !== this.user.id)
-    // this.notifyUser(data.owner, `${this.user.firstName} commented your post ${data.description}`)
-
-    // }))
-
-
-    // setTimeout(() => {
-    //   this.subscribtion[this.subscribtion.length - 1].unsubscribe()
-
-    // }
-    //   , 100);
-    // this.notifyUser(owner!, `${this.user.firstName} commented your post ${post!}`)
-
     await this.firestore.collection(`post`).doc(postid).collection('comment').add({
       writer: {
         id: this.user.id,

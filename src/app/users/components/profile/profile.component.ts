@@ -48,8 +48,10 @@ export class ProfileComponent implements OnInit {
 
   addPost(desc: string) {
     this.post.description = desc;
-    this.post.owner = this.user.id;
-    this.post.id = this.firestore.createId();
+    this.post.owner.id = this.user.id;
+    this.post.owner.name = this.user.firstName + " " + this.user.secondName,
+      this.post.owner.picURL = this.user.picURL,
+      this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });
@@ -57,14 +59,14 @@ export class ProfileComponent implements OnInit {
   }
 
   deletePost(id: string) {
-    this.postsService.deletePost(id).then( 
-      (data) =>{
+    this.postsService.deletePost(id).then(
+      (data) => {
         console.log(data);
 
         this.ngOnInit();
 
-      }) 
-  
+      })
+
   }
 
 }

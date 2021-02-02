@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { FireService } from 'src/app/services/fire.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class NotoficationComponent implements OnInit {
   notoficationArr: any[] = [];
   user: any = JSON.parse(localStorage.getItem('userdata')!)
 
-  constructor(private FireService: FireService
+  constructor(private FireService: FireService, private firestore: AngularFirestore
   ) {
 
   }
@@ -27,11 +28,9 @@ export class NotoficationComponent implements OnInit {
 
     // }
 
-    this.FireService.getDocument(`Users/${this.user.id}`).subscribe((res) => {
+    this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((res) => {
+      this.notoficationArr = res;
       console.log(res)
-      this.notoficationArr = res.notifications
-      console.log(this.notoficationArr)
-
     })
   }
 }
