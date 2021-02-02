@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
-import { UserInfoService } from 'src/app/services/user-info.service';
+import { FireService } from 'src/app/services/fire.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,7 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 })
 export class ProfileComponent implements OnInit {
   userName: string = "";
-  picURL: string = "";
+  picURL: any;
   coverPicURL: string = "";
   public user: User = new User();
   postList: Post[] = [];
@@ -21,14 +22,19 @@ export class ProfileComponent implements OnInit {
   postMind: string = "";
   postDesc: string = "";
 
-  constructor(private postsService: PostsService, private route: Router, private firestore: AngularFirestore) { }
+  constructor(private postsService: PostsService, private route: Router,
+     private firestore: AngularFirestore,private storage : AngularFireStorage, private FireService: FireService) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
       // console.log(this.usrInfo.loggedin)
       this.userName = this.user.firstName + " " + this.user.secondName;
+
+      // const ref = this.storage.refFromURL(this.user.picURL);
+      // this.picURL = ref.getDownloadURL();
       this.picURL = this.user.picURL;
+
       this.coverPicURL = this.user.coverPicURL;
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
@@ -38,7 +44,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getAllPosts() {
-    this.postsService.getAllUserPosts(this.user).subscribe(res => {
+    this.postsService.getAllUserPosts(this.user.id).subscribe(res => {
       this.postList = res
     });
     // return this.postList;
@@ -64,7 +70,13 @@ export class ProfileComponent implements OnInit {
         this.ngOnInit();
 
       }) 
-  
+  }
+
+  updateProfilePic(pic:string){
+    this.storage.upload("/Users/profile_pics",pic)
+    
+    this.user.picURL = pic;
+    this.FireService.updateDocument("Users/" + this.user.id,this.user)
   }
 
 }

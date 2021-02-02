@@ -23,7 +23,7 @@
                     </button>
                     <ul class="dropdown-menu" style="width: 100%;border: none" role="menu" aria-labelledby="menu1">
                         <li role="presentation" style="padding-left:7px;">
-                            <a role="menuitem" tabindex="-1" onclick="document.getElementById('myFileInput').click()">
+                            <a role="menuitem" tabindex="-1"  onclick="document.getElementById('myFileInput').click()">
                                 <i class="fas fa-camera" style="font-size: 15px"></i> Edit Profile Picture</a>
                         </li>
                         <hr>
@@ -113,7 +113,8 @@
         <div class="col-sm-11 col-md-9 rightSide" style="height: 100%">
             <div id="writePst">
                 <div class="firstRow">
-                    <img [src]="picURL" style="width: 6%">
+                    <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner"
+                    routerLinkActive="active" style="cursor: pointer;">
                     <input type="text" placeholder={{postMind}} #desc value="" style="cursor:pointer;"/>
                 </div>
                 <hr>
@@ -144,13 +145,26 @@
                     </ul>
                 </div>
                 <div class="poster">
-                    <img [src]="picURL">
-                    <div id="posterName">{{userName}}</div>
-                    <div id="time">{{post.date}} <i class="fas fa-globe-africa"></i></div>
+                    <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner"
+                    routerLinkActive="active" style="cursor: pointer;">
+                    <div id="posterName" [routerLink]="'/users/profile/'+post.owner"
+                    routerLinkActive="active" style="cursor: pointer;">{{userName}}</div>
+                    <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i class="fas fa-globe-africa"></i></div>
                 </div>
 
-                <span>{{post.description}}</span>
-
+                <span class="ml-2">{{post.description}}</span>
+                <br/>
+                <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
+                <span *ngIf="post.audio">
+                    <div class="container-audio">
+                        <audio controls loop autoplay>
+                            <source 
+                            [src]="post.audio" 
+                                type="audio/ogg">
+                            Your browser dose not Support the audio Tag
+                        </audio>
+                    </div>
+                </span>
 
                 <hr style="margin-top: 15px;">
                 <div class="lastRowPost">
@@ -178,7 +192,8 @@
                 <div id="writecomnt">
                     <hr style="margin-top: 55px;margin-bottom: 10px">
                     <div class="firstRow">
-                        <img [src]="picURL">
+                        <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner"
+                        routerLinkActive="active" style="cursor: pointer;">
                         <input type="text" placeholder="Write a comment..." id="cmntInput" />
                     </div>
 
