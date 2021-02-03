@@ -15,17 +15,15 @@
                 </div>
                 <div class="card-body contacts_body">
                     <ul class="contacts">
-                    <!-- <li *ngFor="let person of persons"> -->
-                        <li>
+                     <li *ngFor="let person of persons"> 
                         <div class="d-flex bd-highlight">
                             <div class="img_cont">
-                                <!--[src]="person.picURL"-->
-                                <img  [src]="user.picURL" class="rounded-circle user_img">
+                                <img  [src]="person.picURL" class="rounded-circle user_img">
                                 <span class="online_icon"></span>
                             </div>
                             <div class="user_info">
-                                <span><!--{{person.firstName}}-->Fatma</span>
-                                <p><!--{{person.firstName}}--> is online</p>
+                                <span>{{person.firstName}}</span>
+                                <p>{{person.firstName}}</p>
                             </div>
                         </div>
                     </li>
