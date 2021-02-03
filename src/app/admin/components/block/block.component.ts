@@ -23,16 +23,19 @@ export class BlockComponent implements OnInit ,OnDestroy{
   user : User | undefined;
   userProfilePic : any;
 
+
   constructor(private fire : FireService,
               private storage : AngularFireStorage,
               private report_block : ReportBlockService,
               private router : Router) { }
+
 
   ngOnInit(): void {
     if(this.report_block.getId()){
       this.userId = this.report_block.getId();
     }
   }
+
 
   getUserInfo() : void{
     this.subs = this.fire.getDocument(`Users/${this.userId}`).subscribe((resp)=>{
