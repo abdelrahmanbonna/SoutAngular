@@ -15,10 +15,26 @@ export class SidebarComponent implements OnInit {
   public notificationsNo: number = 0
   subs: Subscription[] = []
   user: any;
+  talentsList: any[] = []
+  subscribtion: Subscription[] = [];
+  usertalents: any[] = []
   constructor(private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
+    this.loadTalents()
+    this.loadUserTalents()
   }
 
+  loadTalents() {
+    this.subscribtion.push(this.usrInfo.getCollection('talents').subscribe(data => {
+      this.talentsList = data;
+    }))
+  }
+
+  loadUserTalents() {
+    this.subscribtion.push(this.firestore.collection('Users').doc(this.user.id).collection('talents').valueChanges().subscribe(data => {
+      this.usertalents = data;
+    }))
+  }
 
   ngOnInit(): void {
     this.getnotificationsno()
@@ -39,4 +55,11 @@ export class SidebarComponent implements OnInit {
     }))
   }
 
+  addtalents(talent: any) {
+    this.firestore.collection('Users').doc(this.user.id).collection('talents').doc(talent.id).set(talent)
+  }
+
+  async removeTalent(t: any) {
+    await this.firestore.collection('Users').doc(this.user.id).collection('talents').doc(t).delete()
+  }
 }
