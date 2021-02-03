@@ -54,6 +54,7 @@ export class HomeComponent implements OnInit {
       this.route.navigate(['/landing'])
     }
     document.querySelector('.modal-backdrop')!.remove();
+    this.postList = []
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
       this.postList = res;
       for (let index = 0; index < this.postList.length; index++) {
@@ -70,16 +71,17 @@ export class HomeComponent implements OnInit {
 
   async notifyUser(usrId: string, msg: string) {
     let id = this.firestore.createId();
-    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').doc(id).set({
-      id: id,
-      date: new Date().toISOString(),
-      description: msg,
-      maker: {
-        id: this.user.id,
-        name: this.user.firstName + " " + this.user.secondName,
-        picURL: this.user.picURL
-      }
-    })
+    if (this.user.id !== usrId)
+      await this.firestore.collection(`Users`).doc(usrId).collection('notifications').doc(id).set({
+        id: id,
+        date: new Date().toISOString(),
+        description: msg,
+        maker: {
+          id: this.user.id,
+          name: this.user.firstName + " " + this.user.secondName,
+          picURL: this.user.picURL
+        }
+      })
   }
 
   addPost(desc: string, audio: any = null, video: any = null, images: any[] = []) {
@@ -140,8 +142,8 @@ export class HomeComponent implements OnInit {
     })
     this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
-
   async getComments(postid: string) {
+    this.commentsList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
       console.log(data)
@@ -149,6 +151,7 @@ export class HomeComponent implements OnInit {
   }
 
   async getLikes(postid: string) {
+    this.LikesList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
       console.log(data)
