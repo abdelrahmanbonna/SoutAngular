@@ -5,7 +5,7 @@
         <app-sidebar></app-sidebar>
         <div class="col-7 col-sm-7 col-md-8 col-lg-8 my-2 mx-auto">
 
-            <div class="nav nav-tabs bg-dark " role="tablist" id="nav-tab" style="position: sticky;top:12%;">
+            <div *ngIf="talentsList!==[]" class="nav nav-tabs bg-dark " role="tablist" id="nav-tab" style="position: sticky;top:12%;">
                 <a *ngFor="let item of talentsList" class="nav-item nav-link col" data-toggle="tab" aria-selected="false" (click)="selectcat(item.id)" role="tab" href="#jokes" [ngStyle]="{'color': user.favColor}"id="jokes-tab">{{item.name}}</a>
             </div>
 

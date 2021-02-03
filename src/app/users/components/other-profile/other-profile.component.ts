@@ -32,12 +32,14 @@ export class OtherProfileComponent implements OnInit {
   picURL: any;
   coverPicURL: string = "";
   reportImageURL: string = "";
+
   uploadPercent: Observable<number> | any;
   downloadURL: Observable<string> | any;
   uploaded: string = "";
   imageReStatus: string = "Choose Image";
   notificationsNo: number = 0;
   check: boolean = false;
+
 
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
@@ -48,7 +50,7 @@ export class OtherProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
 
@@ -119,6 +121,7 @@ export class OtherProfileComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
+
     this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
 
@@ -134,6 +137,7 @@ export class OtherProfileComponent implements OnInit {
       this.notifyUser(this.userInfo.id, `${this.user.firstName} followed You!`)
       this.check = !this.check;
     }
+
   }
 
   async getComments(postid: string) {

@@ -38,15 +38,16 @@ export class TalentsComponent implements OnInit {
   greating: string;
   selectedTalent: string = "";
   constructor(private fireService: FireService, private domSanitizer: DomSanitizer, private usrInfo: UserInfoService, private firestore: AngularFirestore, private postsService: PostsService, private route: Router) {
-    this.loadTalents()
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     this.greating = "What's up, " + this.user.firstName! + " " + this.user.secondName! + "?";
+    this.loadTalents()
   }
 
   ngOnInit(): void {
     if (document.querySelector('.modal-backdrop')) {
       document.querySelector('.modal-backdrop')!.remove();
     }
+    this.loadTalents()
   }
 
   async getComments(postid: string) {
@@ -231,7 +232,8 @@ export class TalentsComponent implements OnInit {
   }
 
   loadTalents() {
-    this.subscribtion.push(this.fireService.getCollection('talents').subscribe(data => {
+    this.talentsList = []
+    this.subscribtion.push(this.firestore.collection('Users').doc(this.user.id).collection('talents').valueChanges().subscribe(data => {
       this.talentsList = data;
     }))
   }

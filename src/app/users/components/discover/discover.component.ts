@@ -139,6 +139,7 @@ export class DiscoverComponent implements OnInit {
     alert(`post added`)
   }
 
+
   addLike(post: any) {
     this.firestore.collection('post').doc(post.id).collection("like").add({
       userid: this.user.id
