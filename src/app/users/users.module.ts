@@ -19,10 +19,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { BookmarkComponent } from './components/bookmark/bookmark.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { SettingComponent } from './components/setting/setting.component';
+
 import { FormsModule } from '@angular/forms';
-
-
-
 
 @NgModule({
   declarations: [
@@ -43,6 +41,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     UsersRoutingModule,
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyB34ZDbD7bLBLklSgRbyaEqdOo-ZB1V8dw",

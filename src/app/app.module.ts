@@ -11,8 +11,9 @@ import { UserInfoService } from './services/user-info.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxLoadingModule } from 'ngx-loading';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ModalModule } from 'ngx-bootstrap/modal'
-
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { MDBBootstrapModule } from 'angular-bootstrap-md';
 declare module "@angular/core" {
   interface ModuleWithProviders<T = any> {
     ngModule: Type<T>;
@@ -28,6 +29,7 @@ declare module "@angular/core" {
     LandingComponent
   ],
   imports: [
+    // MDBBootstrapModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp({
@@ -44,6 +46,7 @@ declare module "@angular/core" {
     TooltipModule,
     ModalModule,
     NgxLoadingModule,
+    BrowserAnimationsModule,
   ],
   providers: [UserInfoService],
   bootstrap: [AppComponent]

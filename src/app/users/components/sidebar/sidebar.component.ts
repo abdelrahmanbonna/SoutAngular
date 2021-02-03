@@ -1,8 +1,12 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { ModeService } from 'src/app/services/mode.service';
+
 import { Subscription } from 'rxjs';
 import { FireService } from 'src/app/services/fire.service';
+
 import { UserInfoService } from 'src/app/services/user-info.service';
 
 
@@ -18,10 +22,22 @@ export class SidebarComponent implements OnInit {
   talentsList: any[] = []
   subscribtion: Subscription[] = [];
   usertalents: any[] = []
-  constructor(private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
+  constructor(private modeService:ModeService,private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     this.loadTalents()
     this.loadUserTalents()
+    if(this.user.favMode === "dark") this.OnDark()
+    else this.defaultMode()
+  }
+
+ OnDark(){
+    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
+    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); 
+  }
+  defaultMode(){
+    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); 
+    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
+    
   }
 
   loadTalents() {
@@ -35,6 +51,7 @@ export class SidebarComponent implements OnInit {
       this.usertalents = data;
     }))
   }
+
 
   ngOnInit(): void {
     this.getnotificationsno()
