@@ -27,13 +27,22 @@
                     </button>
                     <ul class="dropdown-menu" style="width: 100%;border: none" role="menu" aria-labelledby="menu1">
                         <li role="presentation" style="padding-left:7px;">
-                            <a role="menuitem" tabindex="-1" type="file" >
-                                <i class="fas fa-camera" style="font-size: 15px"></i> Edit Profile Picture</a>
+                            <a class="custom-file" role="menuitem" tabindex="-1">
+                                <input type="file" (change)="uploadFile($event,'profile')" class="custom-file-input"
+                                    style="width:100%;" />
+                                <label class="custom-file-label" for="validatedCustomFile">
+                                    <i class="fas fa-camera" style="font-size: 15px"></i> Edit Profile Pic</label>
+                            </a>
                         </li>
                         <hr>
-                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1"
-                                onclick="document.getElementById('myFileInput').click()"> <i class="fas fa-image"
-                                    style="font-size: 15px"></i> Edit Cover</a></li>
+                        <li role="presentation" style="padding-left:5px;">
+                            <a class="custom-file" role="menuitem" tabindex="-1">
+                                <input type="file" (change)="uploadFile($event,'cover')" class="custom-file-input"
+                                    style="width:100%;" />
+                                <label class="custom-file-label" for="validatedCustomFile">
+                                    <i class="fas fa-image" style="font-size: 15px"></i> Edit Cover</label>
+                            </a>    
+                        </li>
                     </ul>
                 </div>
             </span>
@@ -207,7 +216,8 @@
                 </div>
                 <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3" style="width: 70%;margin-left: 3.5%;">
 
-                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="item.writer.picURL">
+                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="user.id==item.writer.id?picURL:item.writer.picURL"
+                    [routerLink]="'/users/profile/'+user.id==item.writer.id?user.id:item.writer.id" routerLinkActive="active">
 
                     <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
                         <div><small id="posterName">{{item.writer.name}}</small>

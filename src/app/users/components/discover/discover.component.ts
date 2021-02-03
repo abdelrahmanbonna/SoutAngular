@@ -6,11 +6,12 @@ import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { TalentService } from 'src/app/services/talent.service';
 import { FireService } from 'src/app/services/fire.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-discover',
@@ -25,21 +26,32 @@ export class DiscoverComponent implements OnInit {
   ownerId: string = "";
   userList: User[] = [];
   report: Report | any = new Report();
-
+  picURL: any;
+  coverPicURL: string = "";
   id: string = "";
-  toggle :boolean= false;
+  toggle: boolean = false;
+  postcomfields: string[] = [];
+  LikesList: any[] = [];
+  commentsList: any[] = [];
+  subscribtion: Subscription[] = [];
+  reportImageURL: string = "";
+  uploadPercent: Observable<number> | any;
+  downloadURL: Observable<string> | any;
+  uploaded: string = "";
+  imageReStatus: string = "Choose Image";
 
   constructor(private talentService: TalentService, private route: Router, private postsService: PostsService
     , private FireService: FireService
     , config: NgbModalConfig, private modalService: NgbModal
-    , private firestore: AngularFirestore) {
-    config.backdrop = 'static';
-    config.keyboard = false;
+    , private firestore: AngularFirestore, private storage: AngularFireStorage) {
   }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
+      this.picURL = this.user.picURL;
+      this.coverPicURL = this.user.coverPicURL;
+
       this.getAllTalents();
       this.getAllPosts();
     }
@@ -59,9 +71,18 @@ export class DiscoverComponent implements OnInit {
 
 
   getPostsByTalent(id: string) {
-    this.postList=[]
+    this.postList = []
+    this.LikesList= []
+    this.commentsList=[]
     this.postsService.getPostsOfTalent(id).subscribe(res => {
       this.postList = res
+
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
 
       this.postList.forEach(p => {
         this.getUserById(p.owner.id)
@@ -72,9 +93,18 @@ export class DiscoverComponent implements OnInit {
   }
 
   getAllPosts() {
-    this.postList=[]
+    this.postList = []
+    this.LikesList= []
+    this.commentsList=[]
     this.FireService.getCollection("post/").subscribe(res => {
       this.postList = res
+
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
 
       this.postList.forEach(p => {
         this.getUserById(p.owner.id)
@@ -91,11 +121,111 @@ export class DiscoverComponent implements OnInit {
     });
   }
 
-  open(content: any) {
-    this.modalService.open(content);
+  bookmarkpost(post: any) {
+    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+      date: new Date().toISOString(),
+      description: post.description ? post.description : undefined,
+      id: post.id,
+      audio: post.audio ? post.audio : undefined,
+      video: post.video ? post.video : undefined,
+      talent: post.talent ? post.talent : undefined,
+      images: post.images ? post.images : undefined,
+      owner: {
+        id: post.owner.id,
+        name: post.owner.name,
+        picURL: post.owner.picURL
+      }
+    })
+    alert(`post added`)
   }
 
-  reportUser(title: string, des: string, postId: string) {
+  addLike(postid: any) {
+    this.firestore.collection('post').doc(postid.id).collection("like").add({
+      userid: this.user.id
+    })
+    this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
+  }
+
+  addComment(postid: any, index: number) {
+    this.firestore.collection(`post`).doc(postid.id).collection('comment').add({
+      writer: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      },
+      description: this.postcomfields[index],
+      date: new Date().toISOString(),
+    })
+    this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+  }
+
+  async getComments(postid: string) {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      console.log(data)
+    }))
+  }
+
+  async getLikes(postid: string) {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+      console.log(data)
+    }))
+  }
+
+  async notifyUser(usrId: string, msg: string) {
+    let id = this.firestore.createId();
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').doc(id).set({
+      id: id,
+      date: new Date().toISOString(),
+      description: msg,
+      maker: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.subscribtion.forEach(element => {
+      element.unsubscribe();
+    })
+  }
+  
+  //************** For Report ********************
+  
+  uploadReportImage(event: any) {
+    var filePath: any;
+    const file = event.target.files[0];
+    var imageId = this.firestore.createId();
+
+    filePath = '/Reports/images/' + imageId;
+
+    const task = this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    this.imageReStatus = ""
+    this.uploaded = `Uploading..`
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.uploaded = `Image Uploaded`;
+        this.imageReStatus = file.name
+
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url => {
+          this.reportImageURL = url
+          console.log(this.reportImageURL)
+        })
+
+      })
+    )
+      .subscribe()
+
+  }
+
+  reportPost(title: string, des: string, postId: string) {
 
     this.report.title = title;
     this.report.description = des;
@@ -103,8 +233,12 @@ export class DiscoverComponent implements OnInit {
     this.report.reportedId = postId;
     this.report.type = "post";
     this.report.id = this.firestore.createId();
+    this.report.image = this.reportImageURL;
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
   }
 
+  open(content: any) {
+    this.modalService.open(content);
+  }
 
 }
