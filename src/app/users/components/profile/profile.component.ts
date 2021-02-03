@@ -27,33 +27,63 @@ export class ProfileComponent implements OnInit {
 
   constructor(private postsService: PostsService, private route: Router,
     private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) {
-      
-     }
 
-    //  uploadFile(event:any) {
-    //   const file = event.target.files[0];
-    //   const filePath = '/Users/profile_pics';
-    //   const task = this.storage.upload(filePath, file);
-    // }
+  }
+
+
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
-      // console.log(this.usrInfo.loggedin)
       this.userName = this.user.firstName + " " + this.user.secondName;
-
+      this.picURL = this.user.picURL;
+      this.coverPicURL = this.user.coverPicURL;
       // const ref = this.storage.refFromURL(this.user.picURL);
       // this.picURL = ref.getDownloadURL();
-      this.picURL = this.user.picURL;
 
-      this.coverPicURL = this.user.coverPicURL;
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
     }
     else
       this.route.navigate(['/landing'])
   }
+  uploadFile(event: any, type: string) {
+    var filePath: any;
+    var userId = this.user.id
+    const file = event.target.files[0];
 
+    if (type == "profile")
+      filePath = '/Users/profile_pics/' + userId;
+    else if (type == "cover")
+      filePath = '/Users/cover_photos/' + userId;
+
+    this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    ref.getDownloadURL().toPromise().then(url => {
+      if (type == "profile") {
+
+        this.user.picURL = url;
+        this.FireService.updateDocument("Users/" + userId, this.user)
+
+        this.picURL = url;
+        console.log(this.user.picURL)
+      }
+      else if (type == "cover") {
+        this.coverPicURL = url;
+        this.FireService.updateDocument("Users/" + userId, this.user)
+
+        this.user.coverPicURL = url;
+      }
+
+      localStorage.setItem('userdata', JSON.stringify(this.user))
+      this.route.navigate(['/users/profile']).then(() => {
+        window.location.reload();
+      });
+    });
+
+  }
+  
   getAllPosts() {
     this.postsService.getAllUserPosts(this.user.id).subscribe(res => {
       this.postList = res
@@ -73,8 +103,8 @@ export class ProfileComponent implements OnInit {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName,
-    this.post.owner.picURL = this.user.picURL,
-    this.post.id = this.firestore.createId();
+      this.post.owner.picURL = this.user.picURL,
+      this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });

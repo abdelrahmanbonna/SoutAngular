@@ -19,17 +19,21 @@ import { Report } from 'src/app/models/report.model';
 export class OtherProfileComponent implements OnInit {
   userId: string | null = "";
   user: User = new User();
-  postList: Observable<Post[]> | undefined;
+  postList: Post[] = [];
   userInfo: User = new User();
   ownerId: string = "";
   postMind: string = "";
   report: Report | any = new Report();
-
+  postcomfields: string[] = [];
+  LikesList: any[] = [];
+  commentsList: any[] = [];
+  picURL: any;
+  coverPicURL: string = "";
 
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
     , private firestore: AngularFirestore) {
-      
+
     config.backdrop = 'static';
     config.keyboard = false;
   }
@@ -39,6 +43,7 @@ export class OtherProfileComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
 
+      this.picURL = this.user.picURL;
       this.activatedRoute.paramMap.subscribe((params) => {
         let UIDParam: string | null = params.get('UID');
         this.userId = UIDParam;
@@ -70,6 +75,12 @@ export class OtherProfileComponent implements OnInit {
   getAllPosts() {
     this.postsService.getAllUserPosts(this.userId!).subscribe(res => {
       this.postList = res
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
     });
     // return this.postList;
     console.log(this.postList)
@@ -89,6 +100,52 @@ export class OtherProfileComponent implements OnInit {
     this.report.type = "user";
     this.report.id = this.firestore.createId();
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
+  }
+
+  addLike(postid: string) {
+    this.firestore.collection('post').doc(postid).collection("like").add({
+      userid: this.user.id
+    })
+    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+  }
+
+  addComment(postid: string, index: number) {
+    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+      writer: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      },
+      description: this.postcomfields[index],
+      date: new Date().toISOString(),
+    })
+    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+  }
+
+  async getComments(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      console.log(data)
+    })
+  }
+
+  async getLikes(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+      console.log(data)
+    })
+  }
+
+  async notifyUser(usrId: string, msg: string) {
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+      date: new Date().toISOString(),
+      description: msg,
+      maker: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      }
+    })
   }
 
 }

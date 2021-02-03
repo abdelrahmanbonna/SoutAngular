@@ -26,7 +26,7 @@
 
                 <!-- post -->
 
-                <div id="post1" *ngFor="let post of postList " class="ml-3">
+                <div id="post1" *ngFor="let post of postList ;let i = index;" class="ml-3">
                     <!-- <div *ngFor="let user1 of users;"> -->
 
                     <div class="dropdown " style="float: right">
@@ -109,23 +109,23 @@
 
                     <hr style="margin-top: 15px;">
                     <div class="lastRowPost">
-                        <div id="like" (click)="toggle=!toggle;id=post.id"  >
+                        <div id="like" (click)="addLike(post.id)">
                             <i class="far fa-thumbs-up" id="likeIcon"
-                            [class.like]="toggle&&id==post.id" [class.defaultLike]="!toggle&&post.id!=id"></i>
+                            ></i>
                             <span id="likeCont">
-                                Like
+                                Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
                             </span>
                         </div>
-                        <div id="comment" onclick="addComment()">
+                        <div id="comment" >
                             <i class="fas fa-microphone-alt"></i>
                             <span id="commentCont">
                                 Voice
                             </span>
                         </div>
-                        <div id="comment" onclick="addComment()">
+                        <div id="comment" (click)="addComment(post.id,i)">
                             <i class="far fa-comment-alt" id="commentIcon"></i>
                             <span id="commentCont">
-                                Comment
+                                Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>
                             </span>
                         </div>
                     </div>
@@ -134,10 +134,25 @@
                     <div id="writecomnt">
                         <hr style="margin-top: 55px;margin-bottom: 10px">
                         <div class="firstRow">
-                            <img [src]="user.picURL" [routerLink]="'/users/profile'" routerLinkActive="active">
-                            <input type="text" placeholder="Write a comment..."  />
+                            <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active"
+                                style="cursor: pointer;">
+                            <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..."
+                                id="cmntInput" />
                         </div>
-
+    
+                    </div>
+                    <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3" style="width: 70%;margin-left: 3.5%;">
+    
+                        <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="user.id==item.writer.id?picURL:item.writer.picURL">
+    
+                        <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
+                            <div><small id="posterName">{{item.writer.name}}</small>
+                                <small style="display: block;font-size: 10px;">
+                                    {{item.date | date:'dd-MM-yyyy hh:mm'}}</small>
+                            </div>
+                            <span style="font-weight: 400;">{{item.description}}</span>
+                        </div>
+    
                     </div>
                     <!-- </div> -->
                 </div>

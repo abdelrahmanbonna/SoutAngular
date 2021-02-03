@@ -26,20 +26,28 @@ export class DiscoverComponent implements OnInit {
   userList: User[] = [];
   report: Report | any = new Report();
 
+  picURL: any;
+  coverPicURL: string = "";
+
   id: string = "";
-  toggle :boolean= false;
+  toggle: boolean = false;
+
+  postcomfields: string[] = [];
+  LikesList: any[] = [];
+  commentsList: any[] = [];
 
   constructor(private talentService: TalentService, private route: Router, private postsService: PostsService
     , private FireService: FireService
     , config: NgbModalConfig, private modalService: NgbModal
     , private firestore: AngularFirestore) {
-    config.backdrop = 'static';
-    config.keyboard = false;
   }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
+      this.picURL = this.user.picURL;
+      this.coverPicURL = this.user.coverPicURL;
+
       this.getAllTalents();
       this.getAllPosts();
     }
@@ -59,9 +67,18 @@ export class DiscoverComponent implements OnInit {
 
 
   getPostsByTalent(id: string) {
-    this.postList=[]
+    this.postList = []
+    this.LikesList= []
+    this.commentsList=[]
     this.postsService.getPostsOfTalent(id).subscribe(res => {
       this.postList = res
+
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
 
       this.postList.forEach(p => {
         this.getUserById(p.owner.id)
@@ -72,9 +89,18 @@ export class DiscoverComponent implements OnInit {
   }
 
   getAllPosts() {
-    this.postList=[]
+    this.postList = []
+    this.LikesList= []
+    this.commentsList=[]
     this.FireService.getCollection("post/").subscribe(res => {
       this.postList = res
+
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getComments(this.postList[index].id)
+      }
+      for (let index = 0; index < this.postList.length; index++) {
+        this.getLikes(this.postList[index].id)
+      }
 
       this.postList.forEach(p => {
         this.getUserById(p.owner.id)
@@ -104,6 +130,52 @@ export class DiscoverComponent implements OnInit {
     this.report.type = "post";
     this.report.id = this.firestore.createId();
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
+  }
+
+  addLike(postid: string) {
+    this.firestore.collection('post').doc(postid).collection("like").add({
+      userid: this.user.id
+    })
+    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+  }
+
+  addComment(postid: string, index: number) {
+    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+      writer: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      },
+      description: this.postcomfields[index],
+      date: new Date().toISOString(),
+    })
+    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+  }
+
+  async getComments(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      console.log(data)
+    })
+  }
+
+  async getLikes(postid: string) {
+    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+      console.log(data)
+    })
+  }
+
+  async notifyUser(usrId: string, msg: string) {
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+      date: new Date().toISOString(),
+      description: msg,
+      maker: {
+        id: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      }
+    })
   }
 
 
