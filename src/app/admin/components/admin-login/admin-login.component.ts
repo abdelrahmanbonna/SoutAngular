@@ -27,10 +27,10 @@ export class AdminLoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern('((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})')]]
   });
-
+  this.router.navigate(['/admin/dashboard']);
   this.auth.onAuthStateChanged((admin)=>{
     if (admin){
-      this.router.navigate(['admin/dashboard']);
+      this.router.navigate(['/admin/dashboard']);
     }
   })
   this.adminAuth.currenterr.subscribe(message => {
