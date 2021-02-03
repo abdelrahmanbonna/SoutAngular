@@ -2,7 +2,8 @@
 <br><br>
 <h1>Login</h1>
 <br><br>
-<form [formGroup]="loginForm" (ngSubmit)="login()">
+<div class="col-6">
+<form [formGroup]="loginForm" (ngSubmit)="login()" >
     <div class="form-group">
         <label>Email</label>
         <input type="email" formControlName="email" class="form-control" name="test" required >
@@ -26,3 +27,4 @@
         </button>
     </div>
 </form>
+</div>

@@ -4,6 +4,7 @@ import { User } from '../../models/user';
 import { FireService } from '../../services/fire.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ReportBlockService } from '../../services/report-block.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-block',
@@ -24,7 +25,8 @@ export class BlockComponent implements OnInit ,OnDestroy{
 
   constructor(private fire : FireService,
               private storage : AngularFireStorage,
-              private report_block : ReportBlockService) { }
+              private report_block : ReportBlockService,
+              private router : Router) { }
 
   ngOnInit(): void {
     if(this.report_block.getId()){
@@ -36,8 +38,8 @@ export class BlockComponent implements OnInit ,OnDestroy{
     this.subs = this.fire.getDocument(`Users/${this.userId}`).subscribe((resp)=>{
       this.user = resp;
       console.log(this.user);
-      const ref = this.storage.refFromURL(resp.picURL);
-      this.userProfilePic = ref.getDownloadURL();
+      //const ref = this.storage.refFromURL(resp.picURL);
+      //this.userProfilePic = ref.getDownloadURL();
       this.renderUserInfo();
     })
   }
@@ -51,8 +53,13 @@ export class BlockComponent implements OnInit ,OnDestroy{
      : console.log("element undefined");
   }
 
+  goToProfile(){
+    this.router.navigate(['/users/profile/',this.userId]);
+  }
+
   ngOnDestroy(): void {
     this.subs?.unsubscribe();
   }
+
 
 }

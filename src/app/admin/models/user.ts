@@ -1,24 +1,45 @@
-export interface User
-{
-    id: string //res.user.uid,
-    firstName: string // fname,
-    secondName: string //sname,
-    gender: string //gender,
-    mobile: string //mobile,
-    picURL: string //gen,
-    coverPicURL: string //"",
-    birthDate: string //birthdate,
-    dateCreated: string //Date.now().toString(),
-    dateUpdated: string //Date.now().toString(),
-    privateAcc: boolean //false,
-    favColor: string //"grey",
-    favMode: string //"light",
-    blocked: boolean //false,
-    notifications: any[]
-    bookmarks: any[]
-    followers: any[]
-    following: any[]
+export interface User {
+       id: string  
+       firstName: string  
+       secondName: string  
+       gender: string  
+       mobile: string  
+       picURL: string  
+       coverPicURL: string  
+       birthDate: any 
+       privateAcc: boolean
+       favColor: string  
+       favMode: string  
+      //  notifications: any[]  []
+      //  bookmarks: any[]  []
+      //  followers: any[]  []
+      //  following: any[]  []
+       createdDate: any
+       updatedDate: any
+       blocked: boolean 
   }
+
+// export interface User
+// {
+//     id: string //res.user.uid,
+//     firstName: string // fname,
+//     secondName: string //sname,
+//     gender: string //gender,
+//     mobile: string //mobile,
+//     picURL: string //gen,
+//     coverPicURL: string //"",
+//     birthDate: string //birthdate,
+//     dateCreated: string //Date.now().toString(),
+//     dateUpdated: string //Date.now().toString(),
+//     privateAcc: boolean //false,
+//     favColor: string //"grey",
+//     favMode: string //"light",
+//     blocked: boolean //false,
+//     notifications: any[]
+//     bookmarks: any[]
+//     followers: any[]
+//     following: any[]
+//   }
 //  {
 //     birth_date : any
 //     blocked : boolean

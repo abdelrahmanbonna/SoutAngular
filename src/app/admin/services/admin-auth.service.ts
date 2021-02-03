@@ -20,7 +20,7 @@ export class AdminAuthService {
 
   private userId : string | undefined;
 
-  private adminName = new BehaviorSubject('prof');
+  private adminName = new BehaviorSubject('');
   currentAdminName = this.adminName.asObservable();
 
   private err = new BehaviorSubject('');
@@ -68,6 +68,8 @@ export class AdminAuthService {
 
   logout(){
     this.auth.signOut();
+    this.adminName.next('Ali');
+    localStorage.clear();
   }
 
   

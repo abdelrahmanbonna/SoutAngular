@@ -16,24 +16,29 @@ export class DashBoardService {
   private usersData : any[] = []
   private postsData : any[] = []
   private subs : Subscription[] = []
-  private talents : any[] = []
 
 
   constructor(private fire : FireService) {
     for (let i = 0;i<=this.monthNow;i++){
       this.labels.push(this.months[i])
-      this.usersData[i] = 0;
-      this.postsData[i] = 0;
+      // this.usersData[i] = 0;
+      // this.postsData[i] = 0;
     }
    }
 
    usersChart(chartId : string) {
+    for (let i = 0;i<=this.monthNow;i++){
+      this.usersData[i] = 0;
+    }
     this.subs.push(this.fire.getCollection('Users').subscribe((resp)=>{
       resp.forEach(user => {
+        // let temp : string = user.dateCreated;
+        //console.log(Number(user.dateCreated?.split("-")[0]))
         //console.log(Number(user.dateCreated.split("-")[1]))
-        if (Number(user.dateCreated.split("-")[0]) == this.yearNow){
+
+        if (Number(user.dateCreated?.split("-")[0]) == this.yearNow){
           
-            this.usersData[(Number(user.dateCreated.split("-")[1])-1) ]++;
+            this.usersData[(Number(user.dateCreated?.split("-")[1])-1) ]++;
         }
 
       });
@@ -77,6 +82,9 @@ export class DashBoardService {
    }
 
    postsChart(chartId : string) {
+    for (let i = 0;i<=this.monthNow;i++){
+      this.postsData[i] = 0;
+    };
     this.subs.push(this.fire.getCollection('post').subscribe((resp)=>{
       resp.forEach(post => {
        
@@ -124,7 +132,7 @@ export class DashBoardService {
     }));
    };
    
-   //not completed
+   // completed
    talentsChart(chartId : string) {
 
     //talents
@@ -146,11 +154,13 @@ export class DashBoardService {
     //posts-talent
     this.subs.push(this.fire.getCollection('post').subscribe((resp)=>{
       resp.forEach(post => {
-        //console.log(post.talent[0]._.S_.path.segments[6])
-        for(let i = 0;i<post.talent.length;i++){
-          //console.log(post.talent[i]._.S_.path.segments[6])
-          associativeTalents[post.talent[i]._.S_.path.segments[6]]++
-        }
+        associativeTalents[post.talent]++
+        //console.log(post.talent[0]?._?.S_.path.segments[6])
+        // for(let i = 0;i<post.talent.length;i++){
+        //   //console.log(post.talent[i]._.S_.path.segments[6])
+        //   //associativeTalents[post.talent[i]._?.S_.path.segments[6]]++
+        //   associativeTalents[post.talent[i]]++
+        // }
         // let talent : string = post.talent;
         //   this.subs.push(this.fire.getDocument(talent).subscribe((resp)=>{
         //     console.log(resp);

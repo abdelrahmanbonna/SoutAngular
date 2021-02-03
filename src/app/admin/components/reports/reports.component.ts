@@ -52,6 +52,12 @@ export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       
     }));
+
+
+    ///////////////////////////playGround///////////////////
+    // this.fire.getCollection('Users/Ouo7bBHraiMYfEO8asaBCNtKJGo2/bookmarks').subscribe((resp)=>{
+    //   console.log(resp);
+    // })
   }
 
   ngAfterViewInit(): void {
