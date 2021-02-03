@@ -35,11 +35,11 @@ export class OtherProfileComponent implements OnInit {
 
   uploadPercent: Observable<number> | any;
   downloadURL: Observable<string> | any;
-
   uploaded: string = "";
-
   imageReStatus: string = "Choose Image";
-  notificationsNo: number = 0
+  notificationsNo: number = 0;
+  check: boolean = false;
+
 
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
@@ -65,6 +65,7 @@ export class OtherProfileComponent implements OnInit {
         else {
           this.getUserById(this.userId!)
           this.getAllPosts();
+          this.getnotificationsno();
 
         }
       });
@@ -103,15 +104,15 @@ export class OtherProfileComponent implements OnInit {
     this.modalService.open(content);
   }
 
-  addLike(postid: string) {
-    this.firestore.collection('post').doc(postid).collection("like").add({
+  addLike(post: any) {
+    this.firestore.collection('post').doc(post.id).collection("like").add({
       userid: this.user.id
     })
-    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+    this.notifyUser(post.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(postid: string, index: number) {
-    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+  addComment(post: any, index: number) {
+    this.firestore.collection(`post`).doc(post.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -120,7 +121,23 @@ export class OtherProfileComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
-    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+
+    this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+  }
+
+  follow() {
+    if (this.check) {
+      console.log("You already follow this user")
+    } else {
+      this.firestore.collection(`Users`).doc(this.userInfo.id).collection('followers').add({
+        userid: this.user.id,
+        name: this.user.firstName + " " + this.user.secondName,
+        picURL: this.user.picURL
+      })
+      this.notifyUser(this.userInfo.id, `${this.user.firstName} followed You!`)
+      this.check = !this.check;
+    }
+
   }
 
   async getComments(postid: string) {
