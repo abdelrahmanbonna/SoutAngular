@@ -32,9 +32,7 @@ export class UserInfoService {
             x = res.data();
             console.log(res.data())
             localStorage.setItem('userdata', JSON.stringify(res.data()))
-
             this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.dateCreated, x.dateUpdated, x.blocked!)
-
           } else if (!res.exists) {
             throw `User not found.`
           }
@@ -155,7 +153,6 @@ export class UserInfoService {
         // following: user.following,
       }).catch(err => { console.log(`${err}`) });
     }
-
   }
 
   ngOnDestroy(): void {

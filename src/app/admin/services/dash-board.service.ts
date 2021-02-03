@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FireService } from './fire-service.service';
+import { FireService } from './fire.service';
 import * as Chart from 'chart.js'
 import { AdminModule } from '../admin.module'
 import { Subscription } from 'rxjs';
@@ -18,7 +18,6 @@ export class DashBoardService {
   private subs : Subscription[] = []
 
 
-
   constructor(private fire : FireService) {
     for (let i = 0;i<=this.monthNow;i++){
       this.labels.push(this.months[i])
@@ -26,7 +25,6 @@ export class DashBoardService {
       // this.postsData[i] = 0;
     }
    }
-
 
    usersChart(chartId : string) {
     for (let i = 0;i<=this.monthNow;i++){

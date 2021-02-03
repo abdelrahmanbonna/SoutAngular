@@ -1,67 +1,29 @@
-import { OnDestroy, SimpleChanges } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
 import { AfterViewInit, OnChanges } from '@angular/core';
-import { Component, NgModule, OnInit } from '@angular/core';
-import {FormsModule, NgForm} from '@angular/forms';
-import { ISettingsShow } from 'src/app/users/viewModels/isettings';
-import { ISettingsData } from 'src/app/users/viewModels/isettings-data';
-import { User } from 'src/app/models/user.model';
-
-import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { FireService } from 'src/app/services/fire.service';
-import { ModeService } from 'src/app/services/mode.service';
+import { Component, OnInit } from '@angular/core';
+import { ISettings } from 'src/app/users/viewModels/isettings'
 
 @Component({
   selector: 'app-setting',
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.scss']
 })
-export class SettingComponent implements OnInit,  AfterViewInit, OnChanges, OnDestroy {
-  settings: ISettingsShow={accountPrivacy:true,themes:false,changePassword:false,notifications:false,report:false,manageAccount:false};
-  settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
+export class SettingComponent implements OnInit,  AfterViewInit, OnChanges {
+  settings: ISettings={accountPrivacy:true,themes:false,changePassword:false,notifications:false,report:false,manageAccount:false};
   openedValue:boolean=false;
+  dark:boolean=false;
   alertDeact:boolean=false;
-  newPass:string='';
-  oldPass:string='';
-  user: User = new User();
-  userAuth;
-  code:any; 
-  constructor(private modeService:ModeService,private fireService:FireService, private firestore: AngularFirestore, private fireAuth: AngularFireAuth,private router: Router,private route: ActivatedRoute) {
-    
-    this.userAuth= JSON.parse(localStorage.getItem('userauth')!);
+  color:string='';
+  constructor() {
    }
 
   ngOnInit(): void {
-    this.user = JSON.parse(localStorage.getItem('userdata')!)
-    if (this.user) {
-      this.settingsData.privateAcc = this.user.privateAcc;
-      this.settingsData.favColor = this.user.favColor;
-      this.settingsData.favMode = this.user.favMode;
-      this.settingsData.deactive = this.user.deactive;
-      if(this.settingsData.favMode==="dark") {this.OnDark();this.settingsData.favMode="dark";}
-      else if(this.settingsData.favMode==="light") {this.defaultMode();this.settingsData.favMode="light";}
-    }
-    else
-      this.router.navigate(['/landing'])
-  }
-  OnDark(){
-    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"));
-    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="dark";
-  }
-  defaultMode(){
-    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="light";
-    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"));
-    
   }
   ngAfterViewInit(){
     console.log('ngAfterViewInit');
   }
   ngOnChanges(changes: SimpleChanges){
     console.log('changes',changes);
-  }
-  ngOnDestroy(){
-    this.saveThemes();
   }
   disableOthers(settingName:'accountPrivacy'|'themes'|'changePassword'|'notifications'|'report'|'manageAccount'){
     this.openedValue = this.settings[settingName];
@@ -79,37 +41,65 @@ export class SettingComponent implements OnInit,  AfterViewInit, OnChanges, OnDe
   active(obj:any){
     obj.style.backgroundColor='#BBBBBA'
   }
+
+  columnsDark(columns:any) {
+    if (this.dark) {
+        for (var i = 0; i < columns.length; i++) {
+            columns[i].style.backgroundColor = "rgb(32, 30, 30)";
+            columns[i].style.boxShadow = "0px 0.5px 5px #ddd";
+            columns[i].style.color = "white";
+        }
+    } else {
+        for (var i = 0; i < columns.length; i++) {
+            columns[i].style.backgroundColor = "#F0F2F5";
+            columns[i].style.boxShadow = "0px 0.5px 5px grey";
+             columns[i].style.color = "#444444";
+        }
+    }
+  }
+  OnDark() {
+    document.body.style.backgroundColor = "rgb(19, 18, 18)";
+    var allColumns = document.querySelectorAll("#sidebarMenu");
+    var innerSettingsFont = document.querySelectorAll(".nav-item a");
+    var darkFontAll = document.querySelectorAll(".darkFont");
+    this.dark=true;
+    this.columnsDark(allColumns);
+    this.insideColumnsFont(innerSettingsFont,darkFontAll)
+
+  }
+  defaultMode() {
+    document.body.style.backgroundColor = "white";
+    var allColumns = document.querySelectorAll("#sidebarMenu");
+    var innerSettingsFont = document.querySelectorAll(".nav-item a");
+    var darkFontAll = document.querySelectorAll(".darkFont");
+    this.dark=false;
+    this.columnsDark(allColumns);
+    this.insideColumnsFont(innerSettingsFont,darkFontAll)
+  }
+  insideColumnsFont(navItems:any,darkFonts:any) {
+    
+    if (this.dark) {
+        for (var i = 0; i < navItems.length; i++) {
+          navItems[i].style.color = "white";
+          // navItems[i].style.backgroundColor = "#444444";
+        }
+        for (var i = 0; i < darkFonts.length; i++) {
+          darkFonts[i].style.color = "white";
+        }
+    } else {
+        for (var i = 0; i < navItems.length; i++) {
+          navItems[i].style.color = "#444444";
+          // navItems[i].style.backgroundColor = "white";
+        }
+        for (var i = 0; i < darkFonts.length; i++) {
+          darkFonts[i].style.color = "#444444";
+        }
+    }
+  }
   deactivate(){
     this.alertDeact=true;
   }
   confirmDeactivate() {
     window.location.href = "../landing";
-  }
-  resetPassword(){
-    this.fireAuth.sendPasswordResetEmail(this.userAuth.email).then(
-      ()=>{
-        alert("Check Your Email")
-      },
-      err=>{
-        alert(err)
-      }
-    );
-  }
-  saveThemes(){
-    this.fireService.updateDocument(`/Users/${this.user.id}`,{favColor:this.settingsData.favColor,favMode:this.settingsData.favMode})
-    localStorage.setItem('userdata', JSON.stringify({favColor:this.settingsData.favColor,favMode:this.settingsData.favMode}))
-  }
-  actionCode:any;
-  actionCodeChecked:boolean=false;
-  mode:any;
-  changePassword(){
-
-    this.fireAuth.signInWithEmailAndPassword(this.userAuth.email, this.settingsData.oldPassword).then(res => {
-      console.log("res1",res)
-      
-      if (res.user) {
-        this.resetPassword();
-      }
-    }).catch(err=>{ alert(err)})
   }
 }
