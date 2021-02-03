@@ -1,4 +1,4 @@
-export interface ISettingsShow {
+export interface ISettings {
     accountPrivacy:boolean;
     themes:boolean;
     changePassword:boolean;

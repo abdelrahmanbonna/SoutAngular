@@ -1,4 +1,4 @@
-<nav id="sidebarMenu" class="col-xl-12 col-lg-12 col-sm-3 col-md-6 col-3 leftSide" [ngStyle]="{'margin-left': '0.5%'}">
+<nav id="sidebarMenu" class="col-xl-12 col-lg-12 col-sm-3 col-md-6 col-3 leftSide" style="background-color: #F5F7F8;margin-left: 0.5%">
     <div class="position-sticky my-3 d-flex justify-content-center d-md-block">
         <ul class="nav flex-column   pt-3">
             <div>
@@ -6,11 +6,12 @@
                     <a class="nav-link " [routerLink]="[ '/users/profile' ]" routerLinkActive="active">
                         <img [src]="user.picURL" style="width: 50px;border-radius: 50%"><span class="d-none d-md-inline-block" style="margin-left: 18px;font-weight: 500">{{user.firstName}} {{user.secondName}}</span>
                     </a>
+                    
+                    
                 </li>
                 <hr>
-                <li class="nav-item"> <!--*ngIf="!user.notifications.length===0"-->
+                <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
-
                         <i class="fas fa-bell"  [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block">
                                         Notifications<span [ngStyle]="{'color': user.favColor}"  class="badge badge-pill">{{notificationsNo}}</span></span>
                     </a>

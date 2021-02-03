@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
 import { Report } from '../../models/report';
 import { FireService } from '../../services/fire.service';
 import { SoutplayerService } from '../../services/soutplayer.service';
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
-
 export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild ('audio')    audio : ElementRef | undefined;
@@ -63,9 +61,7 @@ export class ReportsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-
      this.soutPlayer.start(this.audio,this.slider,this.auddur,this.audtime,this.vol,this.volicon);
-
   }
 
   playAudio(){
