@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
-import { FireService } from 'src/app/services/fire.service';
-import { ModeService } from 'src/app/services/mode.service';
+import { UserChatsService } from 'src/app/services/user-chats.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-chat',
@@ -14,17 +12,28 @@ import { ModeService } from 'src/app/services/mode.service';
 export class ChatComponent implements OnInit {
   classApplied:boolean = true;
   user: User = new User();
+  private subscritionList:Subscription[]=[];
 
-  constructor(private modeService:ModeService,private fireService:FireService, private firestore: AngularFirestore, private fireAuth: AngularFireAuth,private router: Router,private route: ActivatedRoute) { }
+  constructor(private chatService: UserChatsService) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
+    console.log("here")
+    console.log("chats",this.chatService.getChats())
+    ;
+
   }
+  ngAfterViewInit() {
+
+  }
+  ngOnDestroy(){
+    for(let sub of this.subscritionList){
+      sub?.unsubscribe();
+    }
+}
   toggleActionMenue(){
     this.classApplied = !this.classApplied;
   }
-  getChats(){
-    
-  }
+  
 
 }
