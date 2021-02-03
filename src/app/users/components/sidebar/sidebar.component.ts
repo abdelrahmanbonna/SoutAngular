@@ -16,17 +16,21 @@ import { UserInfoService } from 'src/app/services/user-info.service';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  notificationsNo: number = 0
+  public notificationsNo: number = 0
   subs: Subscription[] = []
   user: any;
- // bg_c:string='white';
-  constructor(private modeService:ModeService, private usrInfo: UserInfoService, private route: Router,private firestore: AngularFirestore) {
-
+  talentsList: any[] = []
+  subscribtion: Subscription[] = [];
+  usertalents: any[] = []
+  constructor(private modeService:ModeService,private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
+    this.loadTalents()
+    this.loadUserTalents()
     if(this.user.favMode === "dark") this.OnDark()
     else this.defaultMode()
   }
-  OnDark(){
+
+ OnDark(){
     this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
     this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); 
   }
@@ -35,6 +39,19 @@ export class SidebarComponent implements OnInit {
     this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
     
   }
+
+  loadTalents() {
+    this.subscribtion.push(this.usrInfo.getCollection('talents').subscribe(data => {
+      this.talentsList = data;
+    }))
+  }
+
+  loadUserTalents() {
+    this.subscribtion.push(this.firestore.collection('Users').doc(this.user.id).collection('talents').valueChanges().subscribe(data => {
+      this.usertalents = data;
+    }))
+  }
+
 
   ngOnInit(): void {
     this.getnotificationsno()
@@ -55,4 +72,11 @@ export class SidebarComponent implements OnInit {
     }))
   }
 
+  addtalents(talent: any) {
+    this.firestore.collection('Users').doc(this.user.id).collection('talents').doc(talent.id).set(talent)
+  }
+
+  async removeTalent(t: any) {
+    await this.firestore.collection('Users').doc(this.user.id).collection('talents').doc(t).delete()
+  }
 }

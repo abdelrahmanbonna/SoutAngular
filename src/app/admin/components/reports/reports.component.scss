@@ -4,6 +4,24 @@ h1{
     text-align: center;
 
 }
+.report-header{
+  background-color: #cac5c5;
+  font-size: 1.25rem;
+}
+
+.report-header > *{
+color: #ac341e;
+}
+
+.report-description{
+  font-family:'Times New Roman', Times, serif;
+  font-size: 1.5rem;
+}
+
+.report{
+  width : 80%;
+  box-shadow:3px 3px 5px 6px #ccc;
+}
 
 //sout player
 .slider {
@@ -57,10 +75,4 @@ h1{
     cursor: pointer;
   }
 
- .report-header{
-    background-color: #cac5c5;
-    font-size: 20px;
- } 
- .report-header > *{
-  color: #ac341e;
- }
+ 
