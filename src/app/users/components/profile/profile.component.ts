@@ -38,8 +38,6 @@ export class ProfileComponent implements OnInit {
       this.userName = this.user.firstName + " " + this.user.secondName;
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
-      // const ref = this.storage.refFromURL(this.user.picURL);
-      // this.picURL = ref.getDownloadURL();
 
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
@@ -47,6 +45,7 @@ export class ProfileComponent implements OnInit {
     else
       this.route.navigate(['/landing'])
   }
+  
   uploadFile(event: any, type: string) {
     var filePath: any;
     var userId = this.user.id

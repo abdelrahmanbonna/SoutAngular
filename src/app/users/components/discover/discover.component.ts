@@ -6,11 +6,12 @@ import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { TalentService } from 'src/app/services/talent.service';
 import { FireService } from 'src/app/services/fire.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-discover',
@@ -25,21 +26,24 @@ export class DiscoverComponent implements OnInit {
   ownerId: string = "";
   userList: User[] = [];
   report: Report | any = new Report();
-
   picURL: any;
   coverPicURL: string = "";
-
   id: string = "";
   toggle: boolean = false;
-
   postcomfields: string[] = [];
   LikesList: any[] = [];
   commentsList: any[] = [];
+  subscribtion: Subscription[] = [];
+  reportImageURL: string = "";
+  uploadPercent: Observable<number> | any;
+  downloadURL: Observable<string> | any;
+  uploaded: string = "";
+  imageReStatus: string = "Choose Image";
 
   constructor(private talentService: TalentService, private route: Router, private postsService: PostsService
     , private FireService: FireService
     , config: NgbModalConfig, private modalService: NgbModal
-    , private firestore: AngularFirestore) {
+    , private firestore: AngularFirestore, private storage: AngularFireStorage) {
   }
 
   ngOnInit(): void {
@@ -117,30 +121,33 @@ export class DiscoverComponent implements OnInit {
     });
   }
 
-  open(content: any) {
-    this.modalService.open(content);
+  bookmarkpost(post: any) {
+    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+      date: new Date().toISOString(),
+      description: post.description ? post.description : undefined,
+      id: post.id,
+      audio: post.audio ? post.audio : undefined,
+      video: post.video ? post.video : undefined,
+      talent: post.talent ? post.talent : undefined,
+      images: post.images ? post.images : undefined,
+      owner: {
+        id: post.owner.id,
+        name: post.owner.name,
+        picURL: post.owner.picURL
+      }
+    })
+    alert(`post added`)
   }
 
-  reportUser(title: string, des: string, postId: string) {
-
-    this.report.title = title;
-    this.report.description = des;
-    this.report.userId = this.user.id;
-    this.report.reportedId = postId;
-    this.report.type = "post";
-    this.report.id = this.firestore.createId();
-    this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
-  }
-
-  addLike(postid: string) {
-    this.firestore.collection('post').doc(postid).collection("like").add({
+  addLike(postid: any) {
+    this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
     })
-    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+    this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(postid: string, index: number) {
-    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+  addComment(postid: any, index: number) {
+    this.firestore.collection(`post`).doc(postid.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -149,25 +156,27 @@ export class DiscoverComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
-    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+    this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
 
   async getComments(postid: string) {
-    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
       console.log(data)
-    })
+    }))
   }
 
   async getLikes(postid: string) {
-    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
       console.log(data)
-    })
+    }))
   }
 
   async notifyUser(usrId: string, msg: string) {
-    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
+    let id = this.firestore.createId();
+    await this.firestore.collection(`Users`).doc(usrId).collection('notifications').doc(id).set({
+      id: id,
       date: new Date().toISOString(),
       description: msg,
       maker: {
@@ -178,5 +187,58 @@ export class DiscoverComponent implements OnInit {
     })
   }
 
+  ngOnDestroy(): void {
+    this.subscribtion.forEach(element => {
+      element.unsubscribe();
+    })
+  }
+  
+  //************** For Report ********************
+  
+  uploadReportImage(event: any) {
+    var filePath: any;
+    const file = event.target.files[0];
+    var imageId = this.firestore.createId();
+
+    filePath = '/Reports/images/' + imageId;
+
+    const task = this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    this.imageReStatus = ""
+    this.uploaded = `Uploading..`
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.uploaded = `Image Uploaded`;
+        this.imageReStatus = file.name
+
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url => {
+          this.reportImageURL = url
+          console.log(this.reportImageURL)
+        })
+
+      })
+    )
+      .subscribe()
+
+  }
+
+  reportPost(title: string, des: string, postId: string) {
+
+    this.report.title = title;
+    this.report.description = des;
+    this.report.userId = this.user.id;
+    this.report.reportedId = postId;
+    this.report.type = "post";
+    this.report.id = this.firestore.createId();
+    this.report.image = this.reportImageURL;
+    this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
+  }
+
+  open(content: any) {
+    this.modalService.open(content);
+  }
 
 }

@@ -10,13 +10,14 @@
 
                 <ul class="nav  ml-3 nav2 nav-tabs" id="nav-tab" role="tablist"
                     style="background-color: #F5F7F8;border-bottom: 2px solid;border-bottom-color:#d8352b;border-radius: 8px;box-shadow: 0px 0.5px 5px grey; width: 100%;margin-bottom: 2%;height: 5%;font-size: 17px;">
-                    
+
                     <li class="nav-item col padding-0" (click)="getAllPosts();">
                         <a class="nav-link active" data-toggle="tab" aria-selected="true" role="tab"
                             style="border-radius: 4px ;color: #d8352b;width: 100%;">All</a>
                     </li>
 
-                    <li class="nav-item col padding-0" *ngFor="let talent of talentList" (click)="getPostsByTalent(talent.id)">
+                    <li class="nav-item col padding-0" *ngFor="let talent of talentList"
+                        (click)="getPostsByTalent(talent.id)">
                         <a class="nav-link" data-toggle="tab" aria-selected="false" role="tab"
                             style="border-radius: 4px ;color: #d8352b;width: 100%;">{{talent.name}}</a>
                     </li>
@@ -62,10 +63,20 @@
                                         <input type="text" class="form-control" #title placeholder="Title">
                                         <br />
                                         <input type="text" class="form-control" #desc placeholder="Description">
+                                        <br />
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                (change)="uploadReportImage($event)">
+                                            <label class="custom-file-label"
+                                                for="inputGroupFile01">{{imageReStatus}}</label>
+                                            <div *ngIf="uploaded" class="mt-1" style="font-size: small;">
+                                                <b *ngIf="uploaded=='Image Uploaded'">&#10003;</b> {{ uploaded }}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-dark"
-                                            (click)="c('Save click');reportUser(title.value,desc.value,post.id)">Report</button>
+                                            (click)="c('Save click');reportPost(title.value,desc.value,post.id)">Report</button>
                                     </div>
                                 </ng-template>
                                 <!-- End Modal -->
@@ -92,7 +103,7 @@
                         <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active">
                             {{post.owner.name}}
                         </div>
-                        <div id="time" cl>{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh-mm'}} <i
+                        <div id="time" cl>{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}} <i
                                 class="fas fa-globe-africa"></i></div>
                     </div>
                     <span class="ml-2">{{post.description}}</span>
@@ -110,13 +121,12 @@
                     <hr style="margin-top: 15px;">
                     <div class="lastRowPost">
                         <div id="like" (click)="addLike(post.id)">
-                            <i class="far fa-thumbs-up" id="likeIcon"
-                            ></i>
+                            <i class="far fa-thumbs-up" id="likeIcon"></i>
                             <span id="likeCont">
                                 Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
                             </span>
                         </div>
-                        <div id="comment" >
+                        <div id="comment">
                             <i class="fas fa-microphone-alt"></i>
                             <span id="commentCont">
                                 Voice
@@ -134,25 +144,27 @@
                     <div id="writecomnt">
                         <hr style="margin-top: 55px;margin-bottom: 10px">
                         <div class="firstRow">
-                            <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active"
+                            <img [src]="picURL" [routerLink]="'/users/profile'" routerLinkActive="active"
                                 style="cursor: pointer;">
                             <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..."
                                 id="cmntInput" />
                         </div>
-    
+
                     </div>
-                    <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3" style="width: 70%;margin-left: 3.5%;">
-    
-                        <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="user.id==item.writer.id?picURL:item.writer.picURL">
-    
+                    <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3"
+                        style="width: 70%;margin-left: 3.5%;">
+
+                        <img style="width: 6%;height: 6%;float: left;border-radius: 50%;"
+                            [src]="user.id==item.writer.id?picURL:item.writer.picURL" [routerLink]="'/users/profile/'+item.writer.id" routerLinkActive="active">
+
                         <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
-                            <div><small id="posterName">{{item.writer.name}}</small>
+                            <div><small id="posterName" style="font-size:15px;">{{item.writer.name}}</small>
                                 <small style="display: block;font-size: 10px;">
                                     {{item.date | date:'dd-MM-yyyy hh:mm'}}</small>
                             </div>
                             <span style="font-weight: 400;">{{item.description}}</span>
                         </div>
-    
+
                     </div>
                     <!-- </div> -->
                 </div>

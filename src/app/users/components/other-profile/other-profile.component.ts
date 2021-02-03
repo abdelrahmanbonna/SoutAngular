@@ -9,6 +9,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-other-profile',
@@ -29,17 +31,26 @@ export class OtherProfileComponent implements OnInit {
   commentsList: any[] = [];
   picURL: any;
   coverPicURL: string = "";
+  reportImageURL: string = "";
+
+  uploadPercent: Observable<number> | any;
+  downloadURL: Observable<string> | any;
+
+  uploaded: string = "";
+
+  imageReStatus: string = "Choose Image";
+  notificationsNo: number = 0
 
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
-    , private firestore: AngularFirestore) {
+    , private firestore: AngularFirestore, private storage: AngularFireStorage) {
 
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   ngOnInit(): void {
-
+    
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
 
@@ -48,6 +59,7 @@ export class OtherProfileComponent implements OnInit {
         let UIDParam: string | null = params.get('UID');
         this.userId = UIDParam;
 
+        // this.getnotificationsno()
         if (this.userId == this.user.id)
           this.router.navigate(['/users/profile'])
         else {
@@ -89,17 +101,6 @@ export class OtherProfileComponent implements OnInit {
 
   open(content: any) {
     this.modalService.open(content);
-  }
-
-  reportUser(title: string, des: string) {
-
-    this.report.title = title;
-    this.report.description = des;
-    this.report.userId = this.user.id;
-    this.report.reportedId = this.userInfo.id;
-    this.report.type = "user";
-    this.report.id = this.firestore.createId();
-    this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
   }
 
   addLike(postid: string) {
@@ -146,6 +147,57 @@ export class OtherProfileComponent implements OnInit {
         picURL: this.user.picURL
       }
     })
+  }
+
+  getnotificationsno() {
+    this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
+      console.log(`notifications: ${data}`)
+      this.notificationsNo = data.length
+    })
+  }
+
+  //************** For Report ******************** 
+
+  uploadReportImage(event: any) {
+    var filePath: any;
+    const file = event.target.files[0];
+    var imageId = this.firestore.createId();
+
+    filePath = '/Reports/images/' + imageId;
+
+    const task = this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    this.imageReStatus = ""
+    this.uploaded = `Uploading..`
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.uploaded = `Image Uploaded`;
+        this.imageReStatus = file.name
+
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url => {
+          this.reportImageURL = url
+          console.log(this.reportImageURL)
+        })
+
+      })
+    )
+      .subscribe()
+
+  }
+
+  reportUser(title: string, des: string) {
+
+    this.report.title = title;
+    this.report.description = des;
+    this.report.userId = this.user.id;
+    this.report.reportedId = this.userInfo.id;
+    this.report.type = "user";
+    this.report.id = this.firestore.createId();
+    this.report.image = this.reportImageURL;
+    this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
   }
 
 }
