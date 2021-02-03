@@ -82,8 +82,11 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  addPost(desc: string, audio: any = null, images: any[] = []) {
+  addPost(desc: string, audio: any = null, video: any = null, images: any[] = []) {
     this.post.description = desc;
+    this.post.audio = audio;
+    this.post.image = images;
+    this.post.video = video;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName;
     this.post.owner.picURL = this.user.picURL;
@@ -218,6 +221,7 @@ export class HomeComponent implements OnInit {
   }
 
   sanitize(url: string) {
+    console.log(url)
     return this.domSanitizer.bypassSecurityTrustUrl(url);
   }
 
