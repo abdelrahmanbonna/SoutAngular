@@ -47,23 +47,6 @@ export class ProfileComponent implements OnInit {
     else
       this.route.navigate(['/landing'])
   }
-  
-  uploadFile(event: any, type: string) {
-    var filePath: any;
-    var userId = this.user.id
-    const file = event.target.files[0];
-
-    if (type == "profile")
-      filePath = '/Users/profile_pics/' + userId;
-    else if (type == "cover")
-      filePath = '/Users/cover_photos/' + userId;
-
-    this.storage.upload(filePath, file);
-    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
-
-    ref.getDownloadURL().toPromise().then(url => {
-      if (type == "profile") {
-
 
   uploadFile(event: any, type: string) {
     var filePath: any;
@@ -80,7 +63,6 @@ export class ProfileComponent implements OnInit {
 
     ref.getDownloadURL().toPromise().then(url => {
       if (type == "profile") {
-
 
         this.user.picURL = url;
         this.FireService.updateDocument("Users/" + userId, this.user)
@@ -102,7 +84,7 @@ export class ProfileComponent implements OnInit {
     });
 
   }
-  
+
   getAllPosts() {
     this.postsService.getAllUserPosts(this.user.id).subscribe(res => {
       this.postList = res
