@@ -1,4 +1,4 @@
 export interface Talent {
-    ID?: string
+    ID? : string
     name: string;
 }
