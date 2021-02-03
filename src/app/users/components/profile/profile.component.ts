@@ -24,34 +24,65 @@ export class ProfileComponent implements OnInit {
   postcomfields: string[] = [];
   LikesList: any[] = [];
   commentsList: any[] = [];
+  notificationsNo: number = 0;
 
   constructor(private postsService: PostsService, private route: Router,
     private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) {
-      
-     }
 
-    //  uploadFile(event:any) {
-    //   const file = event.target.files[0];
-    //   const filePath = '/Users/profile_pics';
-    //   const task = this.storage.upload(filePath, file);
-    // }
+  }
+
+
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
-      // console.log(this.usrInfo.loggedin)
       this.userName = this.user.firstName + " " + this.user.secondName;
-
-      // const ref = this.storage.refFromURL(this.user.picURL);
-      // this.picURL = ref.getDownloadURL();
       this.picURL = this.user.picURL;
-
       this.coverPicURL = this.user.coverPicURL;
+
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
+      this.getnotificationsno();
     }
     else
       this.route.navigate(['/landing'])
+  }
+
+  uploadFile(event: any, type: string) {
+    var filePath: any;
+    var userId = this.user.id
+    const file = event.target.files[0];
+
+    if (type == "profile")
+      filePath = '/Users/profile_pics/' + userId;
+    else if (type == "cover")
+      filePath = '/Users/cover_photos/' + userId;
+
+    this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    ref.getDownloadURL().toPromise().then(url => {
+      if (type == "profile") {
+
+        this.user.picURL = url;
+        this.FireService.updateDocument("Users/" + userId, this.user)
+
+        this.picURL = url;
+        console.log(this.user.picURL)
+      }
+      else if (type == "cover") {
+        this.coverPicURL = url;
+        this.FireService.updateDocument("Users/" + userId, this.user)
+
+        this.user.coverPicURL = url;
+      }
+
+      localStorage.setItem('userdata', JSON.stringify(this.user))
+      this.route.navigate(['/users/profile']).then(() => {
+        window.location.reload();
+      });
+    });
+
   }
 
   getAllPosts() {
@@ -73,8 +104,8 @@ export class ProfileComponent implements OnInit {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName,
-    this.post.owner.picURL = this.user.picURL,
-    this.post.id = this.firestore.createId();
+      this.post.owner.picURL = this.user.picURL,
+      this.post.id = this.firestore.createId();
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });
@@ -92,15 +123,15 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  addLike(postid: string) {
-    this.firestore.collection('post').doc(postid).collection("like").add({
+  addLike(post: any) {
+    this.firestore.collection('post').doc(post.id).collection("like").add({
       userid: this.user.id
     })
-    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+    this.notifyUser(post.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(postid: string, index: number) {
-    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+  addComment(post: any, index: number) {
+    this.firestore.collection(`post`).doc(post.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -109,7 +140,7 @@ export class ProfileComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
-    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+    this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
 
   async getComments(postid: string) {
@@ -135,6 +166,13 @@ export class ProfileComponent implements OnInit {
         name: this.user.firstName + " " + this.user.secondName,
         picURL: this.user.picURL
       }
+    })
+  }
+
+  getnotificationsno() {
+    this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
+      console.log(`notifications: ${data}`)
+      this.notificationsNo = data.length
     })
   }
 

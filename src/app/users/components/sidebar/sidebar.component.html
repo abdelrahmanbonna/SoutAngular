@@ -48,26 +48,36 @@
                 <li class="nav-item">
                     <a class="nav-link " [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
                         <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Settings</span>
-                        <!-- wait for fatma -->
                     </a>
                 </li>
                 <hr>
             </div>
             <div>
                 <li class="nav-item">
-                    <a class="nav-link " [routerLink]="[ '/users/interests' ]" routerLinkActive="active">
-                        <i class="fas fa-bahai" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Interests</span>
-
-                    </a>
+                <a class="nav-link " [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
+                    <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
+                </a>
+            </li>
+            <hr>
+            </div>
+            <div>
+                <li class="" >
+                   
+                                          <h3 style="font-size: 10pt;">Your Interests <small>Click to remove</small></h3>
+                                       <div *ngFor="let item of usertalents">
+                                            <span type="button"  (click)="removeTalent(item.ID)" [ngStyle]="{'background-color': user.favColor}" class="badge badge-pill text-light " >{{item.name}}</span>
+                                       </div>
+                                       <hr>
+                                       <h3 style="font-size: 10pt;">Add Interests <small>Click to add</small></h3>
+                                       <div *ngFor="let item of talentsList">
+                                            <span type="button" (click)="addtalents(item)" [ngStyle]="{'background-color': user.favColor}" class="badge badge-pill text-light " >{{item.name}}</span>
+                                       </div>
+                                          
+                                       
                 </li>
                 <hr>
             </div>
-            <li class="nav-item">
-                <a class="nav-link " [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
-                    <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
-                    <!-- wait for fatma -->
-                </a>
-            </li>
+            
         </ul>
 
     </div>

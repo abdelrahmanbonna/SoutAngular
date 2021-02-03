@@ -8,7 +8,7 @@
                 <div id="writePst">
                     <div class="firstRow">
                         <img [src]="user.picURL">
-                        <input type="text" [(ngModel)]="postDesc" [placeholder]="greating" />
+                        <input *ngIf="urls.length===0||urlsVideo.length===0" type="text" [(ngModel)]="postDesc" [placeholder]="greating" />
                         <div class="p-2 ny-3" *ngFor="let url of urls">
                             <audio controls="" *ngIf="url"> 
                                 <source [src]="sanitize(url)" type="audio/wav">
