@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
   postcomfields: string[] = [];
   LikesList: any[] = [];
   commentsList: any[] = [];
+  notificationsNo: number = 0;
 
   constructor(private postsService: PostsService, private route: Router,
     private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) {
@@ -41,11 +42,12 @@ export class ProfileComponent implements OnInit {
 
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
+      this.getnotificationsno();
     }
     else
       this.route.navigate(['/landing'])
   }
-  
+
   uploadFile(event: any, type: string) {
     var filePath: any;
     var userId = this.user.id
@@ -121,15 +123,15 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  addLike(postid: string) {
-    this.firestore.collection('post').doc(postid).collection("like").add({
+  addLike(post: any) {
+    this.firestore.collection('post').doc(post.id).collection("like").add({
       userid: this.user.id
     })
-    this.notifyUser(postid, `${this.user.firstName} liked on your post `)
+    this.notifyUser(post.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(postid: string, index: number) {
-    this.firestore.collection(`post`).doc(postid).collection('comment').add({
+  addComment(post: any, index: number) {
+    this.firestore.collection(`post`).doc(post.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -138,7 +140,7 @@ export class ProfileComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
-    this.notifyUser(postid, `${this.user.firstName} commented on your post ${this.postcomfields[index]}`)
+    this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
 
   async getComments(postid: string) {
@@ -164,6 +166,13 @@ export class ProfileComponent implements OnInit {
         name: this.user.firstName + " " + this.user.secondName,
         picURL: this.user.picURL
       }
+    })
+  }
+
+  getnotificationsno() {
+    this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
+      console.log(`notifications: ${data}`)
+      this.notificationsNo = data.length
     })
   }
 

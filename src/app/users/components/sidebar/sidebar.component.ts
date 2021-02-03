@@ -12,7 +12,7 @@ import { UserInfoService } from 'src/app/services/user-info.service';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  notificationsNo: number = 0
+  public notificationsNo: number = 0
   subs: Subscription[] = []
   user: any;
   constructor(private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {

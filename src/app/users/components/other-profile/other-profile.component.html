@@ -18,11 +18,12 @@
 
         <div class="nav  nav2 justify-content-end" id="nav-tab"
             style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%;">
-            <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Add Friend">
+            <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Follow">
                 <div class="dropdown edit dropleft"
                     style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
-                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown"
-                        style="width: 100%"><i class="fas fa-user-plus" style="font-size: 16px;text-align: center"></i>
+                    <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown" (click)="follow()"
+                        style="width: 100%"><i class="fas fa-user-plus" style="font-size: 16px;text-align: center" *ngIf="!check"></i>
+                        <i class="fas fa-user-check" style="font-size: 16px;text-align: center" *ngIf="check"></i>
                     </button>
                 </div>
             </span>
@@ -83,8 +84,7 @@
 
                         </li>
                         <hr>
-                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1"
-                                onclick="document.getElementById('myFileInput').click()"> <i class="fas fa-ban"
+                        <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1" > <i class="fas fa-ban"
                                     style="font-size: 15px"></i> Block</a></li>
                     </ul>
                 </div>
@@ -96,7 +96,8 @@
 
     </div>
     <div class="row" id="center">
-        <nav id="sidebarMenu" class="col-sm-1 col-md-3 leftSide sidebar" style="background-color: #F5F7F8;">
+        <nav id="sidebarMenu" class="col-sm-1 col-md-3 leftSide sidebar"
+            style="background-color: #F5F7F8;padding-right: 0px;">
             <div class="position-sticky my-3 d-flex justify-content-center">
                 <ul class="nav flex-column">
                     <div>
@@ -111,8 +112,7 @@
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/notifications' ]"
                                 routerLinkActive="active">
-                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block"> Notifications
-                                </span>
+                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block">Notifications <b class="badge badge-pill">{{notificationsNo}}</b></span> 
                             </a>
                         </li>
                         <hr>
@@ -211,7 +211,7 @@
 
                 <hr style="margin-top: 15px;">
                 <div class="lastRowPost">
-                    <div id="like" (click)="addLike(post.id)">
+                    <div id="like" (click)="addLike(post)">
                         <i class="far fa-thumbs-up" id="likeIcon"></i>
                         <span id="likeCont">
                             Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
@@ -223,7 +223,7 @@
                             Voice
                         </span>
                     </div>
-                    <div id="comment" (click)="addComment(post.id,i)">
+                    <div id="comment" (click)="addComment(post,i)">
                         <i class="far fa-comment-alt" id="commentIcon"></i>
                         <span id="commentCont">
                             Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>
