@@ -120,7 +120,9 @@
 
                     <hr style="margin-top: 15px;">
                     <div class="lastRowPost">
+
                         <div id="like" (click)="addLike(post)">
+
                             <i class="far fa-thumbs-up" id="likeIcon"></i>
                             <span id="likeCont">
                                 Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
@@ -132,7 +134,9 @@
                                 Voice
                             </span>
                         </div>
+
                         <div id="comment" (click)="addComment(post,i)">
+
                             <i class="far fa-comment-alt" id="commentIcon"></i>
                             <span id="commentCont">
                                 Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>

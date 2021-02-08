@@ -84,7 +84,7 @@ export class ProfileComponent implements OnInit {
     });
 
   }
-  
+
   getAllPosts() {
     this.postsService.getAllUserPosts(this.user.id).subscribe(res => {
       this.postList = res
