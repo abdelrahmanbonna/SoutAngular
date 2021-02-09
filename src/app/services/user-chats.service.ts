@@ -23,6 +23,7 @@ export class UserChatsService {
   async getChats(userID:string){     
     await this.firestore.collection(`chat`).get().subscribe((res) => {
       if(res.docs){
+        console.log("chats",res.docs)
         let allChats:any
         let count=0
         for(var i = 0; i < res.docs.length; i++){

@@ -16,6 +16,8 @@ export class ChatComponent implements OnInit {
   user: User = new User();
   user2: User = new User();
   chats:any
+  chatFlag:boolean = false;
+  msgsFlag:boolean = false;
   msgs:Msg[] = [{id:"1",
     sender:"Fatma",
     description:"Hello",
@@ -53,8 +55,8 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getChatsFirst()
-    // setTimeout(()=>{this.myChats()},4000)
+     this.getChatsFirst()
+     setTimeout(()=>{this.myChats()},4000)
   }
   ngAfterViewInit() {
     
@@ -64,9 +66,18 @@ export class ChatComponent implements OnInit {
       sub?.unsubscribe();
     }
   }
+  ngOnChanges(){
+
+  }
    getChatsFirst(){
       this.chatService.getUserChats(this.user.id)
       setTimeout(()=>{this.chats = JSON.parse(localStorage.getItem('userChats')!)},1000)
+      setTimeout(()=>{
+        if(this.chats) this.chatFlag=true;
+      },1000)
+      setTimeout(()=>{
+        if(this.chats[0].messages) this.msgsFlag=true;
+      },1000)
   }
   fakeMsgs(){
     // this.msgs=[{

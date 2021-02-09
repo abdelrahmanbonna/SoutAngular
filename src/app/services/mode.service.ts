@@ -15,8 +15,8 @@ export class ModeService {
   // defaultMode(){
   //   this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); 
   //   this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
-    
   // }
+  
   OnDarkColumn(...args: any[]) {
     document.body.style.backgroundColor = "rgb(19, 18, 18)";
     for(var i = 0; i < args.length; i++) {
