@@ -31,12 +31,14 @@
     "chart.js": "^2.5.0",
     "firebase": "^7.0 || ^8.0",
     "hammerjs": "^2.0.8",
+    "ng-audio-recorder": "0.0.5",
     "ngx-bootstrap": "^6.2.0",
     "ngx-loading": "^8.0.0",
-    "ng-audio-recorder": "0.0.5",
     "recordrtc": "^5.6.1",
     "rxjs": "~6.6.0",
+    "text-encoding-utf-8": "^1.0.2",
     "tslib": "^2.0.0",
+    "typescript-base64-arraybuffer": "^0.1.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
