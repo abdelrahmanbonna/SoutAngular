@@ -96,7 +96,7 @@ export class ProfileComponent implements OnInit {
       }
     });
     // return this.postList;
-    console.log(this.postList)
+    //console.log(this.postList)
 
   }
 
