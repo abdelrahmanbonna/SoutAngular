@@ -20,11 +20,10 @@
                           </button>
                     <!-- <span aria-hidden="true" class="closeBtn" [id]="bookmark.id]" (click)="deleteBookmark($event.target.id)">&times;</span> -->
                     <div class="row" (click)="open(content)" >
-                        <!-- data-toggle="modal" [attr.data-target]="'#' + bookmark.id" -->
                         <div class="col-3">
-                            <div *ngIf="bookmark.data.image.length;then postImg else userImg" class="imageContainer"></div>    
-                            <ng-template #postImg><img [src]="bookmark.data.image[0]" class="rounded float-left bookmarkIcon" alt="soul"></ng-template>
-                            <ng-template #userImg class="imageContainer">
+                            <div *ngIf="bookmark.data.image.length;then postImg else userImg"></div>    
+                            <ng-template #postImg ><img [src]="bookmark.data.image[0]" class="rounded float-left bookmarkIcon" alt="soul"></ng-template>
+                            <ng-template #userImg >
                                 <img [src]="bookmark.data.owner.picURL" class="rounded float-left bookmarkIcon" alt="soul">
                             </ng-template>
                         </div>
@@ -144,78 +143,8 @@
                                 </div>
                             </div>
                           </ng-template>
-                          
-                          <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
-
-
-                        <div class="modal fade show" data-backdrop="static" data-keyboard="false" aria-hidden="true" [id]="bookmark.id">
-                            <div class="modal-dialog" >
-                                <div style="padding: 5px;">
-                                    <div>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:whitesmoke;">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="post">
-                                            <div class="poster">
-                                                
-                                                <img [src]="bookmark.data.owner.picURL">
-                                                <div id="posterName">{{bookmark.data.owner.name}}</div>
-                                                <div id="time">{{bookmark.data.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}} <i class="fas fa-globe-africa"></i></div>
-                                            </div>
-
-                                            <span *ngIf="bookmark.data.description">{{bookmark.data.description}}</span> 
-                                            <div *ngIf="bookmark.data.image.length">
-                                                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                                    <ol *ngFor="let index of bookmark.data.image.length" class="carousel-indicators">
-                                                      <li data-target="#carouselExampleIndicators" data-slide-to="index" class="active"></li>
-                                                    </ol>
-                                                    <div class="carousel-inner">
-                                                      <div *ngFor="let img of bookmark.data.image" class="carousel-item">
-                                                        <img src="img" class="d-block w-100" >
-                                                      </div>
-                                                    </div>
-                                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                      <span class="sr-only">Previous</span>
-                                                    </a>
-                                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                      <span class="sr-only">Next</span>
-                                                    </a>
-                                                  </div>
-                                            </div>
-                                            <!-- <img src="bookmark.owner.picURL" class="rounded float-left bookmarkIcon" style="margin: 2% 2% 2% 0%" alt="dark"> -->
-                                            <span *ngIf="bookmark.data.audio" class="soutplayer">
-                                                <audio id="player" src="../../../../assets/02 Atgah Wahed.mp3"></audio>
-                                                <div>
-                                                    <i onclick="document.getElementById('player').play()" class="fas fa-2x fa-play-circle" style="color: #d8352b"></i>
-                                                    <i onclick="document.getElementById('player').pause()" class="fas fa-2x fa-pause-circle" style="color: #d8352b"></i>
-                                                    <span id="audtime"></span>
-
-                                                    <input type="range" class="slider" id="myRange1" min="0">
-
-                                                    <span id="auddur"></span>
-                                                    <span class="btn-group dropright">
-                                                        <i class="fas fa-2x fa-volume-up" style="color: #d8352b" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="volicon"></i>
-                                                        <div class="dropdown-menu">
-                                                            <input type="range" id="vol" min="0" max="100">
-                                                        </div>
-                                                    </span>
-                                                </div>
-                                            </span>
-                                            <div class="dropdown-divider"></div>
-
-                                           
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <i class="fas fa-share-square float-right" style="margin-top:-1rem;" (click)="shareBookmark()"></i>
+                    <!-- <i class="fas fa-share-square float-right" style="margin-top:-1rem;" (click)="shareBookmark()"></i> -->
 
                     </div>
                 </ng-container>
