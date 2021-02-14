@@ -34,7 +34,40 @@
                                <button *ngIf="!isRecordingVideo" style="display: inline-block;background-color: transparent;border: none;" (click)="startVideoRecording()"><i [ngStyle]="{'color': user.favColor}" class="fas fa-video" ></i></button>
                                <button *ngIf="isRecordingVideo" style="display: inline-block;background-color: transparent;border: none;" (click)="stopRecordingVideo()"><i [ngStyle]="{'color': red}" class="fas fa-video"></i></button>
                             </div>
-                            <i [ngStyle]="{'color': user.favColor}" class="fas fa-paperclip"></i>
+                            <!-- <i [ngStyle]="{'color': user.favColor}" class="fas fa-paperclip"></i> -->
+                            
+                            <div class="dropdown " style="float: right">
+                    <button class="btn dropdown-toggle float-right" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                            class="fas fa-paperclip"  [ngStyle]="{'color': this.user.favColor}"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" style="padding-left:9px;">
+                            <a class="custom-file" role="menuitem" tabindex="-1">
+                                <input type="file" (change)="uploadFile($event,'image')" class="custom-file-input"
+                                    style="width:100%;" />
+                                    <label class="custom-file-label" for="validatedCustomFile">
+                                    <i class="fas fa-image" style="font-size: 15px"></i></label>
+                            </a> 
+                        </li>
+                        <li role="presentation" style="padding-left:9px;">
+                            <a class="custom-file" role="menuitem" tabindex="-1">
+                                <input type="file" (change)="uploadFile($event,'audio')" class="custom-file-input"
+                                    style="width:100%;" />
+                                    <label class="custom-file-label" for="validatedCustomFile">
+                                    <i class="fas fa-microphone" style="font-size: 15px"></i></label>
+                            </a> 
+                        </li>
+                        <li role="presentation" style="padding-left:9px;">
+                            <a class="custom-file" role="menuitem" tabindex="-1">
+                                <input type="file" (change)="uploadFile($event,'video')" class="custom-file-input"
+                                    style="width:100%;" />
+                                    <label class="custom-file-label" for="validatedCustomFile">
+                                    <i class="fas fa-video" style="font-size: 15px"></i></label>
+                            </a> 
+                        </li>
+                    </ul>
+                </div>
                             <input [ngStyle]="{'background-color': user.favColor}" (click)="addPost(postDesc,urls,urlsVideo)" class="postButt col-12" type="button" value="Post">
                         </div>
 

@@ -7,6 +7,7 @@ import { PostsService } from 'src/app/services/posts.service';
 import { Subscription } from 'rxjs';
 import * as RecordRTC from 'recordrtc';
 import { DomSanitizer } from "@angular/platform-browser";
+import { AngularFireStorage } from '@angular/fire/storage';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -15,6 +16,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 export class HomeComponent implements OnInit {
   isRecordingVideo: boolean = false;
   urlsVideo: any[] = [];
+  picURL: any;
 
   styleObject(): Object {
     return { color: this.user.favColor }
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit {
   user: any;
   postcomfields: string[] = [];
   greating: string;
-  constructor(private fireService: FireService, private postsService: PostsService, private firestore: AngularFirestore, private route: Router, private domSanitizer: DomSanitizer) {
+  constructor(private fireService: FireService, private postsService: PostsService, private firestorage: AngularFireStorage, private firestore: AngularFirestore, private route: Router, private domSanitizer: DomSanitizer) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
@@ -76,6 +78,7 @@ export class HomeComponent implements OnInit {
         id: id,
         date: new Date().toISOString(),
         description: msg,
+        seen: false,
         maker: {
           id: this.user.id,
           name: this.user.firstName + " " + this.user.secondName,
@@ -86,9 +89,6 @@ export class HomeComponent implements OnInit {
 
   addPost(desc: string, audio: any = null, video: any = null, images: any[] = []) {
     this.post.description = desc;
-    this.post.audio = audio;
-    this.post.image = images;
-    this.post.video = video;
     this.post.owner.id = this.user.id;
     this.post.owner.name = this.user.firstName + " " + this.user.secondName;
     this.post.owner.picURL = this.user.picURL;
@@ -232,5 +232,27 @@ export class HomeComponent implements OnInit {
     this.error = 'Can not play audio in your browser';
   }
 
-
+  uploadFile(event: any, type: string) {
+    var filePath: any;
+    const file = event.target.files[0];
+    const id = this.firestore.createId()
+    if (type == "image")
+      filePath = '/post/images/' + id;
+    else if (type == "audio")
+      filePath = '/post/audio/' + id;
+    else if (type == "video")
+      filePath = '/post/video/' + id;
+    this.firestorage.upload(filePath, file);
+    const ref = this.firestorage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+    ref.getDownloadURL().toPromise().then(url => {
+      if (type == "image") {
+        this.post.image = url
+      } else if (type == "audio") {
+        this.post.audio = url
+      } else if (type == "video") {
+        this.post.video = url
+      }
+      alert('upload done')
+    });
+  }
 }

@@ -1,149 +1,151 @@
 .sticky-offset {
-    top: 0px;
+  top: 0px;
 }
 
 .nav-item i {
-    font-size: 30px;
-    color: #d8352b;
-    margin-left: 8px;
+  font-size: 30px;
+  color: #d8352b;
+  margin-left: 8px;
 }
 
 .nav-item span {
-    font-size: 20px;
-    margin-left: 30px
+  font-size: 20px;
+  margin-left: 30px
 }
 
 .nav-item {
-    border-radius: 100px;
+  border-radius: 100px;
 }
 
 .nav-item span:hover {
-    color: #d8352b;
-    cursor: pointer
+  color: #fff;
+  cursor: pointer
 }
 
 .nav-item:hover {
-    background-color: #BBBBBA;
+  background-color: #BBBBBA;
 }
 
 .nav-item a {
-    color: #444444;
+  color: #444444;
 }
 
 #sidebarMenu {
-    background-color: #F0F2F5;
-    border-radius: 5px;
-    box-shadow: 0px 0.5px 5px grey;
+  background-color: #F0F2F5;
+  border-radius: 5px;
+  box-shadow: 0px 0.5px 5px grey;
 }
 
 .sticky-offset {
-    top: 0px;
+  top: 0px;
 }
 
 .no-padding {
-    padding-left: 0;
-    padding-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .leftSide {
-    background-color: #F0F2F5;
-    border-radius: 5px;
-    box-shadow: 0px 0.5px 5px grey;
+  background-color: #F0F2F5;
+  border-radius: 5px;
+  box-shadow: 0px 0.5px 5px grey;
 }
 
 .icon:hover {
-    background-color: #BBBBBA;
+  background-color: #BBBBBA;
 }
 
 #writePst {
-    margin-top: 0%;
-    margin-left: 3%;
-    width: 99%;
-    background-color: white;
-    padding: 12px;
-    border-radius: 11px;
-    box-shadow: 0px 0.5px 5px grey;
-    transition: all 1s ease-in-out;
+  margin-top: 0%;
+  margin-left: 3%;
+  width: 99%;
+  background-color: white;
+  padding: 12px;
+  border-radius: 11px;
+  box-shadow: 0px 0.5px 5px grey;
+  transition: all 1s ease-in-out;
 }
 
 .firstRow img {
-    float: left;
-    margin: 2 2.5% 0 0px;
-    height: 40%;
-    width: 5%;
-    border-radius: 50%;
+  float: left;
+  margin: 2 2.5% 0 0px;
+  height: 40%;
+  width: 5%;
+  border-radius: 50%;
 }
 
 .firstRow input {
-    width: 91.2%;
-    height: 35px;
-    padding-left: 5px;
-    font-size: 16px;
-    border: 0px;
-    background: #F0F2F5;
-    border-radius: 18px;
-    margin-top: 1%;
-    padding-left: 12px;
-    outline: none;
-    margin-bottom: 0px;
+  width: 91.2%;
+  height: 35px;
+  padding-left: 5px;
+  font-size: 16px;
+  border: 0px;
+  background: #F0F2F5;
+  border-radius: 18px;
+  margin-top: 1%;
+  padding-left: 12px;
+  outline: none;
+  margin-bottom: 0px;
 }
 
 .secondRow i {
-    font-size: 130%;
-    margin-right: 5px;
-    padding-top: 0px;
+  font-size: 130%;
+  margin-right: 5px;
+  padding-top: 0px;
 }
 
 .live i {
-    float: left;
-    font-size: 25px;
-    margin-left: 3%;
-    color: #d8352b;
+  float: left;
+  font-size: 25px;
+  margin-left: 3%;
+  color: #d8352b;
 }
 
 .poster img {
-    float: left;
-    margin: 0 0% 0 0px;
-    height: 5.1%;
-    width: 6%;
-    border-radius: 50%;
+  float: left;
+  margin: 0 0% 0 0px;
+  height: 5.1%;
+  width: 6%;
+  border-radius: 50%;
 }
 
 #posterName {
-    color: #050505;
-    font-size: 90%;
-    font-weight: 600;
-    margin-top: 5px;
-    margin-left: 0%;
+  color: #050505;
+  font-size: 90%;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 0%;
 }
 
 #time {
-    color: #616871;
-    font-size: 12px;
-    margin-top: 5px;
-    margin-bottom: 12px;
+  color: #616871;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 12px;
 }
 
 #time i {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 @media only screen and (max-width: 768px) {
-    .firstRow img {
-        width: 8%;
-        height: 8%;
-    }
-    .firstRow input {
-        width: 90%;
-    }
+  .firstRow img {
+    width: 8%;
+    height: 8%;
+  }
+
+  .firstRow input {
+    width: 90%;
+  }
 }
 
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
-    .firstRow img {
-        width: 9%;
-        height: 9%;
-    }
-    .firstRow input {
-        width: 90%;
-    }
+  .firstRow img {
+    width: 9%;
+    height: 9%;
+  }
+
+  .firstRow input {
+    width: 90%;
+  }
 }
