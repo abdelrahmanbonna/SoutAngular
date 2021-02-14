@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 import { FireService } from 'src/app/services/fire.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Msg } from 'src/app/models/msg';
-
+import { IChat } from 'src/app/models/ichat';
+import {formatDate } from '@angular/common';
+import { timestamp } from 'rxjs/operators';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -18,36 +20,15 @@ export class ChatComponent implements OnInit {
   chats:any
   chatFlag:boolean = false;
   msgsFlag:boolean = false;
-  msgs:Msg[] = [{id:"1",
-    sender:"Fatma",
-    description:"Hello",
-    date:new Date()},{id:"2",
-    sender:"Eman",
-    description:"Hello Fatma, H R U",
-    date:new Date()},
-    {id:"3",
-    sender:"Fatma",
-    description:"The Project Crached in the DEADline day",
-    date:new Date()},
-    {id:"4",
-    sender:"Eman",
-    description:"OOOHH, So sad ISA The Supervisor will take care of that",
-    date:new Date()},
-    {id:"5",
-    sender:"Fatma",
-    description:"HeISA :((",
-    date:new Date()},
-    {id:"6",
-    sender:"Fatma",
-    description:"Good bye, see u",
-    date:new Date()},
-    {id:"7",
-    sender:"Fatma",
-    description:"see u",
-    date:new Date()}];
   person2Data:[]=[]
   persons:{}[]=[]
-  persons2ID:string[]=[]
+  userChats:IChat[]=[]
+  start :string='';
+  newMsg:string='';
+  ordermsgs:string[]=[];
+  personName:string='';
+  personPic:string='';
+  msg:{}={sender:'',description:'',date:new Date(),}
   private subscritionList:Subscription[]=[];
 
   constructor(private chatService: UserChatsService, private firestore:AngularFirestore) { 
@@ -55,8 +36,49 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-     this.getChatsFirst()
-     setTimeout(()=>{this.myChats()},4000)
+    this.subscritionList.push(this.chatService.getUserChats(this.user.id).subscribe(chats => {this.chats = chats.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t.ID === v.ID))===i);
+      this.chats.forEach((chatInfo:any)=>{
+        if(chatInfo.sender !== this.user.id) this.subscritionList.push(this.firestore.collection(`Users`).doc(chatInfo.sender)
+        .get().subscribe((res:any)=>{this.persons.push(res.data())}))
+        else if(chatInfo.receiver !== this.user.id) this.subscritionList.push(this.firestore.collection(`Users`).doc(chatInfo.receiver)
+        .get().subscribe((res:any)=>{this.persons.push(res.data())}))
+        // if(chatInfo.messages){
+          
+        //   this.start=new Date(chatInfo.startDate.toDate()).toLocaleDateString("en-us");
+        //   chatInfo.messages.forEach((ms:any)=>{
+        //     if( new Date(ms.date.toDate()).toLocaleDateString("en-us") < this.start)
+        //   })
+
+        // }
+      })//t.id === v.id)
+      this.persons=this.persons.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t.id === v.id))===i)
+      console.log("persons",this.persons);
+
+      if(this.chats) {
+        this.chatFlag=true; 
+        if(this.chats[0].messages){
+          
+         
+           console.log(this.chats[0].messages=this.sortData(this.chats[0].messages));
+          //console.log(this.chats[0].messages.sort((a:any,b:any)=> new Date(a.date.toDate()).toLocaleDateString("en-us")< new Date(b.date.toDate()).toLocaleDateString("en-us")))
+        // console.log("chatssort",this.chats);
+          this.msgsFlag=true;}}
+    }))
+      // setTimeout(()=>{ console.log("this.chats",this.chats)},1000)
+  }
+  sortData(arr:[]) {
+    var dd;
+    return arr.sort((a:any, b:any) => {
+      return <any>new Date(b.date.toDate()) - <any>new Date(a.date.toDate());
+    });
+  }
+  addMsg(){
+    if(this.newMsg){
+      let id = this.firestore.createId();
+      this.msg={sender:this.user.id,description:this.newMsg,date:new Date()}
+      this.firestore.collection('/chat').doc(this.chats[0].ID).collection('1').doc(id).set({ ...this.msg })
+    }
+    
   }
   ngAfterViewInit() {
     
@@ -69,46 +91,6 @@ export class ChatComponent implements OnInit {
   ngOnChanges(){
 
   }
-   getChatsFirst(){
-      this.chatService.getUserChats(this.user.id)
-      setTimeout(()=>{this.chats = JSON.parse(localStorage.getItem('userChats')!)},1000)
-      setTimeout(()=>{
-        if(this.chats) this.chatFlag=true;
-      },1000)
-      setTimeout(()=>{
-        if(this.chats[0].messages) this.msgsFlag=true;
-      },1000)
-  }
-  fakeMsgs(){
-    // this.msgs=[{
-    //   date: new Date()
-    // },{}]
-  }
-  myChats(){
-    
-    console.log("this.chats",this.chats)
-    let count = 0;
-    for(let chatInfo of this.chats){
-      this.msgs.push(chatInfo.messages)
-      if(chatInfo.sender !== this.user.id) this.persons2ID.push(chatInfo.sender)
-      else if(chatInfo.receiver !== this.user.id) this.persons2ID.push(chatInfo.receiver)
-    }
-    for(let person of this.persons2ID.values())
-    {
-      this.firestore.collection(`Users`).doc(person).get().subscribe(res=>{
-        let userInfo:any
-        userInfo = res.data();
-        this.persons.push(userInfo)
-        
-      })
-    }  
-    // for(let p of this.msgs.values())
-    // { 
-    //   console.log("p",p)
-    // }
-      
-  }
-
   toggleActionMenue(){
     this.classApplied = !this.classApplied;
     // this.myChats()

@@ -38,48 +38,46 @@
                 <div class="card-header msg_head">
                     <div class="d-flex bd-highlight">
                         <div class="img_cont">
-                            <img [src]="user.picURL" class="rounded-circle user_img">
+                            <img [src]="persons[0].picURL" class="rounded-circle user_img">
                             <span class="online_icon"></span>
                         </div>
                         <div class="user_info">
-                            <span>Chat with Fatma</span>
+                            <span>Chat with {{persons[0].firstName}}</span>
                             <p>1767 Messages</p>
                         </div>
-                        <div class="video_cam">
+                        <!-- <div class="video_cam">
                             <span><i class="fas fa-video"></i></span>
                             <span><i class="fas fa-phone"></i></span>
-                        </div>
+                        </div> -->
                     </div>
                     <span id="action_menu_btn" (click)="toggleActionMenue()"><i class="fas fa-ellipsis-v"></i></span>
                     <div  [class.action_menu]="classApplied">
                         <ul>
-                            <li><i class="fas fa-user-circle"></i> View profile</li>
-                            <li><i class="fas fa-users"></i> Add to close friends</li>
-                            <li><i class="fas fa-plus"></i> Add to group</li>
-                            <li><i class="fas fa-ban"></i> Block</li>
+                            <li style="color:white; cursor" [routerLink]="'/users/profile/'+persons[0].id"><i class="fas fa-user-circle"></i> View profile</li>
+                            <li style="color:white;"><i class="fas fa-ban"></i> Block</li>
                         </ul>
                     </div>
                 </div>
                 <div *ngIf="msgsFlag" class="card-body msg_card_body">
            
-                    <div *ngFor="let msg of msgs" >
-                        <div *ngIf="(msg.sender !== 'Fatma'); else person2">
+                    <div *ngFor="let msg of chats[0].messages" >
+                        <div *ngIf="(msg.sender === user.id); else person2">
                             <div class="d-flex mb-4 justify-content-end">  
                                 
                                     <div class="msg_cotainer">
                                         {{msg.description}}
-                                        <span class="msg_time">8:55 AM, Today</span>
+                                        <span class="msg_time">{{msg.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}}</span>
                                     </div>
                             </div>
                         </div>
                         <ng-template #person2>
                             <div class="d-flex mb-4 justify-content-start">  
                                 <div  class="img_cont_msg">
-                                    <img [src]="user.picURL" class="rounded-circle user_img_msg">
+                                    <img [src]="persons[0].picURL" class="rounded-circle user_img_msg">
                                 </div>
                                     <div class="msg_cotainer_send">
                                         {{msg.description}}
-                                        <span class="msg_time_send">8:55 AM, Today</span>
+                                        <span class="msg_time_send">{{msg.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}}</span>
                                     </div>
                             </div>
                         </ng-template>
@@ -104,8 +102,8 @@
                         <div class="input-group-append">
                             <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                         </div>
-                        <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
-                        <div class="input-group-append">
+                        <textarea name="" class="form-control type_msg" [(ngModel)]="newMsg" placeholder="Type your message..."></textarea>
+                        <div class="input-group-append" (click)="addMsg()">
                             <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
                         </div>
                     </div>
