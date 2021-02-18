@@ -10,6 +10,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 
 import {formatDate } from '@angular/common';
 import { map, timestamp } from 'rxjs/operators';
+import { ModeService } from 'src/app/services/mode.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -34,17 +35,31 @@ export class ChatComponent implements OnInit {
   private subscritionList:Subscription[]=[];
   chatsUrl!: Observable<string | null>;
   chatsUrlW!: Observable<string | null>;
-  constructor(private storage: AngularFireStorage, private chatService: UserChatsService, private firestore:AngularFirestore) { 
+  chatsUrlW2!: Observable<string | null>;
+  value:boolean;
+  image:string='https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchstBG2.jpg?alt=media&token=23f956ad-7b3e-4fae-b105-d538f865d930';
+  otherImage:string='https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchatBGW2.jpg?alt=media&token=8566f008-6fd2-4ce6-831e-2f8b77ac19ca';
+  constructor(private modeService:ModeService, private storage: AngularFireStorage, private chatService: UserChatsService, private firestore:AngularFirestore) { 
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     const ref = this.storage.ref('chats/chstBG2.jpg');
     const ref2 = this.storage.ref('chats/chatBGW.jpg');
+    const ref3 = this.storage.ref('chats/chatBGW2.jpg');
      this.chatsUrl = ref.getDownloadURL();
      this.chatsUrlW = ref2.getDownloadURL();
+     this.chatsUrlW2 = ref3.getDownloadURL();
      this.chatsUrl.subscribe(res=>console.log("img",res));
-     this.chatsUrlW.subscribe(res=>console.log("img",res));
+     this.chatsUrlW.subscribe(res=>console.log("img2",res));
+     this.chatsUrlW2.subscribe(res=>console.log("img3",res));
+     this.value= (this.user.favMode=='dark');
   }
 
   ngOnInit(): void {
+    if(this.user.favMode==="dark") {
+      this.modeService.OnDark();
+      //this.modeService.columns(document.querySelectorAll('.light'),'light');
+    }
+      else if(this.user.favMode==="light") {this.modeService.defaultMode();}
+
     this.subscritionList.push(this.chatService.getUserChats(this.user.id).subscribe(chats => {this.chats = chats.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t.ID === v.ID))===i);
       this.chats.forEach((chatInfo:any)=>{
         if(chatInfo.sender !== this.user.id) this.subscritionList.push(this.firestore.collection(`Users`).doc(chatInfo.sender)
@@ -83,7 +98,12 @@ export class ChatComponent implements OnInit {
   getUrlW()
   {
     // console.log("checlURL",`url(${this.chatsUrl})`)
-      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchstBG2.jpg?alt=media&token=23f956ad-7b3e-4fae-b105-d538f865d930')";
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchatBGW.jpg?alt=media&token=cfdcaf21-5808-4ca1-be18-4a220bbfef8a')";
+  }
+  getUrlW2()
+  {
+    // console.log("checlURL",`url(${this.chatsUrl})`)
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchatBGW2.jpg?alt=media&token=8566f008-6fd2-4ce6-831e-2f8b77ac19ca')";
   }
   sortData(arr:[]) {
     var dd;

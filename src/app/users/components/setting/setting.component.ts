@@ -47,7 +47,7 @@ export class SettingComponent implements OnInit {
       this.settingsData.favColor = this.user.favColor;
       this.settingsData.favMode = this.user.favMode;
       this.settingsData.deactive = this.user.deactive;
-      if(this.settingsData.favMode==="dark") {this.modeService.OnDark();this.settingsData.favMode="dark";this.checked=true;;}
+      if(this.settingsData.favMode==="dark") {this.modeService.OnDark();this.settingsData.favMode="dark";this.checked=true;}
       else if(this.settingsData.favMode==="light") {this.modeService.defaultMode();this.settingsData.favMode="light";this.checked=false;}
     }
     else
