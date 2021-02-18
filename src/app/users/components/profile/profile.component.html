@@ -15,12 +15,27 @@
     </div>
     <div class="row" style="margin-top: 40px">
         <input type="file" id="myFileInput" />
-        <div class="nav  nav2" id="nav-tab"
+        <div class="row nav  nav2" id="nav-tab"
             style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%">
+
+            <span class="col nav-item padding-0" data-toggle="tooltip" data-placement="bottom" style="float: left;">
+                <span class="dropdown edit dropleft"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 12px 5px 12px;">
+                    <a role="menuitem" tabindex="-1" (click)="open(followersModal)">
+                        <b> {{followers}}</b> Followers
+                    </a>
+                </span>
+                <span class="dropdown edit dropleft"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 15px 5px 12px;">
+                    <a role="menuitem" tabindex="-1" (click)="open(followingModal)">
+                        <b> {{following}}</b> Following
+                    </a>
+                </span>
+            </span>
 
             <span class="nav-item col">
                 <div class="dropdown edit"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius: 5px;width: 21%;float: right">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius: 5px;width: 42.5%;float: right">
                     <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"
                         style="width: 100%"><i class="fas fa-edit" style="color: #D93746;font-size: 20px"></i> <span
                             style="margin-right: 2%">Edit</span>
@@ -41,8 +56,19 @@
                                     style="width:100%;" />
                                 <label class="custom-file-label" for="validatedCustomFile">
                                     <i class="fas fa-image" style="font-size: 15px"></i> Edit Cover</label>
-                            </a>    
+                            </a>
                         </li>
+                        <!-- <hr>
+                        <li role="presentation" style="padding-left:7px;">
+                            <a role="menuitem" tabindex="-1">
+                                <div class="input-group mb-3">
+                                    <input type="text" #name value="" class="form-control" placeholder="Edit Your Name">
+                                    <div class="input-group-append">
+                                      <button class="btn btn-outline-secondary input-group-text" (click)="changeName(name.value);name.value=''" type="button">Save</button>
+                                    </div>
+                                  </div>
+                            </a>
+                        </li> -->
                     </ul>
                 </div>
             </span>
@@ -67,7 +93,8 @@
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/notifications' ]"
                                 routerLinkActive="active">
-                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block">Notifications <b class="badge badge-pill">{{notificationsNo}}</b>
+                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block">Notifications <b
+                                        class="badge badge-pill">{{notificationsNo}}</b>
                                 </span>
                             </a>
                         </li>
@@ -103,14 +130,6 @@
                             <a class="nav-link side" [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
                                 <i class="fas fa-cog"></i><span class="d-none d-md-inline-block"> Settings</span>
 
-                            </a>
-                        </li>
-                        <hr>
-                    </div>
-                    <div>
-                        <li class="nav-item">
-                            <a class="nav-link side" [routerLink]="[ '/users/interests' ]" routerLinkActive="active">
-                                <i class="fas fa-bahai"></i><span class="d-none d-md-inline-block"> Interests</span>
                             </a>
                         </li>
                         <hr>
@@ -217,8 +236,10 @@
                 </div>
                 <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3" style="width: 70%;margin-left: 3.5%;">
 
-                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="user.id==item.writer.id?picURL:item.writer.picURL"
-                    [routerLink]="'/users/profile/'+user.id==item.writer.id?user.id:item.writer.id" routerLinkActive="active">
+                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;"
+                        [src]="user.id==item.writer.id?picURL:item.writer.picURL"
+                        [routerLink]="'/users/profile/'+user.id==item.writer.id?user.id:item.writer.id"
+                        routerLinkActive="active">
 
                     <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
                         <div><small id="posterName">{{item.writer.name}}</small>
@@ -235,3 +256,54 @@
         </div>
     </div>
 </div>
+
+
+<!-- Followers Modal -->
+<ng-template #followersModal let-c="close" let-d="dismiss">
+    <div class="modal-header text-light bg-dark">
+        <h4 class="modal-title" id="modal-basic-title">All Followers :</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true" style="color:white;">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let follower of followersList;">
+            <div class="row">
+                <img class=" padding-0" [src]="follower.picURL"
+                    style="width: 50px;float: left;border-radius: 50%;height: 50px;margin-left: 8px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+follower.userid" routerLinkActive="active">
+
+                <span class=" padding-0" style="font-size: 20px;margin-top: 13px;margin-left: 5px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+follower.userid" routerLinkActive="active">{{follower.name}}</span>
+            </div>
+            <hr style="margin-top: 10px;" *ngIf="followersList.length>1" />
+        </div>
+    </div>
+</ng-template>
+<!-- End Modal -->
+
+<!-- Following Modal -->
+<ng-template #followingModal let-c="close" let-d="dismiss">
+    <div class="modal-header text-light bg-dark">
+        <h4 class="modal-title" id="modal-basic-title">Following :</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true" style="color:white;">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let following of followingList;let y=index" style="margin-bottom: 10px;">
+            <div class="row">
+                <img class="padding-0" [src]="following.picURL"
+                    style="width: 50px;float: left;border-radius: 50%;height: 50px;margin-left: 8px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+following.userid" routerLinkActive="active">
+
+                <div class="padding-0" style="font-size: 20px;margin-top: 13px;margin-left: 5px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+following.userid" routerLinkActive="active"> {{following.name}}
+                </div>
+            </div>
+            <hr style="margin-top: 10px;" *ngIf="followingList.length>1" />
+        </div>
+
+    </div>
+</ng-template>
+<!-- End Modal -->

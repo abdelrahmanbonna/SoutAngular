@@ -10,7 +10,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-other-profile',
@@ -38,8 +40,15 @@ export class OtherProfileComponent implements OnInit {
   uploaded: string = "";
   imageReStatus: string = "Choose Image";
   notificationsNo: number = 0;
-  check: boolean = false;
+  check: boolean|undefined;
+  checkFollower: boolean = false;
 
+  following: number = 0;
+  followers: number = 0;
+  followersList:any[] = [];
+  followingList:any[] = [];
+
+  subscribtion: Subscription[] = [];
 
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
@@ -47,10 +56,11 @@ export class OtherProfileComponent implements OnInit {
 
     config.backdrop = 'static';
     config.keyboard = false;
+    this.modalService.dismissAll();
   }
 
   ngOnInit(): void {
-    
+
     this.user = JSON.parse(localStorage.getItem('userdata')!)
     if (this.user) {
 
@@ -59,13 +69,14 @@ export class OtherProfileComponent implements OnInit {
         let UIDParam: string | null = params.get('UID');
         this.userId = UIDParam;
 
-        // this.getnotificationsno()
         if (this.userId == this.user.id)
           this.router.navigate(['/users/profile'])
         else {
           this.getUserById(this.userId!)
           this.getAllPosts();
           this.getnotificationsno();
+          this.getFollowers();
+          this.getFollowing();
 
         }
       });
@@ -126,32 +137,64 @@ export class OtherProfileComponent implements OnInit {
   }
 
   follow() {
+
+
     if (this.check) {
       console.log("You already follow this user")
     } else {
-      this.firestore.collection(`Users`).doc(this.userInfo.id).collection('followers').add({
+      this.FireService.setDocument("/Users/" + this.userInfo.id + "/followers/" + this.user.id, {
         userid: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
         picURL: this.user.picURL
+      });
+      this.FireService.setDocument("/Users/" + this.user.id + "/following/" + this.userInfo.id, {
+        userid: this.userInfo.id,
+        name: this.userInfo.firstName + " " + this.userInfo.secondName,
+        picURL: this.userInfo.picURL
       })
       this.notifyUser(this.userInfo.id, `${this.user.firstName} followed You!`)
-      this.check = !this.check;
+      this.check = true;
     }
 
   }
 
+  getFollowers() {
+    this.followersList=[]
+    this.subscribtion.push(this.firestore.collection(`Users`).doc(this.userId!).collection('followers').valueChanges().subscribe((data) => {
+      this.followers = data.length
+      data.forEach(el=>{
+        this.followersList.push(el);
+      })
+    }))
+    console.log(this.followersList)
+
+  }
+
+  getFollowing() {
+    this.followingList=[]
+    this.subscribtion.push(this.firestore.collection(`Users`).doc(this.userId!).collection('following').valueChanges().subscribe((data) => {
+      this.following = data.length
+      data.forEach(el=>{
+        this.followingList.push(el);
+      })
+    }))
+
+  }
+
   async getComments(postid: string) {
-    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
       console.log(data)
     })
+    )
   }
 
   async getLikes(postid: string) {
-    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
       console.log(data)
     })
+    )
   }
 
   async notifyUser(usrId: string, msg: string) {
@@ -167,10 +210,11 @@ export class OtherProfileComponent implements OnInit {
   }
 
   getnotificationsno() {
-    this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
+    this.subscribtion.push(this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
       console.log(`notifications: ${data}`)
       this.notificationsNo = data.length
     })
+    )
   }
 
   //************** For Report ******************** 
@@ -215,6 +259,12 @@ export class OtherProfileComponent implements OnInit {
     this.report.id = this.firestore.createId();
     this.report.image = this.reportImageURL;
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
+  }
+
+  ngOnDestroy(): void {
+    this.subscribtion.forEach(element => {
+      element.unsubscribe();
+    })
   }
 
 }

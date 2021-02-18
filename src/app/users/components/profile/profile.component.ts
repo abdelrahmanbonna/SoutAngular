@@ -6,6 +6,8 @@ import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { FireService } from 'src/app/services/fire.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -26,9 +28,23 @@ export class ProfileComponent implements OnInit {
   commentsList: any[] = [];
   notificationsNo: number = 0;
 
-  constructor(private postsService: PostsService, private route: Router,
-    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService) {
+  following: number = 0;
+  followers: number = 0;
 
+  usersList: User[] = [];
+
+  followersList: any[] = [];
+  followingList: any[] = [];
+
+  updatedUser: User = new User();
+
+  subscribtion: Subscription[] = [];
+
+  comment: object = {}
+
+  constructor(private postsService: PostsService, private route: Router,
+    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal) {
+    this.modalService.dismissAll();
   }
 
 
@@ -43,6 +59,8 @@ export class ProfileComponent implements OnInit {
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
       this.getnotificationsno();
+      this.getFollowers();
+      this.getFollowing();
     }
     else
       this.route.navigate(['/landing'])
@@ -131,7 +149,9 @@ export class ProfileComponent implements OnInit {
   }
 
   addComment(post: any, index: number) {
-    this.firestore.collection(`post`).doc(post.id).collection('comment').add({
+    var commentId = this.firestore.createId();
+    this.comment = {
+      id: commentId,
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -139,7 +159,8 @@ export class ProfileComponent implements OnInit {
       },
       description: this.postcomfields[index],
       date: new Date().toISOString(),
-    })
+    }
+    this.FireService.setDocument("/post/" + post.id + "/comment/" + commentId, { ...this.comment });
     this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
 
@@ -173,6 +194,97 @@ export class ProfileComponent implements OnInit {
     this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
       console.log(`notifications: ${data}`)
       this.notificationsNo = data.length
+    })
+  }
+
+  getFollowers() {
+    this.followersList = []
+    this.subscribtion.push(this.firestore.collection(`Users`).doc(this.user.id).collection('followers').valueChanges().subscribe((data) => {
+      this.followers = data.length
+      data.forEach(el => {
+        this.followersList.push(el);
+      })
+    })
+    )
+
+  }
+
+  getFollowing() {
+    this.followingList = []
+    this.subscribtion.push(this.firestore.collection(`Users`).doc(this.user.id).collection('following').valueChanges().subscribe((data) => {
+      this.following = data.length
+      data.forEach(el => {
+        this.followingList.push(el);
+      })
+
+    })
+    )
+    console.log(this.followingList)
+
+  }
+
+  changeName(name: string) {
+    var splittedName = name.split(" ");
+    this.user.firstName = splittedName[0];
+    this.user.secondName = (splittedName[1]) ? splittedName[1] : "";
+    // this.user.firstName = name
+    this.FireService.updateDocument("Users/" + this.user.id, this.user);
+
+    this.postList.forEach(el => {
+      el.owner.name = name;
+      this.FireService.updateDocument("post/" + el.id, el);
+
+      // this.getComments(el.id);
+      // console.log(this.commentsList)
+      // this.commentsList.forEach(element => {
+      //   element.forEach((x:any) => {
+      //     x.writer.name = name;
+      //     this.FireService.updateDocument("/post/" + el.id + "/comment/" + element.id, x);
+      //   })
+      
+      // })
+    });
+
+
+    // this.getAllUsers();
+
+    // this.usersList.forEach(el => {
+    //   this.FireService.getCollection("Users/" + el.id + "/followers/").subscribe(res => {
+    //     res.forEach(element => {
+    //       if (element.userid == this.user.id) {
+    //         element.name = name;
+    //       }
+    //     })
+    //   });
+    // });
+
+    console.log(this.postList)
+
+    localStorage.setItem('userdata', JSON.stringify(this.user));
+    this.ngOnInit()
+  }
+
+  getUserById(id: string) {
+    this.FireService.getDocument("Users/" + id).subscribe(res => {
+      this.updatedUser = res
+      console.log(this.updatedUser)
+    });
+  }
+
+  getAllUsers() {
+    this.FireService.getCollection("Users/").subscribe(res => {
+      this.usersList = res
+      console.log(this.usersList)
+    });
+  }
+
+  open(content: any) {
+    this.modalService.open(content);
+  }
+
+  ngOnDestroy(): void {
+    this.subscribtion.forEach(element => {
+      element.unsubscribe();
     })
   }
 
