@@ -9,6 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AngularFireModule } from '@angular/fire';
 import { UserInfoService } from './services/user-info.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UiSwitchModule } from 'ngx-toggle-switch';
 import { NgxLoadingModule } from 'ngx-loading';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
@@ -30,6 +31,7 @@ declare module "@angular/core" {
   ],
   imports: [
     // MDBBootstrapModule.forRoot(),
+    UiSwitchModule,
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp({

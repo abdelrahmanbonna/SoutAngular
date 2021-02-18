@@ -5,7 +5,7 @@
         <app-sidebar></app-sidebar>
         <div class="col-md-4 col-xl-3 chat ">
             <div class="card mb-sm-3 mb-md-0 contacts_card">
-                <div class="card-header">
+                <div class=" bg-dark card-header">
                     <div class="input-group">
                         <input type="text" placeholder="Search..." name="" class="form-control search">
                         <div class="input-group-prepend">
@@ -30,12 +30,12 @@
 
                     </ul> 
                 </div>
-                <div class="card-footer"></div>
+                <div class="card-footer bg-dark"></div>
             </div>
         </div>
         <div class="col-md-4 col-xl-6 chat" >
-            <div class="card">
-                <div class="card-header msg_head">
+            <div class="card" [ngStyle]="{'background-image': getUrl()}">
+                <div class="card-header bg-dark msg_head" *ngIf="persons[0]">
                     <div class="d-flex bd-highlight">
                         <div class="img_cont">
                             <img [src]="persons[0].picURL" class="rounded-circle user_img">
@@ -43,7 +43,7 @@
                         </div>
                         <div class="user_info">
                             <span>Chat with {{persons[0].firstName}}</span>
-                            <p>1767 Messages</p>
+                            <p>{{chats[0].messages.length}} Messages</p>
                         </div>
                         <!-- <div class="video_cam">
                             <span><i class="fas fa-video"></i></span>
@@ -53,7 +53,7 @@
                     <span id="action_menu_btn" (click)="toggleActionMenue()"><i class="fas fa-ellipsis-v"></i></span>
                     <div  [class.action_menu]="classApplied">
                         <ul>
-                            <li style="color:white; cursor" [routerLink]="'/users/profile/'+persons[0].id"><i class="fas fa-user-circle"></i> View profile</li>
+                            <li style="color:white;" [routerLink]="'/users/profile/'+persons[0].id"><i class="fas fa-user-circle"></i> View profile</li>
                             <li style="color:white;"><i class="fas fa-ban"></i> Block</li>
                         </ul>
                     </div>
@@ -71,11 +71,12 @@
                             </div>
                         </div>
                         <ng-template #person2>
-                            <div class="d-flex mb-4 justify-content-start">  
+                            <!-- *ngIf="persons[0].length" -->
+                            <div  class="d-flex mb-4 justify-content-start">  
                                 <div  class="img_cont_msg">
                                     <img [src]="persons[0].picURL" class="rounded-circle user_img_msg">
                                 </div>
-                                    <div class="msg_cotainer_send">
+                                    <div class="msg_cotainer_send" [ngStyle]="{'background-color':user.favColor}">
                                         {{msg.description}}
                                         <span class="msg_time_send">{{msg.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}}</span>
                                     </div>
@@ -97,7 +98,7 @@
                    
                     
                 </div>
-                <div class="card-footer">
+                <div class="bg-dark card-footer">
                     <div class="input-group">
                         <div class="input-group-append">
                             <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>

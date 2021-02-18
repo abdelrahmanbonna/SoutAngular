@@ -22,7 +22,8 @@ export class UserChatsService {
   }
 
   getChats(userID:string): Observable<any>{  
-    return this.firestore.collection<IChat>('chat')
+    return this.firestore.collection<IChat>('chat', ref => 
+    ref.orderBy('startDate','asc'))
   .snapshotChanges()
   .pipe(map(chats => {
     chats.forEach(chat =>{
@@ -45,7 +46,8 @@ export class UserChatsService {
          console.log("hhchats",chats, "index",index)
         chats.forEach((chat:any, index:number)=>{
            // console.log("chatElem",chat,"index",index)
-            this.subscritionList.push(this.firestore.collection(`chat/${chat.ID}/1`).valueChanges().subscribe(
+            this.subscritionList.push(this.firestore.collection(`chat/${chat.ID}/1`,ref => 
+            ref.orderBy('date','asc')).valueChanges().subscribe(
               (msgs:any)=> chats[index].messages = msgs
               ))
          })

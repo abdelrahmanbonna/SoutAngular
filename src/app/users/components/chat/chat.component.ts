@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { UserChatsService } from 'src/app/services/user-chats.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FireService } from 'src/app/services/fire.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Msg } from 'src/app/models/msg';
 import { IChat } from 'src/app/models/ichat';
+import { AngularFireStorage } from '@angular/fire/storage';
+
 import {formatDate } from '@angular/common';
-import { timestamp } from 'rxjs/operators';
+import { map, timestamp } from 'rxjs/operators';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -30,9 +32,16 @@ export class ChatComponent implements OnInit {
   personPic:string='';
   msg:{}={sender:'',description:'',date:new Date(),}
   private subscritionList:Subscription[]=[];
-
-  constructor(private chatService: UserChatsService, private firestore:AngularFirestore) { 
-    this.user = JSON.parse(localStorage.getItem('userdata')!)
+  chatsUrl!: Observable<string | null>;
+  chatsUrlW!: Observable<string | null>;
+  constructor(private storage: AngularFireStorage, private chatService: UserChatsService, private firestore:AngularFirestore) { 
+    this.user = JSON.parse(localStorage.getItem('userdata')!);
+    const ref = this.storage.ref('chats/chstBG2.jpg');
+    const ref2 = this.storage.ref('chats/chatBGW.jpg');
+     this.chatsUrl = ref.getDownloadURL();
+     this.chatsUrlW = ref2.getDownloadURL();
+     this.chatsUrl.subscribe(res=>console.log("img",res));
+     this.chatsUrlW.subscribe(res=>console.log("img",res));
   }
 
   ngOnInit(): void {
@@ -53,7 +62,7 @@ export class ChatComponent implements OnInit {
       })//t.id === v.id)
       this.persons=this.persons.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t.id === v.id))===i)
       console.log("persons",this.persons);
-
+      
       if(this.chats) {
         this.chatFlag=true; 
         if(this.chats[0].messages){
@@ -65,6 +74,16 @@ export class ChatComponent implements OnInit {
           this.msgsFlag=true;}}
     }))
       // setTimeout(()=>{ console.log("this.chats",this.chats)},1000)
+  }
+  getUrl()
+  {
+    // console.log("checlURL",`url(${this.chatsUrl})`)
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchstBG2.jpg?alt=media&token=23f956ad-7b3e-4fae-b105-d538f865d930')";
+  }
+  getUrlW()
+  {
+    // console.log("checlURL",`url(${this.chatsUrl})`)
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchstBG2.jpg?alt=media&token=23f956ad-7b3e-4fae-b105-d538f865d930')";
   }
   sortData(arr:[]) {
     var dd;
