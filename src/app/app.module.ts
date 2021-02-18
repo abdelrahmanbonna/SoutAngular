@@ -48,7 +48,9 @@ declare module "@angular/core" {
     NgxLoadingModule,
     BrowserAnimationsModule,
   ],
-  providers: [UserInfoService],
+  providers: [
+    UserInfoService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

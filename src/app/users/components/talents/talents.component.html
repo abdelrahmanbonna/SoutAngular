@@ -5,9 +5,22 @@
         <app-sidebar></app-sidebar>
         <div class="col-7 col-sm-7 col-md-8 col-lg-8 my-2 mx-auto">
 
-            <div *ngIf="talentsList!==[]" class="nav nav-tabs bg-dark " role="tablist" id="nav-tab" style="position: sticky;top:12%;">
+            <!-- <div *ngIf="talentsList!==[]" class="nav nav-tabs bg-dark " role="tablist" id="nav-tab" style="position: sticky;top:12%;">
                 <a *ngFor="let item of talentsList" class="nav-item nav-link col" data-toggle="tab" aria-selected="false" (click)="selectcat(item.id)" role="tab" href="#jokes" [ngStyle]="{'color': user.favColor}"id="jokes-tab">{{item.name}}</a>
-            </div>
+            </div> -->
+
+            <ul *ngIf="talentsList!==[]" class="nav  ml-3 nav2 nav-tabs" id="nav-tab" role="tablist"
+                    style="background-color: #F5F7F8;border-bottom: 2px solid;border-bottom-color:#d8352b;border-radius: 8px;box-shadow: 0px 0.5px 5px grey; width: 100%;margin-bottom: 2%;height: 5%;font-size: 17px;">
+
+
+                    <li class="nav-item col padding-0" *ngFor="let talent of talentsList"
+                        (click)="selectcat(talent.id)">
+                        <a class="nav-link" data-toggle="tab" aria-selected="false" role="tab"
+                            style="border-radius: 4px ;color: #d8352b;width: 100%;">{{talent.name}}</a>
+                    </li>
+
+
+                </ul>
 
             <div class=" mx-auto my-1">
                 <div class="my-5" id="writePst">
