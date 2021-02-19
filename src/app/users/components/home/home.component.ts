@@ -243,8 +243,7 @@ export class HomeComponent implements OnInit {
     else if (type == "video")
       filePath = '/post/video/' + id;
     this.firestorage.upload(filePath, file);
-    const ref = this.firestorage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
-    ref.getDownloadURL().toPromise().then(url => {
+    const ref = this.firestorage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath).getDownloadURL().toPromise().then((url => {
       if (type == "image") {
         this.post.image = url
       } else if (type == "audio") {
@@ -252,7 +251,9 @@ export class HomeComponent implements OnInit {
       } else if (type == "video") {
         this.post.video = url
       }
-      alert('upload done')
-    });
+      console.log(url)
+    }));
+    alert('upload done')
+    // });
   }
 }

@@ -70,10 +70,10 @@ export class LandingComponent implements OnInit {
   async login() {
     event!.preventDefault()
     this.loading = true;
-    await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(() => {
+    await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(async () => {
       this.loading = false;
       this.closeloginbutton.nativeElement.click();
-      let usr = JSON.parse(localStorage.getItem('userdata')!);
+      let usr = await JSON.parse(localStorage.getItem('userdata')!);
       if (usr !== null) {
         if (!usr.blocked) {
           this.route.navigate(['/users/home'])
