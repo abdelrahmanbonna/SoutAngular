@@ -1,3 +1,10 @@
-<div class="text-center text-light bg-dark foot">
-    All rights reserved <i class="fas fa-copyright fa-lg  "> Sout 2021</i>
+<div class="text-spacebetwen text-light bg-dark foot">
+    <span>All rights reserved <i class="fas fa-copyright fa-lg  "> Sout 2021</i></span>
+    &nbsp;&nbsp;
+    <span>
+        <select  (change)="changeLang($event.target.value)" >
+            <option value="en" [selected]="lang == 'en'" >English</option>
+            <option value="ar" [selected]="lang == 'ar'" >Arabic</option>
+        </select>
+    </span>
 </div>

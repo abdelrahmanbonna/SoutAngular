@@ -4,6 +4,8 @@ import { Router } from '@angular/router'
 import { UserInfoService } from 'src/app/services/user-info.service';
 import auth from 'firebase/app'
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from 'src/app/services/localization.service';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -36,7 +38,9 @@ export class LandingComponent implements OnInit {
   @ViewChild('closeregisterbutton') closeregisterbutton: any;
   @ViewChild('closeforgetbutton') closeforgetbutton: any;
 
-  constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router) { }
+  constructor(private fb: FormBuilder, private usrInfo: UserInfoService, private route: Router, private locale: LocalizationService) {
+
+  }
 
   ngOnInit(): void {
     let usr = JSON.parse(localStorage.getItem('userdata')!)
