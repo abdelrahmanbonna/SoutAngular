@@ -7,7 +7,7 @@
         <div class="col-6 col-md-7">
             <div id="text">
                 <h1>
-                    <strong>  About us:</strong>
+                    <strong>  {{'landing.about_us'|translate}}:</strong>
                 </h1>
                 <p>
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore id accusamus quo ex doloremque at nemo perferendis porro eveniet t empora fuga facere, deleniti culpa suscipit? Tenetur corrupti obcaecati quasi et. Lorem ipsum dolor sit amet consectetur
@@ -22,7 +22,7 @@
                 <form [formGroup]="registerfrm" (ngSubmit)="register()">
                     <!-- Button trigger modal -->
                     <button type="button" id="but1" class="btn btn-danger" data-toggle="modal" data-target="#Regmodel">
-                      Sign up
+                      {{'landing.register'|translate}}
                     </button>
 
                     <!-- Modal -->
@@ -30,7 +30,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Sign up</h5>
+                                    <h5 class="modal-title">{{'landing.register'|translate}}</h5>
                                     <button #closeregisterbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button [disabled]="registerfrm.invalid" type="submit" class="btn btn-primary">Sign up</button>
+                                    <button [disabled]="registerfrm.invalid" type="submit" class="btn btn-primary">{{'landing.register'|translate}}</button>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                 <form [formGroup]="loginfrm" (ngSubmit)="login()">
                     <!-- Button trigger modal -->
                     <button type="button" id="but2" class="btn btn-outline-danger" data-toggle="modal" data-target="#loginmodel">
-                      Login
+                      {{'landing.login'|translate}}
                     </button>
 
                     <!-- Modal -->
@@ -88,7 +88,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Login</h5>
+                                    <h5 class="modal-title">{{'landing.login'|translate}}</h5>
                                     <button #closeloginbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary"  [disabled]="loginfrm.invalid">Login</button>
+                                    <button type="submit" class="btn btn-primary"  [disabled]="loginfrm.invalid">{{'landing.login'|translate}}</button>
                                 </div>
                             </div>
                         </div>
@@ -110,14 +110,14 @@
                 </form>
                 <div class="dropdown-divider"></div>
                 <span style="color: black;font-size:medium;padding-left: 2vw;">
-                    <a data-toggle="modal" data-target="#ForgotpassModal" style="cursor: pointer;text-decoration: underline;">Forgot Password.??</a>
+                    <a data-toggle="modal" data-target="#ForgotpassModal" style="cursor: pointer;text-decoration: underline;">{{'landing.forgot_password'|translate}}</a>
                     <form [formGroup]="forgotpassfrm" (ngSubmit)="forgetpassword()">
                         <!-- Modal -->
                         <div class="modal text-danger fade" id="ForgotpassModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Forgot Password</h5>
+                                        <h5 class="modal-title">{{'landing.forgot_password'|translate}}</h5>
                                             <button #closeforgetbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -125,7 +125,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <input formControlName="email" type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" placeholder="Email" required>
-                    <small id="emailHelpId" class="form-text text-muted">Enter your email to reset password</small>
+                    <small id="emailHelpId" class="form-text text-muted">{{'landing.email_reset_msg'|translate}}</small>
                 </div>
             </div>
             <div class="modal-footer">

@@ -7,12 +7,14 @@ import { LocalizationService } from 'src/app/services/localization.service';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  lang: string = "en";
+  lang: string;
   constructor(private locale: LocalizationService) {
     this.lang = this.locale.getLanguage()
+
   }
 
   ngOnInit(): void {
+    this.lang = this.locale.getLanguage();
   }
 
   changeLang(lang: string) {

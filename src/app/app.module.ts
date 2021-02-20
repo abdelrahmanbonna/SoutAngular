@@ -65,6 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     UserInfoService,
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })

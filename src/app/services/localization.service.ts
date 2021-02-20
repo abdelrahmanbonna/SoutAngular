@@ -29,6 +29,7 @@ export class LocalizationService {
   }
 
   private getDefaultLanguage() {
+    localStorage.setItem('lang', "en");
     return "en";
   }
 

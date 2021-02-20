@@ -1,11 +1,27 @@
 {
+    "footer":{
+      "all_rights_reserved": "All rights reserved"
+  },  
   "landing": {
     "login": "Login",
     "register": "Register",
     "forgot_password": "Forgot password ?",
-    "all_rights_reserved": "All rights reserved"
+    "about_us":"About us",
+    "first_name":"First Name",
+    "second_name":"Second Name",
+    "email":"Email",
+    "birthdate":"Birthdate",
+    "mobile":"Mobile",
+    "gender":"Gender",
+    "password":"Password",
+    "confirm_password":"Confirm Password",
+    "about_sout":"",
+    "email_reset_msg":"Enter your email to reset password"
   },
-  "Home": {
+  "home": {
+
+  },
+  "talents": {
 
   }
 }

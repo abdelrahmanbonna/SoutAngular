@@ -1,11 +1,27 @@
 {
-    "landing": {
-    "login":"تسجيل الدخول",
-    "register":"تسجيل حساب",
-    "forgot_password":"هل نسيت كلمةالمرور؟",
-    "all_rights_reserved":"جميع الحقوق محفوظة"
-    },
-     "Home": {
+  "footer":{
+      "all_rights_reserved": "جميع الحقوق محفوظة"
+  },  
+  "landing": {
+    "login": "تسجيل الدخول",
+    "register": "تسجيل حساب",
+    "forgot_password": "هل نسيت كلمةالمرور؟",
+    "about_us":"عنا",
+    "first_name":"الاسم الاول",
+    "second_name":"الاسم الثاني",
+    "email":"البريد الالكتروني",
+    "birthdate":"تاريخ الميلاد",
+    "mobile":"الهاتف المحمول",
+    "gender":"الجنس",
+    "password":"كلمة المرور",
+    "confirm_password":"تاكيد كلمةالمرور",
+    "about_sout":"",
+    "email_reset_msg":"ادخل البريد الالكتروني الخاص بك ليتم تغيير كلمة المرور"
+  },
+  "Home": {
+
+  },
+  "Talents": {
 
   }
 
