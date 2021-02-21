@@ -8,6 +8,8 @@ import { PostsService } from 'src/app/services/posts.service';
 import { FireService } from 'src/app/services/fire.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+import { ISettingsData } from '../../viewModels/isettings-data';
+import { ModeService } from 'src/app/services/mode.service';
 
 @Component({
   selector: 'app-profile',
@@ -40,10 +42,13 @@ export class ProfileComponent implements OnInit {
 
   subscribtion: Subscription[] = [];
 
-  comment: object = {}
+  comment: object = {};
+
+  settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
 
   constructor(private postsService: PostsService, private route: Router,
-    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal) {
+    private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService
+    , config: NgbModalConfig, private modalService: NgbModal,private modeService:ModeService) {
     this.modalService.dismissAll();
   }
 
@@ -55,15 +60,29 @@ export class ProfileComponent implements OnInit {
       this.userName = this.user.firstName + " " + this.user.secondName;
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
-
+      this.settingsData.favMode = this.user.favMode;
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
       this.getAllPosts();
       this.getnotificationsno();
       this.getFollowers();
       this.getFollowing();
+      console.log(this.user);
+
+      if(this.settingsData.favMode==="dark") {this.OnDark();this.settingsData.favMode="dark";}
+      else if(this.settingsData.favMode==="light") {this.defaultMode();this.settingsData.favMode="light";}
     }
     else
       this.route.navigate(['/landing'])
+  }
+
+  OnDark(){
+    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
+    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="dark";
+  }
+  defaultMode(){
+    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="light";
+    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
+    
   }
 
   uploadFile(event: any, type: string) {

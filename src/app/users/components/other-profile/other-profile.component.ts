@@ -13,6 +13,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize, map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
+import { ISettingsData } from '../../viewModels/isettings-data';
+import { ModeService } from 'src/app/services/mode.service';
 
 @Component({
   selector: 'app-other-profile',
@@ -40,19 +42,20 @@ export class OtherProfileComponent implements OnInit {
   uploaded: string = "";
   imageReStatus: string = "Choose Image";
   notificationsNo: number = 0;
-  check: boolean|undefined;
+  check: boolean | undefined;
   checkFollower: boolean = false;
 
   following: number = 0;
   followers: number = 0;
-  followersList:any[] = [];
-  followingList:any[] = [];
+  followersList: any[] = [];
+  followingList: any[] = [];
 
   subscribtion: Subscription[] = [];
-
+  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
+  
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
-    , private firestore: AngularFirestore, private storage: AngularFireStorage) {
+    , private firestore: AngularFirestore, private storage: AngularFireStorage, private modeService: ModeService) {
 
     config.backdrop = 'static';
     config.keyboard = false;
@@ -65,9 +68,14 @@ export class OtherProfileComponent implements OnInit {
     if (this.user) {
 
       this.picURL = this.user.picURL;
+      this.settingsData.favMode = this.user.favMode;
+      if (this.settingsData.favMode === "dark") { this.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.defaultMode(); this.settingsData.favMode = "light"; }
+
       this.activatedRoute.paramMap.subscribe((params) => {
         let UIDParam: string | null = params.get('UID');
         this.userId = UIDParam;
+
 
         if (this.userId == this.user.id)
           this.router.navigate(['/users/profile'])
@@ -83,9 +91,18 @@ export class OtherProfileComponent implements OnInit {
     }
     else
       this.router.navigate(['/landing'])
+  }
 
+  OnDark() {
+    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkFont"), document.querySelectorAll("#name"));
+    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode = "dark";
+  }
+  defaultMode() {
+    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode = "light";
+    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkFont"), document.querySelectorAll("#name"));
 
   }
+
 
   getUserById(id: string) {
 
@@ -159,10 +176,10 @@ export class OtherProfileComponent implements OnInit {
   }
 
   getFollowers() {
-    this.followersList=[]
+    this.followersList = []
     this.subscribtion.push(this.firestore.collection(`Users`).doc(this.userId!).collection('followers').valueChanges().subscribe((data) => {
       this.followers = data.length
-      data.forEach(el=>{
+      data.forEach(el => {
         this.followersList.push(el);
       })
     }))
@@ -171,10 +188,10 @@ export class OtherProfileComponent implements OnInit {
   }
 
   getFollowing() {
-    this.followingList=[]
+    this.followingList = []
     this.subscribtion.push(this.firestore.collection(`Users`).doc(this.userId!).collection('following').valueChanges().subscribe((data) => {
       this.following = data.length
-      data.forEach(el=>{
+      data.forEach(el => {
         this.followingList.push(el);
       })
     }))

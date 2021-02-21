@@ -6,7 +6,7 @@
             <img [src]="userInfo.coverPicURL" id="coverPhoto">
             <div id="avatar">
                 <img [src]="userInfo.picURL">
-                <h3 style="text-align: center;margin-top: 15px">{{userInfo.firstName+" "+userInfo.secondName}}</h3>
+                <h3 id="name" style="text-align: center;margin-top: 15px">{{userInfo.firstName+" "+userInfo.secondName}}</h3>
             </div>
             <hr style="margin-top: 10%;">
         </div>
@@ -20,13 +20,13 @@
 
             <span class="col nav-item padding-0" data-toggle="tooltip" data-placement="bottom" style="float: left;">
                 <span class="dropdown edit dropleft"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 12px 5px 12px;">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 12px 5px 12px; background-color: #F5F7F8;">
                     <a role="menuitem" tabindex="-1" (click)="open(followersModal)">
                         <b> {{followers}}</b> Followers
                     </a>
                 </span>
                 <span class="dropdown edit dropleft"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 15px 5px 12px;">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 15px 5px 12px;background-color: #F5F7F8;">
                     <a role="menuitem" tabindex="-1" (click)="open(followingModal)">
                         <b> {{following}}</b> Following
                     </a>
@@ -35,20 +35,20 @@
 
             <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Follow">
                 <div class="dropdown edit dropleft"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right;background-color: #F5F7F8;">
                     <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown" (click)="follow()"
                         style="width: 100%"><i class="fas fa-user-plus" style="font-size: 16px;text-align: center"
-                            *ngIf="!check"></i>
-                        <i class="fas fa-user-check" style="font-size: 16px;text-align: center" *ngIf="check"></i>
+                            *ngIf="!check" [ngStyle]="{'color': user.favColor}"></i>
+                        <i class="fas fa-user-check" style="font-size: 16px;text-align: center" *ngIf="check" [ngStyle]="{'color': user.favColor}"></i>
                     </button>
                 </div>
             </span>
             <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Send Message">
                 <div class="edit dropleft"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right;background-color: #F5F7F8;">
                     <button [routerLink]="[ '/users/messages' ]" routerLinkActive="active" class="btn btn-default "
                         type="button" id="menu1" data-toggle="dropdown" style="width: 100%"><i class="fas fa-envelope"
-                            style="font-size: 16px;text-align: center"></i>
+                            style="font-size: 16px;text-align: center" [ngStyle]="{'color': user.favColor}"></i>
                     </button>
                 </div>
             </span>
@@ -56,14 +56,14 @@
 
             <span class="nav-item">
                 <div class="dropdown edit"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right;background-color: #F5F7F8;">
                     <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown"
-                        style="width: 100%"><i class="fas fa-ellipsis-h" style="font-size: 16px;text-align: center"></i>
+                        style="width: 100%"><i class="fas fa-ellipsis-h" style="font-size: 16px;text-align: center" [ngStyle]="{'color': user.favColor}"></i>
                     </button>
                     <ul class="dropdown-menu" style="width: 25%;border: none" role="menu" aria-labelledby="menu1">
                         <li role="presentation" style="padding-left:7px;">
                             <a role="menuitem" tabindex="-1" (click)="open(content)">
-                                <i class="fas fa-exclamation-triangle" style="font-size: 15px"></i>
+                                <i class="fas fa-exclamation-triangle" style="font-size: 15px" [ngStyle]="{'color': user.favColor}"></i>
                                 Report Profile
                             </a>
 
@@ -72,7 +72,7 @@
                         </li>
                         <hr>
                         <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1"> <i
-                                    class="fas fa-ban" style="font-size: 15px"></i> Block</a></li>
+                                    class="fas fa-ban" style="font-size: 15px" [ngStyle]="{'color': user.favColor}"></i> Block</a></li>
                     </ul>
                 </div>
             </span>
@@ -83,14 +83,15 @@
 
     </div>
     <div class="row" id="center">
-        <nav id="sidebarMenu" class="col-sm-1 col-md-3 leftSide sidebar"
-            style="background-color: #F5F7F8;padding-right: 0px;">
+        <nav id="sidebarMenu1" class="col-sm-1 col-md-3 leftSide sidebar"
+        style="background-color: #F5F7F8;border-radius: 5px;
+        box-shadow: 0px 0.5px 5px grey;">
             <div class="position-sticky my-3 d-flex justify-content-center">
                 <ul class="nav flex-column">
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/home' ]" routerLinkActive="active">
-                                <i class="fas fa-home"></i><span class="d-none d-md-inline-block"> Home</span>
+                                <i class="fas fa-home" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Home</span>
                             </a>
                         </li>
                         <hr>
@@ -99,7 +100,7 @@
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/notifications' ]"
                                 routerLinkActive="active">
-                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block">Notifications <b
+                                <i class="fas fa-bell" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block">Notifications <b
                                         class="badge badge-pill">{{notificationsNo}}</b></span>
                             </a>
                         </li>
@@ -108,7 +109,7 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
-                                <i class="fas fa-envelope"></i><span class="d-none d-md-inline-block"> Messages</span>
+                                <i class="fas fa-envelope" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Messages</span>
                             </a>
                         </li>
                         <hr>
@@ -117,7 +118,7 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
-                                <i class="fas fa-music"></i><span class="d-none d-md-inline-block"> Talents</span>
+                                <i class="fas fa-music" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Talents</span>
                             </a>
                         </li>
                         <hr>
@@ -125,7 +126,7 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
-                                <i class="fas fa-hashtag"></i><span class="d-none d-md-inline-block"> Discover</span>
+                                <i class="fas fa-hashtag" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Discover</span>
                             </a>
                         </li>
                         <hr>
@@ -133,7 +134,7 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
-                                <i class="fas fa-cog"></i><span class="d-none d-md-inline-block"> Settings</span>
+                                <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Settings</span>
 
                             </a>
                         </li>
@@ -142,7 +143,7 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
-                                <i class="fas fa-bookmark"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
+                                <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
                             </a>
                         </li>
                     </div>
@@ -160,10 +161,10 @@
                 <hr>
                 <div class="secondRow">
                     <div class="live">
-                        <i class="fas fa-video" id="liveIcon"></i>
-                        <i class="fas fa-microphone-alt"></i>
-                        <i class="fas fa-paperclip"></i>
-                        <input id="postButt" type="button" value="Post">
+                        <i class="fas fa-video" id="liveIcon" [ngStyle]="{'color': user.favColor}"></i>
+                        <i class="fas fa-microphone-alt" [ngStyle]="{'color': user.favColor}"></i>
+                        <i class="fas fa-paperclip" [ngStyle]="{'color': user.favColor}"></i>
+                        <input id="postButt" type="button" value="Post" [ngStyle]="{'background-color': user.favColor}">
                     </div>
 
                 </div>
