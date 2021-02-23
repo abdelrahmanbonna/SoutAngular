@@ -10,10 +10,7 @@
                     <strong>  {{'landing.about_us'|translate}}:</strong>
                 </h1>
                 <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore id accusamus quo ex doloremque at nemo perferendis porro eveniet t empora fuga facere, deleniti culpa suscipit? Tenetur corrupti obcaecati quasi et. Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Voluptate eligendi illo, s equi nobis animi porro earum nemo autem neque repudiandae, dolorem sint explicabo perferendis alias nisi iure ullam delec tus natus? Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Quos accusantium, ab inventore nobis similique itaque ducimus pariatur dolorum animi quod voluptatum neque odio tempora eligendi perferendis numquam labore dignissimos quibusdam! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolor ab quos consequatur omnis error.
+                    {{'landing.about_sout'|translate}}
                 </p>
             </div>
         </div>
@@ -37,37 +34,37 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input formControlName="fname" type="text" class="form-control" name="FNameReg" id="FNameReg" aria-describedby="#FNHelpReg" placeholder="First Name" required>
+                                        <input formControlName="fname" type="text" class="form-control" name="FNameReg" id="FNameReg" aria-describedby="#FNHelpReg" [placeholder]="'landing.first_name'|translate" required>
                                     </div>
                                     <div class="form-group">
-                                        <input formControlName="sname" type="text" class="form-control" name="SNameReg" id="SNameReg" aria-describedby="#SNHelpReg" placeholder="Second Name" required>
+                                        <input formControlName="sname" type="text" class="form-control" name="SNameReg" id="SNameReg" aria-describedby="#SNHelpReg" [placeholder]="'landing.second_name'|translate" required>
                                     </div>
                                     <div class="form-group">
-                                        <input formControlName="email" type="email" class="form-control" name="EmailReg" id="EmailReg" aria-describedby="#EmailHelpReg" placeholder="Email" required>
+                                        <input formControlName="email" type="email" class="form-control" name="EmailReg" id="EmailReg" aria-describedby="#EmailHelpReg" [placeholder]="'landing.email'|translate" required>
                                     </div>
                                     <div class="form-group">
-                                      <input formControlName="birthdate" type="date" class="form-control" name="BirthdateReg" id="BirthdateReg"  placeholder="" required>
+                                      <input formControlName="birthdate" type="date" class="form-control" name="BirthdateReg" id="BirthdateReg"  [placeholder]="'landing.birthdate'|translate" required>
                                     </div>
                                     <div class="form-group">
-                                        <input formControlName="mobile" type="text" class="form-control" name="MobileReg" id="MobileReg" aria-describedby="#MobileHelpReg" placeholder="Mobile" required>
+                                        <input formControlName="mobile" type="text" class="form-control" name="MobileReg" id="MobileReg" aria-describedby="#MobileHelpReg" [placeholder]="'landing.mobile'|translate" required>
                                     </div>
-                                    <h6>Gender</h6>
+                                    <h6>{{'landing.gender'|translate}}</h6>
                                     <div class="form-check w-50 p-1 mx-1">
                                         <label class="form-check-label mx-5">
                                         <input formControlName="gender" type="radio" class="form-check-input" name="gender" value="Male" >
-                                        Male
+                                        {{'landing.male'|translate}}
                                       </label>
                                         <label class="form-check-label">
                                         <input formControlName="gender" type="radio" class="form-check-input" name="gender"  value="Female" >
-                                        Female
+                                        {{'landing.female'|translate}}
                                       </label>
                                     </div>
                                     <br>
                                     <div class="form-group">
-                                        <input formControlName="password" type="password" class="form-control" name="PassReg" id="PassReg" aria-describedby="#PassHelpReg" placeholder="Password" required>
+                                        <input formControlName="password" type="password" class="form-control" name="PassReg" id="PassReg" aria-describedby="#PassHelpReg" [placeholder]="'landing.password'|translate" required>
                                     </div>
                                     <div class="form-group">
-                                        <input formControlName="confirmPassword" type="password" class="form-control" name="ConfPassReg" id="ConfPassReg" aria-describedby="#ConfPassHelpReg" placeholder="Confirm Password" required>
+                                        <input formControlName="confirmPassword" type="password" class="form-control" name="ConfPassReg" id="ConfPassReg" aria-describedby="#ConfPassHelpReg" [placeholder]="'landing.confirm_password'|translate" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -95,10 +92,10 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input formControlName="email" type="email" class="form-control" name="LoginEmail" id="LoginEmail" placeholder="Email" required>
+                                        <input formControlName="email" type="email" class="form-control" name="LoginEmail" id="LoginEmail" [placeholder]="'landing.email'|translate" required>
                                     </div>
                                     <div class="form-group">
-                                        <input formControlName="password" type="password" class="form-control" name="LoginPass" id="LoginPass" placeholder="Password" required>
+                                        <input formControlName="password" type="password" class="form-control" name="LoginPass" id="LoginPass" [placeholder]="'landing.password'|translate" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -124,12 +121,12 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input formControlName="email" type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" placeholder="Email" required>
+                    <input formControlName="email" type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" [placeholder]="'landing.email'|translate" required>
                     <small id="emailHelpId" class="form-text text-muted">{{'landing.email_reset_msg'|translate}}</small>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" [disabled]="forgotpassfrm.invalid">Reset</button>
+                <button type="submit" class="btn btn-primary" [disabled]="forgotpassfrm.invalid">{{'landing.reset'|translate}}</button>
             </div>
         </div>
     </div>

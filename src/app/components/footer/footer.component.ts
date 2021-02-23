@@ -10,7 +10,7 @@ export class FooterComponent implements OnInit {
   lang: string;
   constructor(private locale: LocalizationService) {
     this.lang = this.locale.getLanguage()
-
+    if (this.lang == '' || this.lang == null) this.lang = 'en';
   }
 
   ngOnInit(): void {
