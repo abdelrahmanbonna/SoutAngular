@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AdminComponent } from './components/admin/admin.component';
 // import { MDBBootstrapModule } from 'angular-bootstrap-md';
 declare module "@angular/core" {
   interface ModuleWithProviders<T = any> {
@@ -33,7 +34,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     NotfoundComponent,
     FooterComponent,
-    LandingComponent
+    LandingComponent,
+    AdminComponent
   ],
   imports: [
     // MDBBootstrapModule.forRoot(),
