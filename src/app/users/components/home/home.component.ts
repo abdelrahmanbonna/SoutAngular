@@ -102,18 +102,7 @@ export class HomeComponent implements OnInit {
 
   bookmarkpost(post: any) {
     this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
-      date: new Date().toISOString(),
-      description: post.description ? post.description : undefined,
-      id: post.id,
-      audio: post.audio ? post.audio : undefined,
-      video: post.video ? post.video : undefined,
-      talent: post.talent ? post.talent : undefined,
-      images: post.images ? post.images : undefined,
-      owner: {
-        id: post.owner.id,
-        name: post.owner.name,
-        picURL: post.owner.picURL
-      }
+      post: this.firestore.doc(`post/${post.id}`).ref
     })
     alert(`post added`)
   }
@@ -149,6 +138,10 @@ export class HomeComponent implements OnInit {
       this.commentsList.push(data);
       // console.log(data)
     }))
+  }
+
+  deletepost(post:any){
+    this.firestore.collection('post').doc(post.id).delete();
   }
 
   async getLikes(postid: string) {
