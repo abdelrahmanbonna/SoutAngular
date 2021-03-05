@@ -98,11 +98,11 @@
 
                 <span style="padding: 2%;" *ngIf="post.description">{{post.description}}</span>
                 <!-- <span style="padding: 2%;" *ngIf="post.image.length>0"><img *ngFor="let item of post.image;" [src]="item." class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt=""></span> -->
-                <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
-                <span *ngFor="let item of post.audio">
+                <img [src]="post.image" *ngIf="post.image" style="width: 20vw;">
+                <span *ngIf="post.audio">
                     <div class="container-audio">
                         <audio controls loop autoplay>
-                            <source [src]="sanitize(item)" type="audio/ogg">
+                            <source [src]="sanitize(post.audio)" type="audio/ogg">
                             Your browser dose not Support the audio Tag
                         </audio>
                     </div>
