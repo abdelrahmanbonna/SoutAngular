@@ -67,7 +67,7 @@ export class SidebarComponent implements OnInit {
 
   getnotificationsno() {
     this.subs.push(this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
-      console.log(`notifications: ${data}`)
+      this.notificationsNo = 0
       data.forEach(element => {
         if (element.seen === false || element.seen === undefined) this.notificationsNo++;
       })
