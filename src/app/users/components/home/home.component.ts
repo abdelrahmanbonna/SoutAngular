@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import * as RecordRTC from 'recordrtc';
 import { DomSanitizer } from "@angular/platform-browser";
 import { AngularFireStorage } from '@angular/fire/storage';
+// import { Console } from 'console';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
       this.postList = res;
-      console.log(res);
+      // console.log(res);
       for (let index = 0; index < this.postList.length; index++) {
         this.getComments(this.postList[index].id)
       }
@@ -67,8 +68,8 @@ export class HomeComponent implements OnInit {
       }
     }))
 
-    console.log(`Likes ${this.LikesList}`)
-    console.log(`Comments ${this.commentsList}`)
+    // console.log(`Likes ${this.LikesList}`)
+    // console.log(`Comments ${this.commentsList}`)
   }
 
   async notifyUser(usrId: string, msg: string) {
@@ -146,7 +147,7 @@ export class HomeComponent implements OnInit {
     this.commentsList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
-      console.log(data)
+      // console.log(data)
     }))
   }
 
@@ -154,7 +155,7 @@ export class HomeComponent implements OnInit {
     this.LikesList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
-      console.log(data)
+      // console.log(data)
     }))
   }
 
@@ -224,7 +225,7 @@ export class HomeComponent implements OnInit {
   }
 
   sanitize(url: string) {
-    console.log(url)
+    // console.log(url)
     return this.domSanitizer.bypassSecurityTrustUrl(url);
   }
 
@@ -232,7 +233,7 @@ export class HomeComponent implements OnInit {
     this.error = 'Can not play audio in your browser';
   }
 
-  uploadFile(event: any, type: string) {
+  async uploadFile(event: any, type: string) {
     var filePath: any;
     const file = event.target.files[0];
     const id = this.firestore.createId()
@@ -242,8 +243,9 @@ export class HomeComponent implements OnInit {
       filePath = '/post/audio/' + id;
     else if (type == "video")
       filePath = '/post/video/' + id;
-    this.firestorage.upload(filePath, file);
+    await this.firestorage.upload(filePath, file);
     const ref = this.firestorage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath).getDownloadURL().toPromise().then((url => {
+      console.log(url);
       if (type == "image") {
         this.post.image = url
       } else if (type == "audio") {
