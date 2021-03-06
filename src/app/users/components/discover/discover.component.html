@@ -36,11 +36,11 @@
                                 style="color: #d8352b;font-size: 16px"></i>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation" style="padding-left:9px;cursor: pointer;">
-                                <a style="color: black">
-                                    <i class="far fa-bookmark"
+                            <li role="presentation" style="padding-left:9px;">
+                                <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                    <i class="fas fa-bookmark"
                                         style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
-                                    Bookmark</a>
+                                    Bookmark Post</button>
                             </li>
                             <hr>
                             <li role="presentation" style="padding-left:7px;cursor: pointer;">
@@ -51,12 +51,12 @@
 
                                 <!-- Modal -->
                                 <ng-template #content let-c="close" let-d="dismiss">
-                                    <div class="modal-header">
+                                    <div class="modal-header text-light bg-dark">
                                         <h4 class="modal-title" id="modal-basic-title">Report Post !
                                         </h4>
                                         <button type="button" class="close" aria-label="Close"
                                             (click)="d('Cross click')">
-                                            <span aria-hidden="true">&times;</span>
+                                            <span aria-hidden="true" style="color:white;">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
@@ -81,7 +81,7 @@
                                 </ng-template>
                                 <!-- End Modal -->
                             </li>
-                            <hr>
+                            <!-- <hr>
                             <li role="presentation" style="padding-left:7px;cursor: pointer;">
                                 <a style="color: black">
                                     <i class="fas fa-ban" style="font-size: 15px;color: #d8352b;margin-right: 5px;"></i>
@@ -93,7 +93,7 @@
                                     <i class="fas fa-volume-mute"
                                         style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
                                     Mute</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="poster">
@@ -108,10 +108,10 @@
                     </div>
                     <span class="ml-2">{{post.description}}</span>
                     <br />
-                    <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
+                    <img [src]="post.image" *ngIf="post.image" style="width: 100%;">
                     <span *ngIf="post.audio">
                         <div class="container-audio">
-                            <audio controls loop autoplay>
+                            <audio controls>
                                 <source [src]="post.audio" type="audio/ogg">
                                 Your browser dose not Support the audio Tag
                             </audio>

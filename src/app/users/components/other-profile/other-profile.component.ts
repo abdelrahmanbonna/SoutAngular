@@ -85,6 +85,8 @@ export class OtherProfileComponent implements OnInit {
           this.getnotificationsno();
           this.getFollowers();
           this.getFollowing();
+          // if(this.check)
+          // this.checkFollower=false;
 
         }
       });
@@ -154,10 +156,9 @@ export class OtherProfileComponent implements OnInit {
   }
 
   follow() {
-
-
     if (this.check) {
       console.log("You already follow this user")
+      this.checkFollower=true;
     } else {
       this.FireService.setDocument("/Users/" + this.userInfo.id + "/followers/" + this.user.id, {
         userid: this.user.id,
@@ -279,6 +280,24 @@ export class OtherProfileComponent implements OnInit {
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
   }
 
+  bookmarkpost(post: any) {
+      this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+        post: this.firestore.collection("post").doc(post.id).ref,
+      })
+      alert(`post added`)
+    }
+    
+  reportPost(title: string, des: string, postId: string) {
+
+    this.report.title = title;
+    this.report.description = des;
+    this.report.userId = this.user.id;
+    this.report.reportedId = postId;
+    this.report.type = "post";
+    this.report.id = this.firestore.createId();
+    this.report.image = this.reportImageURL;
+    this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
+  }
   ngOnDestroy(): void {
     this.subscribtion.forEach(element => {
       element.unsubscribe();

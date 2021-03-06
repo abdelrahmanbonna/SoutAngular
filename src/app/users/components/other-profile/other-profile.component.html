@@ -22,13 +22,13 @@
                 <span class="dropdown edit dropleft"
                     style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 12px 5px 12px; background-color: #F5F7F8;">
                     <a role="menuitem" tabindex="-1" (click)="open(followersModal)">
-                        <b> {{followers}}</b> Followers
+                        <b [ngStyle]="{'color': user.favColor}"> {{followers}}</b> Followers
                     </a>
                 </span>
                 <span class="dropdown edit dropleft"
                     style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 15px 5px 12px;background-color: #F5F7F8;">
                     <a role="menuitem" tabindex="-1" (click)="open(followingModal)">
-                        <b> {{following}}</b> Following
+                        <b [ngStyle]="{'color': user.favColor}"> {{following}}</b> Following
                     </a>
                 </span>
             </span>
@@ -70,9 +70,9 @@
 
 
                         </li>
-                        <hr>
+                        <!-- <hr>
                         <li role="presentation" style="padding-left:5px;"><a role="menuitem" tabindex="-1"> <i
-                                    class="fas fa-ban" style="font-size: 15px" [ngStyle]="{'color': user.favColor}"></i> Block</a></li>
+                                    class="fas fa-ban" style="font-size: 15px" [ngStyle]="{'color': user.favColor}"></i> Block</a></li> -->
                     </ul>
                 </div>
             </span>
@@ -85,7 +85,7 @@
     <div class="row" id="center">
         <nav id="sidebarMenu1" class="col-sm-1 col-md-3 leftSide sidebar"
         style="background-color: #F5F7F8;border-radius: 5px;
-        box-shadow: 0px 0.5px 5px grey;">
+        box-shadow: 0px 0.5px 5px grey;height: 75vh;">
             <div class="position-sticky my-3 d-flex justify-content-center">
                 <ul class="nav flex-column">
                     <div>
@@ -152,8 +152,8 @@
             </div>
         </nav>
 
-        <div class="col-sm-11 col-md-9 rightSide" style="height: 100%">
-            <div id="writePst">
+        <div class="col-sm-11 col-md-9 rightSide" style="height: 100%;margin-bottom: 30px;">
+            <!-- <div id="writePst">
                 <div class="firstRow">
                     <img [src]="user.picURL" style="width: 6%;cursor: pointer;" [routerLink]="'/users/profile'" routerLinkActive="active">
                     <input type="text" placeholder={{postMind}} />
@@ -168,9 +168,62 @@
                     </div>
 
                 </div>
-            </div>
+            </div> -->
 
-            <div id="post1" *ngFor="let post of postList;let i=index">
+            <div id="post1" *ngFor="let post of postList;let i=index" style="margin-bottom: 2.5%;margin-top: 0px;">
+                <div class="dropdown " style="float: right">
+                    <button class="btn dropdown-toggle points" id="menu1" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                            class="fas fa-ellipsis-h"  [ngStyle]="{'color': this.user.favColor}"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" style="padding-left:9px;">
+                            <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <i class="fas fa-bookmark"
+                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                Bookmark Post</button>
+                        </li>
+                        <hr>
+                        <li role="presentation" style="padding-left:7px;cursor: pointer;">
+                            <a role="menuitem" tabindex="-1" (click)="open(content)" style="color: black">
+                                <i class="fas fa-exclamation-triangle"
+                                    style="font-size: 15px;color: #d8352b;margin-right: 5px;"></i>
+                                Report Post</a>
+
+                            <!-- Modal -->
+                            <ng-template #content let-c="close" let-d="dismiss">
+                                <div class="modal-header text-light bg-dark">
+                                    <h4 class="modal-title" id="modal-basic-title">Report Post !
+                                    </h4>
+                                    <button type="button" class="close" aria-label="Close"
+                                        (click)="d('Cross click')">
+                                        <span aria-hidden="true" style="color:white;">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" #title placeholder="Title">
+                                    <br />
+                                    <input type="text" class="form-control" #desc placeholder="Description">
+                                    <br />
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                            (change)="uploadReportImage($event)">
+                                        <label class="custom-file-label"
+                                            for="inputGroupFile01">{{imageReStatus}}</label>
+                                        <div *ngIf="uploaded" class="mt-1" style="font-size: small;">
+                                            <b *ngIf="uploaded=='Image Uploaded'">&#10003;</b> {{ uploaded }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-dark"
+                                        (click)="c('Save click');reportPost(title.value,desc.value,post.id)">Report</button>
+                                </div>
+                            </ng-template>
+                            <!-- End Modal -->
+                        </li>
+                    </ul>
+                </div>
                 <div class="poster">
                     <img [src]="userInfo.picURL" style="cursor: pointer;">
                     <div id="posterName" style="cursor: pointer;">{{userInfo.firstName+" "+userInfo.secondName}}</div>
@@ -180,10 +233,10 @@
 
                 <span class="ml-2">{{post.description}}</span>
                 <br />
-                <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
+                <img [src]="post.image" *ngIf="post.image" style="width: 100%;">
                 <span *ngIf="post.audio">
                     <div class="container-audio">
-                        <audio controls loop autoplay>
+                        <audio controls>
                             <source [src]="post.audio" type="audio/ogg">
                             Your browser dose not Support the audio Tag
                         </audio>
@@ -249,10 +302,10 @@
 
 <!-- Report Modal -->
 <ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
+    <div class="modal-header text-light bg-dark">
         <h4 class="modal-title" id="modal-basic-title">Report {{userInfo.firstName}} !</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" style="color:white;">&times;</span>
         </button>
     </div>
     <div class="modal-body">
