@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { UserChatsService } from 'src/app/services/user-chats.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FireService } from 'src/app/services/fire.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Msg } from 'src/app/models/msg';
+import { IChat } from 'src/app/models/ichat';
+import { AngularFireStorage } from '@angular/fire/storage';
 
+import {formatDate } from '@angular/common';
+import { map, timestamp } from 'rxjs/operators';
+import { ModeService } from 'src/app/services/mode.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -16,45 +21,103 @@ export class ChatComponent implements OnInit {
   user: User = new User();
   user2: User = new User();
   chats:any
-  msgs:Msg[] = [{id:"1",
-    sender:"Fatma",
-    description:"Hello",
-    date:new Date()},{id:"2",
-    sender:"Eman",
-    description:"Hello Fatma, H R U",
-    date:new Date()},
-    {id:"3",
-    sender:"Fatma",
-    description:"The Project Crached in the DEADline day",
-    date:new Date()},
-    {id:"4",
-    sender:"Eman",
-    description:"OOOHH, So sad ISA The Supervisor will take care of that",
-    date:new Date()},
-    {id:"5",
-    sender:"Fatma",
-    description:"HeISA :((",
-    date:new Date()},
-    {id:"6",
-    sender:"Fatma",
-    description:"Good bye, see u",
-    date:new Date()},
-    {id:"7",
-    sender:"Fatma",
-    description:"see u",
-    date:new Date()}];
+  chatFlag:boolean = false;
+  msgsFlag:boolean = false;
   person2Data:[]=[]
   persons:{}[]=[]
-  persons2ID:string[]=[]
+  userChats:IChat[]=[]
+  start :string='';
+  newMsg:string='';
+  ordermsgs:string[]=[];
+  personName:string='';
+  personPic:string='';
+  msg:{}={sender:'',description:'',date:new Date(),}
   private subscritionList:Subscription[]=[];
-
-  constructor(private chatService: UserChatsService, private firestore:AngularFirestore) { 
-    this.user = JSON.parse(localStorage.getItem('userdata')!)
+  chatsUrl!: Observable<string | null>;
+  chatsUrlW!: Observable<string | null>;
+  chatsUrlW2!: Observable<string | null>;
+  value:boolean;
+  image:string='https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchstBG2.jpg?alt=media&token=23f956ad-7b3e-4fae-b105-d538f865d930';
+  otherImage:string='https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchatBGW2.jpg?alt=media&token=8566f008-6fd2-4ce6-831e-2f8b77ac19ca';
+  constructor(private modeService:ModeService, private storage: AngularFireStorage, private chatService: UserChatsService, private firestore:AngularFirestore) { 
+    this.user = JSON.parse(localStorage.getItem('userdata')!);
+    const ref = this.storage.ref('chats/chstBG2.jpg');
+    const ref2 = this.storage.ref('chats/chatBGW.jpg');
+    const ref3 = this.storage.ref('chats/chatBGW2.jpg');
+     this.chatsUrl = ref.getDownloadURL();
+     this.chatsUrlW = ref2.getDownloadURL();
+     this.chatsUrlW2 = ref3.getDownloadURL();
+     this.chatsUrl.subscribe(res=>console.log("img",res));
+     this.chatsUrlW.subscribe(res=>console.log("img2",res));
+     this.chatsUrlW2.subscribe(res=>console.log("img3",res));
+     this.value= (this.user.favMode=='dark');
   }
 
   ngOnInit(): void {
-    // this.getChatsFirst()
-    // setTimeout(()=>{this.myChats()},4000)
+    if(this.user.favMode==="dark") {
+      this.modeService.OnDark();
+      //this.modeService.columns(document.querySelectorAll('.light'),'light');
+    }
+      else if(this.user.favMode==="light") {this.modeService.defaultMode();}
+
+    this.subscritionList.push(this.chatService.getUserChats(this.user.id).subscribe(chats => {this.chats = chats.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t.ID === v.ID))===i);
+      this.chats.forEach((chatInfo:any)=>{
+        if(chatInfo.sender !== this.user.id) this.subscritionList.push(this.firestore.collection(`Users`).doc(chatInfo.sender)
+        .get().subscribe((res:any)=>{this.persons.push(res.data())}))
+        else if(chatInfo.receiver !== this.user.id) this.subscritionList.push(this.firestore.collection(`Users`).doc(chatInfo.receiver)
+        .get().subscribe((res:any)=>{this.persons.push(res.data())}))
+        // if(chatInfo.messages){
+          
+        //   this.start=new Date(chatInfo.startDate.toDate()).toLocaleDateString("en-us");
+        //   chatInfo.messages.forEach((ms:any)=>{
+        //     if( new Date(ms.date.toDate()).toLocaleDateString("en-us") < this.start)
+        //   })
+
+        // }
+      })//t.id === v.id)
+      this.persons=this.persons.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t.id === v.id))===i)
+      console.log("persons",this.persons);
+      
+      if(this.chats) {
+        this.chatFlag=true; 
+        if(this.chats[0].messages){
+          
+         
+           console.log(this.chats[0].messages=this.sortData(this.chats[0].messages));
+          //console.log(this.chats[0].messages.sort((a:any,b:any)=> new Date(a.date.toDate()).toLocaleDateString("en-us")< new Date(b.date.toDate()).toLocaleDateString("en-us")))
+        // console.log("chatssort",this.chats);
+          this.msgsFlag=true;}}
+    }))
+      // setTimeout(()=>{ console.log("this.chats",this.chats)},1000)
+  }
+  getUrl()
+  {
+    // console.log("checlURL",`url(${this.chatsUrl})`)
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchstBG2.jpg?alt=media&token=23f956ad-7b3e-4fae-b105-d538f865d930')";
+  }
+  getUrlW()
+  {
+    // console.log("checlURL",`url(${this.chatsUrl})`)
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchatBGW.jpg?alt=media&token=cfdcaf21-5808-4ca1-be18-4a220bbfef8a')";
+  }
+  getUrlW2()
+  {
+    // console.log("checlURL",`url(${this.chatsUrl})`)
+      return "url('https://firebasestorage.googleapis.com/v0/b/sout-2d0f6.appspot.com/o/chats%2FchatBGW2.jpg?alt=media&token=8566f008-6fd2-4ce6-831e-2f8b77ac19ca')";
+  }
+  sortData(arr:[]) {
+    var dd;
+    return arr.sort((a:any, b:any) => {
+      return <any>new Date(b.date.toDate()) - <any>new Date(a.date.toDate());
+    });
+  }
+  addMsg(){
+    if(this.newMsg){
+      let id = this.firestore.createId();
+      this.msg={sender:this.user.id,description:this.newMsg,date:new Date()}
+      this.firestore.collection('/chat').doc(this.chats[0].ID).collection('1').doc(id).set({ ...this.msg })
+    }
+    
   }
   ngAfterViewInit() {
     
@@ -64,40 +127,9 @@ export class ChatComponent implements OnInit {
       sub?.unsubscribe();
     }
   }
-   getChatsFirst(){
-      this.chatService.getUserChats(this.user.id)
-      setTimeout(()=>{this.chats = JSON.parse(localStorage.getItem('userChats')!)},1000)
-  }
-  fakeMsgs(){
-    // this.msgs=[{
-    //   date: new Date()
-    // },{}]
-  }
-  myChats(){
-    
-    console.log("this.chats",this.chats)
-    let count = 0;
-    for(let chatInfo of this.chats){
-      this.msgs.push(chatInfo.messages)
-      if(chatInfo.sender !== this.user.id) this.persons2ID.push(chatInfo.sender)
-      else if(chatInfo.receiver !== this.user.id) this.persons2ID.push(chatInfo.receiver)
-    }
-    for(let person of this.persons2ID.values())
-    {
-      this.firestore.collection(`Users`).doc(person).get().subscribe(res=>{
-        let userInfo:any
-        userInfo = res.data();
-        this.persons.push(userInfo)
-        
-      })
-    }  
-    // for(let p of this.msgs.values())
-    // { 
-    //   console.log("p",p)
-    // }
-      
-  }
+  ngOnChanges(){
 
+  }
   toggleActionMenue(){
     this.classApplied = !this.classApplied;
     // this.myChats()

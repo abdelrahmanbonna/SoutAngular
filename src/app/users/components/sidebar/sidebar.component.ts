@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { FireService } from 'src/app/services/fire.service';
 
 import { UserInfoService } from 'src/app/services/user-info.service';
+import { ISettingsData } from '../../viewModels/isettings-data';
 
 
 @Component({
@@ -21,13 +22,16 @@ export class SidebarComponent implements OnInit {
   user: any;
   talentsList: any[] = []
   subscribtion: Subscription[] = [];
+
   usertalents: any[] = []
+    settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
   constructor(private modeService: ModeService, private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     this.loadTalents()
     this.loadUserTalents()
-    if (this.user.favMode === "dark") this.OnDark()
-    else this.defaultMode()
+    console.log("user",this.user)
+    if(this.user.favMode === "dark") this.modeService.OnDark();
+    else this.modeService.defaultMode();
   }
 
   OnDark() {
@@ -37,7 +41,6 @@ export class SidebarComponent implements OnInit {
   defaultMode() {
     this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu"));
     this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkfont"));
-
   }
 
   loadTalents() {

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ModeService } from './mode.service';
-import {Msg} from '../models/msg'
 import {IChat} from '../models/ichat'
 
 import { map, filter, tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
 
 @Injectable({
@@ -14,58 +12,55 @@ import { map, filter, tap } from 'rxjs/operators';
 })
 export class UserChatsService {
 
-  chats:any
-  chat:IChat[]=[];
-  chatMsg:Msg={id:'',sender:'',description:'',date:new Date()};
-  constructor(private modeService:ModeService, private firestore: AngularFirestore, private fireAuth: AngularFireAuth,private router: Router,private route: ActivatedRoute) { 
+  // chats:any
+  chats:IChat[]=[];
+  chat:{}[]=[];
+  private subscritionList:Subscription[]=[];
+  //chatTemp:IChat[]=[];//{id:'',sender:'',receiver:'',startDate:new Date(),messages:[]};
+  constructor(private modeService:ModeService, private firestore: AngularFirestore) { 
+    this.chat=[]
   }
 
-  async getChats(userID:string){     
-    await this.firestore.collection(`chat`).get().subscribe((res) => {
-      if(res.docs){
-        let allChats:any
-        let count=0
-        for(var i = 0; i < res.docs.length; i++){
-          allChats= res.docs[i].data();
-          if(allChats.sender == userID || allChats.receiver == userID){
-            this.chat[count] = allChats
-            this.chat[count++]['id'] = res.docs[i].id//(res.docs[i].id,allChats);
-            
-         }
-        }
-        //return this.chat        
+  getChats(userID:string): Observable<any>{  
+    return this.firestore.collection<IChat>('chat', ref => 
+    ref.orderBy('startDate','asc'))
+  .snapshotChanges()
+  .pipe(map(chats => {
+    chats.forEach(chat =>{
+    if (chat) {
+      const data = chat.payload.doc.data();
+      const ID = chat.payload.doc.id;
+      if(data.receiver === userID ||  data.sender === userID){
+        this.chat.push({ID, ...data})
       }
-     // return null
-    })
-  }
-   getUserChats(userID:string){
-     this.getChats(userID).then(()=>{
-      let count = 0;
-      //this.chats = JSON.parse(localStorage.getItem('chat')!);
+      
+    }})
+    // console.log("ChatGet",this.chat)
+      return [...this.chat];
+    }));
 
-        for(let chatInfo of this.chat.values()){
-          this.getMessages(chatInfo.id)
-        }
-
-        localStorage.setItem('userChats',JSON.stringify(this.chat))
-        return this.chat
-    })
   }
-  async getMessages(userID:string){
-    await this.firestore.collection(`chat/${userID}/1`).valueChanges({ idField: 'id' }).subscribe(res=>{
-      let count = 0;
-      if(res){
-        let msgs:any
-        msgs = res
-        this.chat[count++].messages = msgs
-      }
-    })
+   getUserChats(userID:string): Observable<any>{
+    // console.log("hgjhl;hlfghjk")
+      return this.getChats(userID).pipe(map((chats,index) =>{
+         console.log("hhchats",chats, "index",index)
+        chats.forEach((chat:any, index:number)=>{
+           // console.log("chatElem",chat,"index",index)
+            this.subscritionList.push(this.firestore.collection(`chat/${chat.ID}/1`,ref => 
+            ref.orderBy('date','asc')).valueChanges().subscribe(
+              (msgs:any)=> chats[index].messages = msgs
+              ))
+         })
+         
+         //console.log("After",chats)
+         return [...chats]
+      }))
+       //console.log("before",chats)
+       
   }
-  async getChatMsgs(){
-    await this.firestore.collection(`chat`).get().subscribe(res => {
-      if(res.docs){
-        res.docs.find((doc) =>{console.log(doc.data())})
-      }
-    })
+  ngOnDestroy(){
+    for(let sub of this.subscritionList){
+      sub?.unsubscribe();
+    }
   }
 }

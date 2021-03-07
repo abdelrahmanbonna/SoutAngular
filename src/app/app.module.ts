@@ -9,9 +9,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AngularFireModule } from '@angular/fire';
 import { UserInfoService } from './services/user-info.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UiSwitchModule } from 'ngx-toggle-switch';
 import { NgxLoadingModule } from 'ngx-loading';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -39,6 +40,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     // MDBBootstrapModule.forRoot(),
+    UiSwitchModule,
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp({
@@ -68,6 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     UserInfoService,
     HttpClient
+    , BsModalRef
   ],
   bootstrap: [AppComponent]
 })
