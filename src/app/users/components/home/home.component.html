@@ -86,8 +86,15 @@
                             <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                 <i class="fas fa-bookmark"
                                     style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
-                                Bookmark this post</button>
+                                Bookmark post</button>
                         </li>
+                        <li *ngIf="post.owner.id == user.id" role="presentation" style="padding-left:9px;">
+                            <button (click)="deletepost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <i class="fas fa-recycle"
+                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                Delete post</button>
+                        </li>
+
                     </ul>
                 </div>
                 <div class="poster">
@@ -101,11 +108,19 @@
                 <img [src]="post.image" *ngIf="post.image" style="width: 20vw;">
                 <span *ngIf="post.audio">
                     <div class="container-audio">
-                        <audio controls loop autoplay>
+                        <audio controls  >
                             <source [src]="sanitize(post.audio)" type="audio/ogg">
                             Your browser dose not Support the audio Tag
                         </audio>
                     </div>
+                </span>
+
+                <span *ngIf="post.video">
+                    <div class="container ny-3" >
+                            <video controls> 
+                                <source [src]="sanitize(post.video)" type="video/mp4">
+                            </video>
+                        </div>
                 </span>
 
                 <hr style="margin-top: 15px;">

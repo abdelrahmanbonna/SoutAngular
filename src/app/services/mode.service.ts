@@ -7,50 +7,38 @@ export class ModeService {
 
   constructor() { }
   //READ ME
-  //Add them in Your Typescript with selections that u want apply mode on them 
-  // OnDark(){
-  //   this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
-  //   this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); 
-  // }
-  // defaultMode(){
-  //   this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); 
-  //   this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkfont"));
-    
-  // }
-  OnDarkColumn(...args: any[]) {
-    document.body.style.backgroundColor = "rgb(19, 18, 18)";
-    for(var i = 0; i < args.length; i++) {
-      this.columns(args[i],"dark");
+  //call Body() first to change the body color according to mode
+  //Then for each container or div or anything U wanna make its BG changes with mode: add (dark) class to them
+  //Then for each fonts U wanna make them changes with mode: add (font) class to them
+  //Then call OnDark() or defaultMode() according to user mode
+  
+  Body(mode:string){
+    if (mode==="dark"){
+      document.body.style.backgroundColor = "#212121";
+    }
+    else{
+      document.body.style.backgroundColor = "#F0F2F5";
     }
   }
-  OnDarkFont(...args: any[]){
-    for(var i = 0; i < args.length; i++) {
-      this.fonts(args[i],"dark");
-    }
+  OnDark(){
+    //  document.body.style.backgroundColor = "#212121";
+    this.Body("dark");
+    this.columns(document.querySelectorAll(".dark"),'dark');
+    this.fonts(document.querySelectorAll(".font"),'dark');
   }
-  defaultModeColumn(...args: any[]) {
-    document.body.style.backgroundColor = "white";
-    for(var i = 0; i < args.length; i++) {
-      this.columns(args[i],"light");
-    }
-  }
-  defaultModeFont(...args: any[]){
-    for(var i = 0; i < args.length; i++) {
-      this.fonts(args[i],"light");
-    }
+  defaultMode(){
+    this.Body("light");
+    this.columns(document.querySelectorAll(".dark"),'light');
+    this.fonts(document.querySelectorAll(".font"),'light');
   }
   columns(columns:any, mode:string) {
     if (mode==="dark") {
         for (var i = 0; i < columns.length; i++) {
-            columns[i].style.backgroundColor = "rgb(32, 30, 30)";
-            columns[i].style.boxShadow = "0px 0.5px 5px #ddd";
-            columns[i].style.color = "white";
+            columns[i].style.backgroundColor = "#2E2E2E";
         }
     } else {
         for (var i = 0; i < columns.length; i++) {
             columns[i].style.backgroundColor = "#F0F2F5";
-            columns[i].style.boxShadow = "0px 0.5px 5px grey";
-            columns[i].style.color = "#444444";
         }
     }
   }
@@ -59,7 +47,7 @@ export class ModeService {
     
     if (mode==="dark") {
         for (var i = 0; i < Items.length; i++) {
-          Items[i].style.color = "white";
+          Items[i].style.color = "#F0F2F5";
         }
     } else {
         for (var i = 0; i < Items.length; i++) {

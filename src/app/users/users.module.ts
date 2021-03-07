@@ -19,7 +19,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { BookmarkComponent } from './components/bookmark/bookmark.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { SettingComponent } from './components/setting/setting.component';
-
+import { UiSwitchModule } from 'ngx-toggle-switch';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -40,6 +40,7 @@ import { FormsModule } from '@angular/forms';
     ReportsComponent
   ],
   imports: [
+    UiSwitchModule,
     CommonModule,
     FormsModule,
     UsersRoutingModule,
