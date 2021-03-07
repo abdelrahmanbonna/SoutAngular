@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ReportBlockService } from './report-block.service';
+import { LocalizationService } from './localization.service';
 
-describe('ReportBlockService', () => {
-  let service: ReportBlockService;
+describe('LocalizationService', () => {
+  let service: LocalizationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ReportBlockService);
+    service = TestBed.inject(LocalizationService);
   });
 
   it('should be created', () => {

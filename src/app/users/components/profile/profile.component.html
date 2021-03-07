@@ -6,7 +6,7 @@
             <img [src]="coverPicURL" id="coverPhoto">
             <div id="avatar">
                 <img [src]="picURL">
-                <h3 style="text-align: center;margin-top: 15px">{{userName}}</h3>
+                <h3 id="name" style="text-align: center;margin-top: 15px">{{userName}}</h3>
             </div>
             <hr style="margin-top: 10%;">
         </div>
@@ -15,14 +15,30 @@
     </div>
     <div class="row" style="margin-top: 40px">
         <input type="file" id="myFileInput" />
-        <div class="nav  nav2" id="nav-tab"
+        <div class="row nav  nav2" id="nav-tab"
             style="background-color: transparent; width: 100%;margin-bottom: 2%;height: 5.5%;margin-top: 1%">
+
+            <span class="col nav-item padding-0" data-toggle="tooltip" data-placement="bottom" style="float: left;">
+                <span class="dropdown edit dropleft bb"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 12px 5px 12px;background-color: #F5F7F8;">
+                    <a role="menuitem" tabindex="-1" (click)="open(followersModal)">
+                        <b [ngStyle]="{'color': user.favColor}"> {{followers}}</b> Followers
+                    </a>
+                </span>
+                <span class="dropdown edit dropleft bb"
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius:20px;width: 120px;padding: 3px 15px 5px 12px;background-color: #F5F7F8;">
+                    <a role="menuitem" tabindex="-1" (click)="open(followingModal)">
+                        <b [ngStyle]="{'color': user.favColor}"> {{following}}</b> Following
+                    </a>
+                </span>
+            </span>
 
             <span class="nav-item col">
                 <div class="dropdown edit"
-                    style="box-shadow: 0px 0.5px 5px grey;border-radius: 5px;width: 21%;float: right">
+                    style="box-shadow: 0px 0.5px 5px grey;border-radius: 5px;width: 42.5%;float: right">
                     <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"
-                        style="width: 100%"><i class="fas fa-edit" style="color: #D93746;font-size: 20px"></i> <span
+                        style="width: 100%;background-color: #F5F7F8;"><i class="fas fa-edit"
+                            style="color: #D93746;font-size: 20px " [ngStyle]="{'color': user.favColor}"></i> <span
                             style="margin-right: 2%">Edit</span>
                     </button>
                     <ul class="dropdown-menu" style="width: 100%;border: none" role="menu" aria-labelledby="menu1">
@@ -31,7 +47,8 @@
                                 <input type="file" (change)="uploadFile($event,'profile')" class="custom-file-input"
                                     style="width:100%;" />
                                 <label class="custom-file-label" for="validatedCustomFile">
-                                    <i class="fas fa-camera" style="font-size: 15px"></i> Edit Profile Pic</label>
+                                    <i class="fas fa-camera" style="font-size: 15px"
+                                        [ngStyle]="{'color': user.favColor}"></i> Edit Profile Pic</label>
                             </a>
                         </li>
                         <hr>
@@ -40,9 +57,21 @@
                                 <input type="file" (change)="uploadFile($event,'cover')" class="custom-file-input"
                                     style="width:100%;" />
                                 <label class="custom-file-label" for="validatedCustomFile">
-                                    <i class="fas fa-image" style="font-size: 15px"></i> Edit Cover</label>
-                            </a>    
+                                    <i class="fas fa-image" style="font-size: 15px"
+                                        [ngStyle]="{'color': user.favColor}"></i> Edit Cover</label>
+                            </a>
                         </li>
+                        <!-- <hr>
+                        <li role="presentation" style="padding-left:7px;">
+                            <a role="menuitem" tabindex="-1">
+                                <div class="input-group mb-3">
+                                    <input type="text" #name value="" class="form-control" placeholder="Edit Your Name">
+                                    <div class="input-group-append">
+                                      <button class="btn btn-outline-secondary input-group-text" (click)="changeName(name.value);name.value=''" type="button">Save</button>
+                                    </div>
+                                  </div>
+                            </a>
+                        </li> -->
                     </ul>
                 </div>
             </span>
@@ -52,13 +81,15 @@
     </div>
     <div class="row" id="center">
         <!--            <div class="col-sm-1 col-md-3 leftSide" style="">-->
-        <nav id="sidebarMenu" class="col-sm-1 col-md-3 leftSide sidebar" style="background-color: #F5F7F8;">
+        <nav id="sidebarMenu1" class="col-sm-1 col-md-3" style="background-color: #F5F7F8;border-radius: 5px;
+        box-shadow: 0px 0.5px 5px grey;height: 75vh;">
             <div class="position-sticky my-3 d-flex justify-content-center">
                 <ul class="nav flex-column">
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/home' ]" routerLinkActive="active">
-                                <i class="fas fa-home"></i><span class="d-none d-md-inline-block"> Home</span>
+                                <i class="fas fa-home" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block"> Home</span>
                             </a>
                         </li>
                         <hr>
@@ -67,7 +98,9 @@
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/notifications' ]"
                                 routerLinkActive="active">
-                                <i class="fas fa-bell"></i><span class="d-none d-md-inline-block">Notifications <b class="badge badge-pill">{{notificationsNo}}</b>
+                                <i class="fas fa-bell" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block">Notifications <b
+                                        class="badge badge-pill">{{notificationsNo}}</b>
                                 </span>
                             </a>
                         </li>
@@ -76,7 +109,8 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
-                                <i class="fas fa-envelope"></i><span class="d-none d-md-inline-block"> Messages</span>
+                                <i class="fas fa-envelope" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block"> Messages</span>
                             </a>
                         </li>
                         <hr>
@@ -85,7 +119,8 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
-                                <i class="fas fa-music"></i><span class="d-none d-md-inline-block"> Talents</span>
+                                <i class="fas fa-music" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block"> Talents</span>
                             </a>
                         </li>
                         <hr>
@@ -93,7 +128,8 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
-                                <i class="fas fa-hashtag"></i><span class="d-none d-md-inline-block"> Discover</span>
+                                <i class="fas fa-hashtag" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block"> Discover</span>
                             </a>
                         </li>
                         <hr>
@@ -101,7 +137,8 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
-                                <i class="fas fa-cog"></i><span class="d-none d-md-inline-block"> Settings</span>
+                                <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block"> Settings</span>
 
                             </a>
                         </li>
@@ -109,16 +146,9 @@
                     </div>
                     <div>
                         <li class="nav-item">
-                            <a class="nav-link side" [routerLink]="[ '/users/interests' ]" routerLinkActive="active">
-                                <i class="fas fa-bahai"></i><span class="d-none d-md-inline-block"> Interests</span>
-                            </a>
-                        </li>
-                        <hr>
-                    </div>
-                    <div>
-                        <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
-                                <i class="fas fa-bookmark"></i><span class="d-none d-md-inline-block"> Bookmarks</span>
+                                <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span
+                                    class="d-none d-md-inline-block"> Bookmarks</span>
                             </a>
                         </li>
                     </div>
@@ -127,20 +157,90 @@
             </div>
         </nav>
 
-        <div class="col-sm-11 col-md-9 rightSide" style="height: 100%">
+        <div class="col-sm-11 col-md-9 rightSide" style="height: 100%;margin-bottom: 30px;">
             <div id="writePst">
                 <div class="firstRow">
                     <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner.id"
                         routerLinkActive="active" style="cursor: pointer;">
-                    <input type="text" placeholder={{postMind}} #desc value="" style="cursor:auto;" />
+                    <input *ngIf="urls.length===0||urlsVideo.length===0" type="text" placeholder={{postMind}}
+                        [(ngModel)]="postDesc" style="cursor:auto;" />
+                    <div class="p-2 ny-3" *ngFor="let url of urls">
+                        <audio controls="" *ngIf="url">
+                            <source [src]="sanitize(url)" type="audio/wav">
+                        </audio>
+                    </div>
+                    <div class="container ny-3" *ngFor="let url of urlsVideo">
+                        <video controls="" *ngIf="url">
+                            <source [src]="sanitize(url)" type="video/mp4">
+                        </video>
+                    </div>
                 </div>
                 <hr>
                 <div class="secondRow">
                     <div class="live">
-                        <i class="fas fa-video" id="liveIcon" style="cursor: pointer;"></i>
-                        <i class="fas fa-microphone-alt" style="cursor: pointer;"></i>
-                        <i class="fas fa-paperclip" style="cursor: pointer;"></i>
-                        <button class="btn" id="postButt" (click)="addPost(desc.value);desc.value=''">Post</button>
+                        <!-- Audio recorder html -->
+                        <div style="display: inline-block;background-color: transparent;">
+                            <button *ngIf="!isRecording"
+                                style="display: inline-block;background-color: transparent;border: none;"
+                                (click)="startRecording()"><i class="fas fa-microphone-alt" style="cursor: pointer;"
+                                    [ngStyle]="{'color': user.favColor}"></i></button>
+                            <button *ngIf="isRecording"
+                                style="display: inline-block;background-color: transparent;border: none;"
+                                (click)="stopRecording()"><i class="fas fa-microphone-alt" style="cursor: pointer;"
+                                    [ngStyle]="{'color': user.favColor}"></i></button>
+                        </div>
+                        <!-- startVideoRecording -->
+                        <div style="display: inline-block;background-color: transparent;margin-left: 10px;">
+                            <button *ngIf="!isRecordingVideo"
+                                style="display: inline-block;background-color: transparent;border: none;"
+                                (click)="startVideoRecording()"><i class="fas fa-video" id="liveIcon"
+                                    style="cursor: pointer;" [ngStyle]="{'color': user.favColor}"></i></button>
+                            <button *ngIf="isRecordingVideo"
+                                style="display: inline-block;background-color: transparent;border: none;"
+                                (click)="stopRecordingVideo()"><i class="fas fa-video" id="liveIcon"
+                                    style="cursor: pointer;" [ngStyle]="{'color': user.favColor}"></i></button>
+                        </div>
+                        <!-- <i class="fas fa-video" id="liveIcon" style="cursor: pointer;margin-top: 6px;"
+                            [ngStyle]="{'color': user.favColor}"></i>
+                        <i class="fas fa-microphone-alt" style="cursor: pointer;margin-top: 6px;margin-left: 23px;"
+                            [ngStyle]="{'color': user.favColor}"></i> -->
+                        <!-- <i class="fas fa-paperclip" style="cursor: pointer;" [ngStyle]="{'color': user.favColor}"></i> -->
+                        <div class="dropdown" style="float:right;">
+                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><i class="fas fa-paperclip"
+                                    [ngStyle]="{'color': this.user.favColor}"></i>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" style="padding-left:9px;padding-right: 9px;">
+                                    <a class="custom-file" role="menuitem" tabindex="-1">
+                                        <input type="file" (change)="uploadFile2($event,'image')"
+                                            class="custom-file-input" style="width:100%;" />
+                                        <label class="custom-file-label" for="validatedCustomFile">
+                                            <i class="fas fa-image" style="font-size: 25px"></i></label>
+                                    </a>
+                                </li>
+                                <hr>
+                                <li role="presentation" style="padding-left:9px;padding-right: 9px;">
+                                    <a class="custom-file" role="menuitem" tabindex="-1">
+                                        <input type="file" (change)="uploadFile2($event,'audio')"
+                                            class="custom-file-input" style="width:100%;" />
+                                        <label class="custom-file-label" for="validatedCustomFile">
+                                            <i class="fas fa-microphone" style="font-size: 25px"></i></label>
+                                    </a>
+                                </li>
+                                <hr>
+                                <li role="presentation" style="padding-left:9px;padding-right: 9px;">
+                                    <a class="custom-file" role="menuitem" tabindex="-1">
+                                        <input type="file" (change)="uploadFile2($event,'video')"
+                                            class="custom-file-input" style="width:100%;" />
+                                        <label class="custom-file-label" for="validatedCustomFile">
+                                            <i class="fas fa-video" style="font-size: 25px"></i></label>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="btn" id="postButt" (click)="addPost(postDesc,urls,urlsVideo);postDesc=''"
+                            [ngStyle]="{'background-color': user.favColor}">Post</button>
                     </div>
 
                 </div>
@@ -150,7 +250,7 @@
                 <div class="dropdown " style="float: right">
                     <button class="btn dropdown-toggle points" id="menu1" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"
-                            style="color: #d8352b;font-size: 16px"></i>
+                            style="color: #d8352b;font-size: 16px" [ngStyle]="{'color': user.favColor}"></i>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation" style="padding-left:9px;">
@@ -158,6 +258,14 @@
                                 style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                 <i class="fas fa-trash" style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
                                 Delete Post</button>
+                        </li>
+                        <hr>
+                        <li role="presentation" style="padding-left:9px;">
+                            <button (click)="bookmarkpost(post)"
+                                style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <i class="fas fa-bookmark"
+                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                Bookmark Post</button>
                         </li>
                     </ul>
                 </div>
@@ -172,17 +280,17 @@
 
                 <span class="ml-2">{{post.description}}</span>
                 <br />
-                <img [src]="post.image[0]" *ngIf="post.image[0]" style="width: 100%;">
+                <img [src]="post.image" *ngIf="post.image" style="width: 100%;">
                 <span *ngIf="post.audio">
                     <div class="container-audio">
-                        <audio controls loop autoplay>
+                        <audio controls>
                             <source [src]="post.audio" type="audio/ogg">
                             Your browser dose not Support the audio Tag
                         </audio>
                     </div>
                 </span>
 
-                <hr style="margin-top: 15px;">
+                <hr style="margin-top: 5px;">
                 <div class="lastRowPost">
                     <div id="like" (click)="addLike(post)">
                         <i class="far fa-thumbs-up" id="likeIcon"></i>
@@ -217,8 +325,10 @@
                 </div>
                 <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3" style="width: 70%;margin-left: 3.5%;">
 
-                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;" [src]="user.id==item.writer.id?picURL:item.writer.picURL"
-                    [routerLink]="'/users/profile/'+user.id==item.writer.id?user.id:item.writer.id" routerLinkActive="active">
+                    <img style="width: 6%;height: 6%;float: left;border-radius: 50%;"
+                        [src]="user.id==item.writer.id?picURL:item.writer.picURL"
+                        [routerLink]="'/users/profile/'+user.id==item.writer.id?user.id:item.writer.id"
+                        routerLinkActive="active">
 
                     <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
                         <div><small id="posterName">{{item.writer.name}}</small>
@@ -235,3 +345,54 @@
         </div>
     </div>
 </div>
+
+
+<!-- Followers Modal -->
+<ng-template #followersModal let-c="close" let-d="dismiss">
+    <div class="modal-header text-light bg-dark">
+        <h4 class="modal-title" id="modal-basic-title">All Followers :</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true" style="color:white;">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let follower of followersList;">
+            <div class="row">
+                <img class=" padding-0" [src]="follower.picURL"
+                    style="width: 50px;float: left;border-radius: 50%;height: 50px;margin-left: 8px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+follower.userid" routerLinkActive="active">
+
+                <span class=" padding-0" style="font-size: 20px;margin-top: 13px;margin-left: 5px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+follower.userid" routerLinkActive="active">{{follower.name}}</span>
+            </div>
+            <hr style="margin-top: 10px;" *ngIf="followersList.length>1" />
+        </div>
+    </div>
+</ng-template>
+<!-- End Modal -->
+
+<!-- Following Modal -->
+<ng-template #followingModal let-c="close" let-d="dismiss">
+    <div class="modal-header text-light bg-dark">
+        <h4 class="modal-title" id="modal-basic-title">Following :</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true" style="color:white;">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let following of followingList;let y=index" style="margin-bottom: 10px;">
+            <div class="row">
+                <img class="padding-0" [src]="following.picURL"
+                    style="width: 50px;float: left;border-radius: 50%;height: 50px;margin-left: 8px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+following.userid" routerLinkActive="active">
+
+                <div class="padding-0" style="font-size: 20px;margin-top: 13px;margin-left: 5px;cursor: pointer;"
+                    [routerLink]="'/users/profile/'+following.userid" routerLinkActive="active"> {{following.name}}
+                </div>
+            </div>
+            <hr style="margin-top: 10px;" *ngIf="followingList.length>1" />
+        </div>
+
+    </div>
+</ng-template>
+<!-- End Modal -->

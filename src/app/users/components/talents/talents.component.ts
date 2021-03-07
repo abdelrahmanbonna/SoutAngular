@@ -73,6 +73,7 @@ export class TalentsComponent implements OnInit {
         id: id,
         date: new Date().toISOString(),
         description: msg,
+        seen: false,
         maker: {
           id: this.user.id,
           name: this.user.firstName + " " + this.user.secondName,

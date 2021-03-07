@@ -12,6 +12,8 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { ModeService } from 'src/app/services/mode.service';
+import { ISettingsData } from '../../viewModels/isettings-data';
 
 @Component({
   selector: 'app-discover',
@@ -39,11 +41,12 @@ export class DiscoverComponent implements OnInit {
   downloadURL: Observable<string> | any;
   uploaded: string = "";
   imageReStatus: string = "Choose Image";
+  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
 
   constructor(private talentService: TalentService, private route: Router, private postsService: PostsService
     , private FireService: FireService
     , config: NgbModalConfig, private modalService: NgbModal
-    , private firestore: AngularFirestore, private storage: AngularFireStorage) {
+    , private firestore: AngularFirestore, private storage: AngularFireStorage, private modeService: ModeService) {
   }
 
   ngOnInit(): void {
@@ -52,6 +55,10 @@ export class DiscoverComponent implements OnInit {
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
 
+      this.settingsData.favMode = this.user.favMode;
+      if (this.settingsData.favMode === "dark") { this.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.defaultMode(); this.settingsData.favMode = "light"; }
+
       this.getAllTalents();
       this.getAllPosts();
     }
@@ -59,6 +66,15 @@ export class DiscoverComponent implements OnInit {
       this.route.navigate(['/landing'])
   }
 
+  OnDark() {
+    this.modeService.OnDarkFont( document.querySelectorAll("#discover"));
+    this.settingsData.favMode = "dark";
+  }
+  defaultMode() {
+    this.settingsData.favMode = "light";
+    this.modeService.defaultModeFont( document.querySelectorAll("#discover"));
+
+  }
   getAllTalents() {
 
     this.talentService.getAllTalents().subscribe(res => {
@@ -120,25 +136,6 @@ export class DiscoverComponent implements OnInit {
       this.userList.push(res)
     });
   }
-
-  bookmarkpost(post: any) {
-    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
-      date: new Date().toISOString(),
-      description: post.description ? post.description : undefined,
-      id: post.id,
-      audio: post.audio ? post.audio : undefined,
-      video: post.video ? post.video : undefined,
-      talent: post.talent ? post.talent : undefined,
-      images: post.images ? post.images : undefined,
-      owner: {
-        id: post.owner.id,
-        name: post.owner.name,
-        picURL: post.owner.picURL
-      }
-    })
-    alert(`post added`)
-  }
-
 
   addLike(post: any) {
     this.firestore.collection('post').doc(post.id).collection("like").add({
@@ -240,6 +237,13 @@ export class DiscoverComponent implements OnInit {
 
   open(content: any) {
     this.modalService.open(content);
+  }
+
+  bookmarkpost(post: any) {
+    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+      post: this.firestore.collection("post").doc(post.id).ref,
+    })
+    alert(`post added`)
   }
 
 }
