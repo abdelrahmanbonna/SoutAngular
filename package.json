@@ -24,6 +24,8 @@
     "@angular/router": "~11.0.6",
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "@types/mocha": "^8.2.0",
     "animate.css": "^4.1.1",
     "bootstrap": "^4.6.0",
@@ -38,7 +40,9 @@
     "ngx-ui-switch": "^1.6.0",
     "recordrtc": "^5.6.1",
     "rxjs": "~6.6.0",
+    "text-encoding-utf-8": "^1.0.2",
     "tslib": "^2.0.0",
+    "typescript-base64-arraybuffer": "^0.1.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

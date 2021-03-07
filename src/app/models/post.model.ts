@@ -1,5 +1,3 @@
-import { IComment } from "./icomment";
-
 export class Post {
     constructor(
         public id: string = "",
@@ -14,6 +12,8 @@ export class Post {
         public description: string = "",
         public image: string[] = [],
         public talent: string = "",
+        public likes: any[] = [],
+        public comments: any[] = []
     ) { }
 
 }

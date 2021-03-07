@@ -22,16 +22,25 @@ export class SidebarComponent implements OnInit {
   user: any;
   talentsList: any[] = []
   subscribtion: Subscription[] = [];
-  usertalents: any[] = [];
-  settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
 
-  constructor(private modeService:ModeService,private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
+  usertalents: any[] = []
+    settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
+  constructor(private modeService: ModeService, private usrInfo: FireService, private route: Router, private firestore: AngularFirestore) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
     this.loadTalents()
     this.loadUserTalents()
     console.log("user",this.user)
     if(this.user.favMode === "dark") this.modeService.OnDark();
     else this.modeService.defaultMode();
+  }
+
+  OnDark() {
+    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkfont"));
+    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu"));
+  }
+  defaultMode() {
+    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu"));
+    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkfont"));
   }
 
   loadTalents() {
@@ -61,8 +70,10 @@ export class SidebarComponent implements OnInit {
 
   getnotificationsno() {
     this.subs.push(this.firestore.collection('Users').doc(this.user.id).collection('notifications').valueChanges().subscribe((data) => {
-      console.log(`notifications: ${data}`)
-      this.notificationsNo = data.length
+      this.notificationsNo = 0
+      data.forEach(element => {
+        if (element.seen === false || element.seen === undefined) this.notificationsNo++;
+      })
     }))
   }
 
