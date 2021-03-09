@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { Talent } from 'src/app/models/talent.model';
@@ -6,7 +6,7 @@ import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { TalentService } from 'src/app/services/talent.service';
 import { FireService } from 'src/app/services/fire.service';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
@@ -56,8 +56,8 @@ export class DiscoverComponent implements OnInit {
       this.coverPicURL = this.user.coverPicURL;
 
       this.settingsData.favMode = this.user.favMode;
-      if (this.settingsData.favMode === "dark") { this.OnDark(); this.settingsData.favMode = "dark"; }
-      else if (this.settingsData.favMode === "light") { this.defaultMode(); this.settingsData.favMode = "light"; }
+      if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
 
       this.getAllTalents();
       this.getAllPosts();
@@ -66,15 +66,15 @@ export class DiscoverComponent implements OnInit {
       this.route.navigate(['/landing'])
   }
 
-  OnDark() {
-    this.modeService.OnDarkFont( document.querySelectorAll("#discover"));
-    this.settingsData.favMode = "dark";
-  }
-  defaultMode() {
-    this.settingsData.favMode = "light";
-    this.modeService.defaultModeFont( document.querySelectorAll("#discover"));
+  // OnDark() {
+  //   this.modeService.OnDarkFont( document.querySelectorAll("#discover"));
+  //   this.settingsData.favMode = "dark";
+  // }
+  // defaultMode() {
+  //   this.settingsData.favMode = "light";
+  //   this.modeService.defaultModeFont( document.querySelectorAll("#discover"));
 
-  }
+  // }
   getAllTalents() {
 
     this.talentService.getAllTalents().subscribe(res => {

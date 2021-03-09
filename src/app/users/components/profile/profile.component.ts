@@ -56,11 +56,11 @@ export class ProfileComponent implements OnInit {
   public urls: any[] = []; //audio recorder audios
   private error: any; //audio recorder error
 
-  settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
+  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
 
   constructor(private postsService: PostsService, private route: Router,
     private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService
-    , config: NgbModalConfig, private modalService: NgbModal,private modeService:ModeService, private domSanitizer: DomSanitizer, private firestorage: AngularFireStorage,) {
+    , config: NgbModalConfig, private modalService: NgbModal, private modeService: ModeService, private domSanitizer: DomSanitizer, private firestorage: AngularFireStorage,) {
     this.modalService.dismissAll();
   }
 
@@ -80,22 +80,22 @@ export class ProfileComponent implements OnInit {
       this.getFollowing();
       console.log(this.user);
 
-      if(this.settingsData.favMode==="dark") {this.OnDark();this.settingsData.favMode="dark";}
-      else if(this.settingsData.favMode==="light") {this.defaultMode();this.settingsData.favMode="light";}
+      if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
     }
     else
       this.route.navigate(['/landing'])
   }
 
-  OnDark(){
-    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
-    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="dark";
-  }
-  defaultMode(){
-    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="light";
-    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
-    
-  }
+  // OnDark(){
+  //   this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
+  //   this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="dark";
+  // }
+  // defaultMode(){
+  //   this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="light";
+  //   this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
+
+  // }
 
   uploadFile(event: any, type: string) {
     var filePath: any;
@@ -288,7 +288,7 @@ export class ProfileComponent implements OnInit {
       //     x.writer.name = name;
       //     this.FireService.updateDocument("/post/" + el.id + "/comment/" + element.id, x);
       //   })
-      
+
       // })
     });
 

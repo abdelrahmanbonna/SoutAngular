@@ -52,7 +52,7 @@ export class OtherProfileComponent implements OnInit {
 
   subscribtion: Subscription[] = [];
   settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
-  
+
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
     , private firestore: AngularFirestore, private storage: AngularFireStorage, private modeService: ModeService) {
@@ -69,8 +69,8 @@ export class OtherProfileComponent implements OnInit {
 
       this.picURL = this.user.picURL;
       this.settingsData.favMode = this.user.favMode;
-      if (this.settingsData.favMode === "dark") { this.OnDark(); this.settingsData.favMode = "dark"; }
-      else if (this.settingsData.favMode === "light") { this.defaultMode(); this.settingsData.favMode = "light"; }
+      if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
 
       this.activatedRoute.paramMap.subscribe((params) => {
         let UIDParam: string | null = params.get('UID');
@@ -93,16 +93,6 @@ export class OtherProfileComponent implements OnInit {
     }
     else
       this.router.navigate(['/landing'])
-  }
-
-  OnDark() {
-    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkFont"), document.querySelectorAll("#name"));
-    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode = "dark";
-  }
-  defaultMode() {
-    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode = "light";
-    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkFont"), document.querySelectorAll("#name"));
-
   }
 
 
@@ -158,7 +148,7 @@ export class OtherProfileComponent implements OnInit {
   follow() {
     if (this.check) {
       console.log("You already follow this user")
-      this.checkFollower=true;
+      this.checkFollower = true;
     } else {
       this.FireService.setDocument("/Users/" + this.userInfo.id + "/followers/" + this.user.id, {
         userid: this.user.id,
@@ -281,12 +271,12 @@ export class OtherProfileComponent implements OnInit {
   }
 
   bookmarkpost(post: any) {
-      this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
-        post: this.firestore.collection("post").doc(post.id).ref,
-      })
-      alert(`post added`)
-    }
-    
+    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+      post: this.firestore.collection("post").doc(post.id).ref,
+    })
+    alert(`post added`)
+  }
+
   reportPost(title: string, des: string, postId: string) {
 
     this.report.title = title;

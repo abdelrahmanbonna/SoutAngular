@@ -98,6 +98,8 @@ export class HomeComponent implements OnInit {
       console.log(this.post)
     });
     this.ngOnInit()
+    this.postDesc = "";
+    this.post = new Post();
   }
 
   bookmarkpost(post: any) {

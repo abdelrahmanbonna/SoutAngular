@@ -34,8 +34,8 @@ export class NotoficationComponent implements OnInit {
     })
   }
 
-  removeN(id: string) {
-    this.firestore.collection('Users').doc(this.user.id).collection('notifications').doc(id).update({ seen: true });
+ async removeN(id: string) {
+   await this.firestore.collection('Users').doc(this.user.id).collection('notifications').doc(id).update({ seen: true });
   }
 
 
