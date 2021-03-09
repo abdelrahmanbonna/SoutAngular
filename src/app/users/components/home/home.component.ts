@@ -116,7 +116,22 @@ export class HomeComponent implements OnInit {
   addLike(postid: any) {
     this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
-    })
+    });
+
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+    // this.LikesList = [];
+    // this.getLikes(postid);
+    // for (let i = 0; i < this.postList.length; i++) {
+    //   this.getLikes(this.postList[i].id)
+    // }
+    // this.subscribtion.push(this.firestore.collection('post').doc(postid)
+    //       .collection('like').valueChanges().subscribe((data) => {
+    //   this.LikesList = data
+    //   // console.log(data)
+    // }))
+
     this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
@@ -130,10 +145,16 @@ export class HomeComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
+
+    //this.getComments(postid)
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
     this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
   }
   async getComments(postid: string) {
-    this.commentsList = []
+    // this.commentsList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
       // console.log(data)
@@ -145,7 +166,7 @@ export class HomeComponent implements OnInit {
   }
 
   async getLikes(postid: string) {
-    this.LikesList = []
+    //this.LikesList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
       // console.log(data)
