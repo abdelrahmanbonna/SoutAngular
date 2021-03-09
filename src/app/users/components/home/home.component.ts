@@ -100,6 +100,8 @@ export class HomeComponent implements OnInit {
     this.ngOnInit()
     this.postDesc = "";
     this.post = new Post();
+    this.urls = []
+    this.urlsVideo = []
   }
 
   bookmarkpost(post: any) {
@@ -133,6 +135,7 @@ export class HomeComponent implements OnInit {
       date: new Date().toISOString(),
     })
     this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+    this.postcomfields[index] = ""
   }
   async getComments(postid: string) {
     this.commentsList = []
