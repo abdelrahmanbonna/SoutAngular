@@ -17,7 +17,8 @@ export class User {
         public createdDate: Date = new Date(),
         public updatedDate: Date = new Date(),
         public blocked: boolean = false,
-        public deactive: boolean = false
+        public deactive: boolean = false,
+        public bio: string = "",
     ) { }
 
 

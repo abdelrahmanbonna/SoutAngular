@@ -10,7 +10,7 @@ export class AdminComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    window.location.replace('http://localhost:4100/');
+    window.location.replace('https://mohamedmagdy715.github.io/soutAdmin');
   }
 
 }

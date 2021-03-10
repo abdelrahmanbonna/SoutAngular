@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import * as RecordRTC from 'recordrtc';
 import { DomSanitizer } from "@angular/platform-browser";
 import { AngularFireStorage } from '@angular/fire/storage';
+import { UserInfoService } from 'src/app/services/user-info.service';
 // import { Console } from 'console';
 @Component({
   selector: 'app-home',
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
   greating: string;
   constructor(private fireService: FireService, private postsService: PostsService, private firestorage: AngularFireStorage, private firestore: AngularFirestore, private route: Router, private domSanitizer: DomSanitizer) {
     this.user = JSON.parse(localStorage.getItem('userdata')!);
+    // this.user = UserInfoService.user;
     this.greating = "What's up, " + this.user.firstName + " " + this.user.secondName + "?";
     this.subscribtion.push(this.fireService.getCollection('post').subscribe((res) => {
       this.postList = res;
@@ -120,7 +122,22 @@ export class HomeComponent implements OnInit {
   addLike(postid: any) {
     this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
-    })
+    });
+
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+    // this.LikesList = [];
+    // this.getLikes(postid);
+    // for (let i = 0; i < this.postList.length; i++) {
+    //   this.getLikes(this.postList[i].id)
+    // }
+    // this.subscribtion.push(this.firestore.collection('post').doc(postid)
+    //       .collection('like').valueChanges().subscribe((data) => {
+    //   this.LikesList = data
+    //   // console.log(data)
+    // }))
+
     this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
@@ -134,23 +151,29 @@ export class HomeComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
+
+    //this.getComments(postid)
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
     this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
     this.postcomfields[index] = ""
   }
   async getComments(postid: string) {
-    this.commentsList = []
+    // this.commentsList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
       // console.log(data)
     }))
   }
 
-  deletepost(post:any){
+  deletepost(post: any) {
     this.firestore.collection('post').doc(post.id).delete();
   }
 
   async getLikes(postid: string) {
-    this.LikesList = []
+    //this.LikesList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
       // console.log(data)
