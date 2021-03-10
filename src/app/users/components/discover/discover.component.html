@@ -1,0 +1,183 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="col-9">
+            <div class="col-10 col-md-9">
+                <h1 class="ml-3 mb-4" id="discover">Discover</h1>
+
+                <ul class="nav  ml-3 nav2 nav-tabs" id="nav-tab" role="tablist"
+                    style="background-color: #F5F7F8;border-bottom: 2px solid;border-bottom-color:#d8352b;border-radius: 8px;box-shadow: 0px 0.5px 5px grey; width: 100%;margin-bottom: 2%;height: 5%;font-size: 17px;">
+
+                    <li class="nav-item col padding-0" (click)="getAllPosts();">
+                        <a class="nav-link active" data-toggle="tab" aria-selected="true" role="tab"
+                            style="border-radius: 4px ;color: #d8352b;width: 100%;">All</a>
+                    </li>
+
+                    <li class="nav-item col padding-0" *ngFor="let talent of talentList"
+                        (click)="getPostsByTalent(talent.id)">
+                        <a class="nav-link" data-toggle="tab" aria-selected="false" role="tab"
+                            style="border-radius: 4px ;color: #d8352b;width: 100%;">{{talent.name}}</a>
+                    </li>
+
+
+                </ul>
+
+                <!-- post -->
+
+                <div id="post1" *ngFor="let post of postList ;let i = index;" class="ml-3">
+                    <!-- <div *ngFor="let user1 of users;"> -->
+
+                    <div class="dropdown " style="float: right">
+                        <button class="btn dropdown-toggle points" id="menu1" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"
+                                style="color: #d8352b;font-size: 16px"></i>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation" style="padding-left:9px;">
+                                <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                    <i class="fas fa-bookmark"
+                                        style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                    Bookmark Post</button>
+                            </li>
+                            <hr>
+                            <li role="presentation" style="padding-left:7px;cursor: pointer;">
+                                <a role="menuitem" tabindex="-1" (click)="open(content)" style="color: black">
+                                    <i class="fas fa-exclamation-triangle"
+                                        style="font-size: 15px;color: #d8352b;margin-right: 5px;"></i>
+                                    Report Post</a>
+
+                                <!-- Modal -->
+                                <ng-template #content let-c="close" let-d="dismiss">
+                                    <div class="modal-header text-light bg-dark">
+                                        <h4 class="modal-title" id="modal-basic-title">Report Post !
+                                        </h4>
+                                        <button type="button" class="close" aria-label="Close"
+                                            (click)="d('Cross click')">
+                                            <span aria-hidden="true" style="color:white;">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="text" class="form-control" #title placeholder="Title">
+                                        <br />
+                                        <input type="text" class="form-control" #desc placeholder="Description">
+                                        <br />
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                (change)="uploadReportImage($event)">
+                                            <label class="custom-file-label"
+                                                for="inputGroupFile01">{{imageReStatus}}</label>
+                                            <div *ngIf="uploaded" class="mt-1" style="font-size: small;">
+                                                <b *ngIf="uploaded=='Image Uploaded'">&#10003;</b> {{ uploaded }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-dark"
+                                            (click)="c('Save click');reportPost(title.value,desc.value,post.id)">Report</button>
+                                    </div>
+                                </ng-template>
+                                <!-- End Modal -->
+                            </li>
+                            <!-- <hr>
+                            <li role="presentation" style="padding-left:7px;cursor: pointer;">
+                                <a style="color: black">
+                                    <i class="fas fa-ban" style="font-size: 15px;color: #d8352b;margin-right: 5px;"></i>
+                                    Block</a>
+                            </li>
+                            <hr>
+                            <li role="presentation" style="padding-left:7px;cursor: pointer;">
+                                <a style="color: black">
+                                    <i class="fas fa-volume-mute"
+                                        style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                    Mute</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div class="poster">
+                        <img [src]="post.owner.picURL" [routerLink]="'/users/profile/'+post.owner.id"
+                            routerLinkActive="active">
+                        <!-- <div id="posterName" >{{getUserById(post.owner).firstName}}</div> -->
+                        <div id="posterName" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active">
+                            {{post.owner.name}}
+                        </div>
+                        <div id="time" cl>{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}} <i
+                                class="fas fa-globe-africa"></i></div>
+                    </div>
+                    <span class="ml-2">{{post.description}}</span>
+                    <br />
+                    <img [src]="post.image" *ngIf="post.image" style="width: 100%;">
+                    <span *ngIf="post.audio">
+                        <div class="container-audio">
+                            <audio controls>
+                                <source [src]="post.audio" type="audio/ogg">
+                                Your browser dose not Support the audio Tag
+                            </audio>
+                        </div>
+                    </span>
+
+                    <hr style="margin-top: 15px;">
+                    <div class="lastRowPost">
+
+                        <div id="like" (click)="addLike(post)">
+
+                            <i class="far fa-thumbs-up" id="likeIcon"></i>
+                            <span id="likeCont">
+                                Like <span class="badge badge-pill badge-light">{{LikesList[i].length}}</span>
+                            </span>
+                        </div>
+                        <div id="comment">
+                            <i class="fas fa-microphone-alt"></i>
+                            <span id="commentCont">
+                                Voice
+                            </span>
+                        </div>
+
+                        <div id="comment" (click)="addComment(post,i)">
+
+                            <i class="far fa-comment-alt" id="commentIcon"></i>
+                            <span id="commentCont">
+                                Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div id="writecomnt">
+                        <hr style="margin-top: 55px;margin-bottom: 10px">
+                        <div class="firstRow">
+                            <img [src]="picURL" [routerLink]="'/users/profile'" routerLinkActive="active"
+                                style="cursor: pointer;">
+                            <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..."
+                                id="cmntInput" />
+                        </div>
+
+                    </div>
+                    <div *ngFor="let item of commentsList[i]" class="my-2 mx-3 mt-3"
+                        style="width: 70%;margin-left: 3.5%;">
+
+                        <img style="width: 6%;height: 6%;float: left;border-radius: 50%;"
+                            [src]="user.id==item.writer.id?picURL:item.writer.picURL" [routerLink]="'/users/profile/'+item.writer.id" routerLinkActive="active">
+
+                        <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
+                            <div><small id="posterName" style="font-size:15px;">{{item.writer.name}}</small>
+                                <small style="display: block;font-size: 10px;">
+                                    {{item.date | date:'dd-MM-yyyy hh:mm'}}</small>
+                            </div>
+                            <span style="font-weight: 400;">{{item.description}}</span>
+                        </div>
+
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <br />
+
+                <!-- post -->
+
+
+            </div>
+        </div>
+    </div>
+</div>

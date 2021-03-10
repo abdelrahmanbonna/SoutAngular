@@ -1,0 +1,11 @@
+<div class="text-spacebetwen text-light bg-dark foot">
+    <span>{{'footer.all_rights_reserved'|translate}} <i class="fas fa-copyright fa-lg  "> Sout 2021</i></span>
+    
+    <span class="float-right">
+        <select  (change)="changeLang($event.target.value)" >
+            <option value="en" [selected]="lang == 'en'" >English</option>
+            <option value="ar" [selected]="lang == 'ar'" >Arabic</option>
+        </select>
+        &nbsp;&nbsp;
+    </span>
+</div>

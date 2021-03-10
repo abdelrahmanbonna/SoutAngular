@@ -1,1 +1,83 @@
-<p>sidebar works!</p>
+<nav id="sidebarMenu" class="col-xl-12 col-lg-12 col-sm-3 col-md-6 col-3 leftSide dark" [ngStyle]="{'margin-left': '0.5%'}">
+    <div class="position-sticky my-3 d-flex justify-content-center d-md-block">
+        <ul class="nav flex-column   pt-3">
+            <div>
+                <li class="nav-item">
+                    <a class="nav-link " [routerLink]="[ '/users/profile' ]" routerLinkActive="active">
+                        <img [src]="user.picURL" style="width: 50px;border-radius: 50%"><span class="d-none d-md-inline-block font" style="margin-left: 18px;font-weight: 500">{{user.firstName}} {{user.secondName}}</span>
+                    </a>
+                </li>
+                <hr>
+                <li class="nav-item"> <!--*ngIf="!user.notifications.length===0"-->
+                    <a class="nav-link " [routerLink]="[ '/users/notifications' ]" routerLinkActive="active">
+
+                        <i class="fas fa-bell"  [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block font">
+                                        Notifications<span [ngStyle]="{'color': user.favColor}"  class="badge badge-pill">{{notificationsNo}}</span></span>
+                    </a>
+                </li>
+                <hr>
+            </div>
+            <div>
+                <li class="nav-item">
+                    <a class="nav-link " [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
+                        <i class="fas fa-envelope" [ngStyle]="{'color': user.favColor}" ></i><span class="d-none d-md-inline-block font">
+                                        Messages <span [ngStyle]="{'color': user.favColor}" class="badge badge-pill"></span></span>
+                    </a>
+                </li>
+                <hr>
+            </div>
+            <div>
+                <li class="nav-item">
+                    <a class="nav-link " [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
+                        <i class="fas fa-music" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block font"> Talents</span>
+                    </a>
+                </li>
+                <hr>
+            </div>
+            <div>
+                <li class="nav-item">
+                    <a class="nav-link " [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
+                        <i class="fas fa-hashtag" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block font">
+                                        Discover</span>
+                    </a>
+                </li>
+                <hr>
+            </div>
+            <div>
+                <li class="nav-item">
+                    <a class="nav-link " [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
+                        <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block font"> Settings</span>
+                    </a>
+                </li>
+                <hr>
+            </div>
+            <div>
+                <li class="nav-item">
+                <a class="nav-link " [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
+                    <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span class="d-none d-md-inline-block font"> Bookmarks</span>
+                </a>
+            </li>
+            <hr>
+            </div>
+            <div>
+                <li class="" >
+                   
+                                          <h3 style="font-size: 10pt;" class="font">Your Interests <small>Click to remove</small></h3>
+                                       <div *ngFor="let item of usertalents">
+                                            <span type="button"  (click)="removeTalent(item.ID)" [ngStyle]="{'background-color': user.favColor}" class="badge badge-pill text-light " >{{item.name}}</span>
+                                       </div>
+                                       <hr>
+                                       <h3 style="font-size: 10pt;" class="font">Add Interests <small>Click to add</small></h3>
+                                       <div *ngFor="let item of talentsList">
+                                            <span type="button" (click)="addtalents(item)" [ngStyle]="{'background-color': user.favColor}" class="badge badge-pill text-light" >{{item.name}}</span>
+                                       </div>
+                                          
+                                       
+                </li>
+                <hr>
+            </div>
+            
+        </ul>
+
+    </div>
+</nav>

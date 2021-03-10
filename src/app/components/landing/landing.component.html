@@ -1,0 +1,140 @@
+<nav class="navbar navbar-dark bg-dark justify-content-between px-5 sticky-top sticky-offset">
+    <img src="../../../assets/sout.jpeg" style="width: 100px">
+</nav>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" ></ngx-loading>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 col-md-7">
+            <div id="text">
+                <h1>
+                    <strong>  {{'landing.about_us'|translate}}:</strong>
+                </h1>
+                <p>
+                    {{'landing.about_sout'|translate}}
+                </p>
+            </div>
+        </div>
+        <div class="col-6 col-md-5">
+            <div class="box">
+                <form [formGroup]="registerfrm" (ngSubmit)="register()">
+                    <!-- Button trigger modal -->
+                    <button type="button" id="but1" class="btn btn-danger" data-toggle="modal" data-target="#Regmodel">
+                      {{'landing.register'|translate}}
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal text-danger  fade" id="Regmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{'landing.register'|translate}}</h5>
+                                    <button #closeregisterbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input formControlName="fname" type="text" class="form-control" name="FNameReg" id="FNameReg" aria-describedby="#FNHelpReg" [placeholder]="'landing.first_name'|translate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input formControlName="sname" type="text" class="form-control" name="SNameReg" id="SNameReg" aria-describedby="#SNHelpReg" [placeholder]="'landing.second_name'|translate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input formControlName="email" type="email" class="form-control" name="EmailReg" id="EmailReg" aria-describedby="#EmailHelpReg" [placeholder]="'landing.email'|translate" required>
+                                    </div>
+                                    <div class="form-group">
+                                      <input formControlName="birthdate" type="date" class="form-control" name="BirthdateReg" id="BirthdateReg"  [placeholder]="'landing.birthdate'|translate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input formControlName="mobile" type="text" class="form-control" name="MobileReg" id="MobileReg" aria-describedby="#MobileHelpReg" [placeholder]="'landing.mobile'|translate" required>
+                                    </div>
+                                    <h6>{{'landing.gender'|translate}}</h6>
+                                    <div class="form-check w-50 p-1 mx-1">
+                                        <label class="form-check-label mx-5">
+                                        <input formControlName="gender" type="radio" class="form-check-input" name="gender" value="Male" >
+                                        {{'landing.male'|translate}}
+                                      </label>
+                                        <label class="form-check-label">
+                                        <input formControlName="gender" type="radio" class="form-check-input" name="gender"  value="Female" >
+                                        {{'landing.female'|translate}}
+                                      </label>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <input formControlName="password" type="password" class="form-control" name="PassReg" id="PassReg" aria-describedby="#PassHelpReg" [placeholder]="'landing.password'|translate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input formControlName="confirmPassword" type="password" class="form-control" name="ConfPassReg" id="ConfPassReg" aria-describedby="#ConfPassHelpReg" [placeholder]="'landing.confirm_password'|translate" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button [disabled]="registerfrm.invalid" type="submit" class="btn btn-primary">{{'landing.register'|translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form [formGroup]="loginfrm" (ngSubmit)="login()">
+                    <!-- Button trigger modal -->
+                    <button type="button" id="but2" class="btn btn-outline-danger" data-toggle="modal" data-target="#loginmodel">
+                      {{'landing.login'|translate}}
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal text-danger fade" id="loginmodel" tabindex="99" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{'landing.login'|translate}}</h5>
+                                    <button #closeloginbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input formControlName="email" type="email" class="form-control" name="LoginEmail" id="LoginEmail" [placeholder]="'landing.email'|translate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input formControlName="password" type="password" class="form-control" name="LoginPass" id="LoginPass" [placeholder]="'landing.password'|translate" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary"  [disabled]="loginfrm.invalid">{{'landing.login'|translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="dropdown-divider"></div>
+                <span style="color: black;font-size:medium;padding-left: 2vw;">
+                    <a data-toggle="modal" data-target="#ForgotpassModal" style="cursor: pointer;text-decoration: underline;">{{'landing.forgot_password'|translate}}</a>
+                    <form [formGroup]="forgotpassfrm" (ngSubmit)="forgetpassword()">
+                        <!-- Modal -->
+                        <div class="modal text-danger fade" id="ForgotpassModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" >
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{'landing.forgot_password'|translate}}</h5>
+                                            <button #closeforgetbutton type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input formControlName="email" type="email" class="form-control" name="ForgotEmail" id="ForgotEmail" aria-describedby="#emailHelpId" [placeholder]="'landing.email'|translate" required>
+                    <small id="emailHelpId" class="form-text text-muted">{{'landing.email_reset_msg'|translate}}</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" [disabled]="forgotpassfrm.invalid">{{'landing.reset'|translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+</span>
+</div>
+</div>
+</div>
+</div>
+<app-footer></app-footer>

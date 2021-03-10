@@ -1,0 +1,154 @@
+.sticky-offset {
+    top: 0px;
+}
+
+.active {
+    background-color: #BBBBBA;
+}
+
+.inactive{
+    background-color: #F0F2F5;
+}
+
+.dark {
+    color: white;
+}
+
+.light{
+    color: #444444;
+}
+
+@media screen and (max-width: 1220px) {
+    .middleSetting {
+        display: none
+    }
+}
+
+.theme {
+    font-family: ProximaNova, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: subpixel-antialiased;
+    list-style: none;
+    padding: 0;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid black;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    margin: 10px 15px 5px 0;
+    text-align: center;
+    vertical-align: top;
+    width: 36px;
+}
+
+.theme-0 {
+    background-color: #ee4c22;
+    border-color: #ee4c22;
+    color: #ee4c22;
+}
+
+.theme-1 {
+    background-color: #ee1144;
+    border-color: #ee1144;
+    color: #ee1144;
+}
+
+.theme-2 {
+    background-color: #4A4A50;
+    border-color: #4A4A50;
+    color: #4A4A50;
+}
+
+.theme-3 {
+    background-color: #bd4381;
+    border-color: #bd4381;
+    color: #bd4381;
+}
+
+.theme-4 {
+    background-color: #A0306F;
+    border-color: #A0306F;
+    color: #A0306F;
+}
+
+.theme-5 {
+    background-color: #642F42;
+    border-color: #642F42;
+    color: #642F42;
+}
+
+.theme-6 {
+    background-color: #9b6d98;
+    border-color: #9b6d98;
+    color: #9b6d98;
+}
+
+.theme-7 {
+    background-color: #553655;
+    border-color: #553655;
+    color: #553655;
+}
+
+.theme-8 {
+    background-color: #4080D8;
+    border-color: #4080D8;
+    color: #4080D8;
+}
+
+.arrow {
+    height: "20";
+    width: "20";
+    margin-left: 10px;
+}
+
+.content {
+    display: none;
+}
+
+.displaySettings {
+    display: none;
+}
+
+.defaultColor {
+    color: #d8352b;
+}
+
+.reset {
+    background-color: #d8352b;
+}
+
+.nav-item i {
+    font-size: 25px;
+    color: #d8352b;
+    margin-left: 8px;
+}
+
+.nav-item span {
+    font-size: 20px;
+    margin-left: 30px
+}
+
+.nav-item {
+    border-radius: 100px;
+}
+
+.nav-item span:hover {
+    color: #d8352b;
+    cursor: pointer
+}
+
+.nav-item:hover {
+    background-color: #BBBBBA;
+}
+
+.nav-item a {
+    color: #444444;
+}
+
+#sidebarMenu {
+    // background-color: #F0F2F5;
+    border-radius: 5px;
+    box-shadow: 0px 0.5px 5px grey;
+}
