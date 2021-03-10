@@ -69,14 +69,15 @@ export class UserInfoService {
             gender: gender,
             mobile: mobile,
             picURL: gen,
-            coverPicURL: "",
+            coverPicURL: "./../../../../assets/cover2.jpg",
             birthDate: birthdate,
             dateCreated: new Date().toISOString(),
             dateUpdated: new Date().toISOString(),
             privateAcc: false,
-            favColor: "grey",
+            favColor: "red",
             favMode: "light",
             blocked: false,
+            bio:""
           })
           localStorage.setItem('userdata', JSON.stringify({
             id: res.user.uid,
