@@ -10,6 +10,7 @@
                 </h3>
                 <div style="text-align: center;font-size: 17px;color: dimgray;" *ngIf="userInfo.bio">{{userInfo.bio}}
                 </div>
+
             </div>
             <hr style="margin-top: 10%;">
         </div>
@@ -35,6 +36,7 @@
                     </a>
                 </span>
             </span>
+
             <!-- birtDateeeeeeeeeeee -->
             <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Birth Date">
                 <div class="dropdown edit dropleft"
@@ -46,6 +48,7 @@
                 </div>
             </span>
 
+
             <span class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Follow">
                 <div class="dropdown edit dropleft"
                     style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right;background-color: #F5F7F8;">
@@ -54,6 +57,7 @@
                             *ngIf="!check" [ngStyle]="{'color': user.favColor}"></i>
                         <i class="fas fa-user-check" style="font-size: 16px;text-align: center" *ngIf="check"
                             [ngStyle]="{'color': user.favColor}"></i>
+
                     </button>
                 </div>
             </span>
@@ -72,14 +76,18 @@
                 <div class="dropdown edit"
                     style="box-shadow: 0px 0.5px 5px grey;border-radius:50%;width: 40px;float: right;background-color: #F5F7F8;">
                     <button class="btn btn-default " type="button" id="menu1" data-toggle="dropdown"
+
                         style="width: 100%"><i class="fas fa-ellipsis-h" style="font-size: 16px;text-align: center"
                             [ngStyle]="{'color': user.favColor}"></i>
+
                     </button>
                     <ul class="dropdown-menu" style="width: 25%;border: none" role="menu" aria-labelledby="menu1">
                         <li role="presentation" style="padding-left:7px;">
                             <a role="menuitem" tabindex="-1" (click)="open(content)">
+
                                 <i class="fas fa-exclamation-triangle" style="font-size: 15px"
                                     [ngStyle]="{'color': user.favColor}"></i>
+
                                 Report Profile
                             </a>
 
@@ -99,15 +107,19 @@
 
     </div>
     <div class="row" id="center">
+
         <nav id="sidebarMenu1" class="col-sm-1 col-md-3 leftSide sidebar" style="background-color: #F5F7F8;border-radius: 5px;
+
         box-shadow: 0px 0.5px 5px grey;height: 75vh;">
             <div class="position-sticky my-3 d-flex justify-content-center">
                 <ul class="nav flex-column">
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/home' ]" routerLinkActive="active">
+
                                 <i class="fas fa-home" [ngStyle]="{'color': user.favColor}"></i><span
                                     class="d-none d-md-inline-block"> Home</span>
+
                             </a>
                         </li>
                         <hr>
@@ -126,8 +138,10 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/messages' ]" routerLinkActive="active">
+
                                 <i class="fas fa-envelope" [ngStyle]="{'color': user.favColor}"></i><span
                                     class="d-none d-md-inline-block"> Messages</span>
+
                             </a>
                         </li>
                         <hr>
@@ -136,8 +150,10 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/talents' ]" routerLinkActive="active">
+
                                 <i class="fas fa-music" [ngStyle]="{'color': user.favColor}"></i><span
                                     class="d-none d-md-inline-block"> Talents</span>
+
                             </a>
                         </li>
                         <hr>
@@ -145,8 +161,10 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/discover' ]" routerLinkActive="active">
+
                                 <i class="fas fa-hashtag" [ngStyle]="{'color': user.favColor}"></i><span
                                     class="d-none d-md-inline-block"> Discover</span>
+
                             </a>
                         </li>
                         <hr>
@@ -154,8 +172,10 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/settings' ]" routerLinkActive="active">
+
                                 <i class="fas fa-cog" [ngStyle]="{'color': user.favColor}"></i><span
                                     class="d-none d-md-inline-block"> Settings</span>
+
 
                             </a>
                         </li>
@@ -164,8 +184,10 @@
                     <div>
                         <li class="nav-item">
                             <a class="nav-link side" [routerLink]="[ '/users/bookmarks' ]" routerLinkActive="active">
+
                                 <i class="fas fa-bookmark" [ngStyle]="{'color': user.favColor}"></i><span
                                     class="d-none d-md-inline-block"> Bookmarks</span>
+
                             </a>
                         </li>
                     </div>
@@ -194,6 +216,7 @@
 
             <div id="post1" *ngFor="let post of postList;let i=index" style="margin-bottom: 2.5%;margin-top: 0px;">
                 <div class="dropdown " style="float: right">
+
                     <button class="btn dropdown-toggle points" id="menu1" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"
                             [ngStyle]="{'color': this.user.favColor}"></i>
@@ -202,23 +225,30 @@
                         <li role="presentation" style="padding-left:9px;">
                             <button (click)="bookmarkpost(post)"
                                 style="color: black;background-color: transparent;border: none;cursor: pointer;">
+
                                 <i class="fas fa-bookmark"
                                     style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
                                 Bookmark Post</button>
                         </li>
                         <hr>
+
                         <li role="presentation" style="padding-left:9px;cursor: pointer;">
+
                             <a role="menuitem" tabindex="-1" (click)="open(content)" style="color: black">
                                 <i class="fas fa-exclamation-triangle"
                                     style="font-size: 15px;color: #d8352b;margin-right: 5px;"></i>
                                 Report Post</a>
 
+
                             <!-- Report Post Modal -->
+
                             <ng-template #content let-c="close" let-d="dismiss">
                                 <div class="modal-header text-light bg-dark">
                                     <h4 class="modal-title" id="modal-basic-title">Report Post !
                                     </h4>
+
                                     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+
                                         <span aria-hidden="true" style="color:white;">&times;</span>
                                     </button>
                                 </div>
@@ -236,6 +266,7 @@
                                             <b *ngIf="uploaded=='Image Uploaded'">&#10003;</b> {{ uploaded }}
                                         </div>
                                     </div>
+
                                     <br /><br />
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="inputGroupFile01"
@@ -249,6 +280,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-dark"
+
                                         (click)="c('Save click');reportPost(title.value,desc.value,post.id)">Report</button>
                                 </div>
                             </ng-template>
@@ -265,7 +297,9 @@
 
                 <span class="ml-2">{{post.description}}</span>
                 <br />
+
                 <img [src]="post.image" *ngIf="post.image" style="width: 100%">
+
                 <span *ngIf="post.audio">
                     <div class="container-audio">
                         <audio controls>
@@ -342,6 +376,7 @@
 </div>
 
 <!-- Report User Modal -->
+
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header text-light bg-dark">
         <h4 class="modal-title" id="modal-basic-title">Report {{userInfo.firstName}} !</h4>
@@ -361,6 +396,7 @@
                 <b *ngIf="uploaded=='Image Uploaded'">&#10003;</b> {{ uploaded }}
             </div>
         </div>
+
         <br /><br />
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="inputGroupFile01" (change)="uploadReportAudio($event)">
@@ -373,6 +409,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-dark"
+
             (click)="c('Save click');reportUser(title.value,desc.value)">Report</button>
     </div>
 </ng-template>
@@ -390,6 +427,7 @@
     <div class="modal-body">
         <div *ngFor="let follower of followersList;">
             <div class="row">
+
                 <img class=" padding-0" [src]="follower.picURL"
                     style="width: 50px;float: left;border-radius: 50%;height: 50px;margin-left: 8px;cursor: pointer;"
                     [routerLink]="'/users/profile/'+follower.userid" routerLinkActive="active">
@@ -398,6 +436,7 @@
                     [routerLink]="'/users/profile/'+follower.userid" routerLinkActive="active">{{follower.name}}</span>
             </div>
             <hr style="margin-top: 10px;" *ngIf="followersList.length>1" />
+
         </div>
     </div>
 </ng-template>
@@ -408,12 +447,15 @@
     <div class="modal-header text-light bg-dark">
         <h4 class="modal-title" id="modal-basic-title">Following :</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+
             <span aria-hidden="true" style="color:white;">&times;</span>
+
         </button>
     </div>
     <div class="modal-body">
         <div *ngFor="let following of followingList;" style="margin-bottom: 10px;">
             <div class="row">
+
                 <img class="padding-0" [src]="following.picURL"
                     style="width: 50px;float: left;border-radius: 50%;height: 50px;margin-left: 8px;cursor: pointer;"
                     [routerLink]="'/users/profile/'+following.userid" routerLinkActive="active">
@@ -424,6 +466,7 @@
             </div>
             <hr style="margin-top: 10px;" *ngIf="followingList.length>1" />
         </div>
+
 
     </div>
 </ng-template>

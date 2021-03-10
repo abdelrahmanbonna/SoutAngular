@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
   }
   logout() {
     console.log(`works`)
-    localStorage.removeItem("**");
+    localStorage.removeItem("userauth");
     localStorage.removeItem('userdata');
     this.usrInfo.signOut();
     this.route.navigate(['/landing'])

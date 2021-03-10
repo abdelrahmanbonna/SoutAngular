@@ -34,6 +34,7 @@ export class SidebarComponent implements OnInit {
     else this.modeService.defaultMode();
   }
 
+
   loadTalents() {
     this.subscribtion.push(this.usrInfo.getCollection('talents').subscribe(data => {
       this.talentsList = data;

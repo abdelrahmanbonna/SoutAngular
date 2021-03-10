@@ -47,7 +47,7 @@
                                 <input type="file" (change)="uploadFile($event,'image')" class="custom-file-input"
                                     style="width:100%;" />
                                     <label class="custom-file-label" for="validatedCustomFile">
-                                    <i class="fas fa-image" style="font-size: 15px"></i></label>
+                                    <i class="fas fa-image" [ngStyle]="{'color': user.favColor}" style="font-size: 15px"></i></label>
                             </a> 
                         </li>
                         <li role="presentation" style="padding-left:9px;">
@@ -55,7 +55,7 @@
                                 <input type="file" (change)="uploadFile($event,'audio')" class="custom-file-input"
                                     style="width:100%;" />
                                     <label class="custom-file-label" for="validatedCustomFile">
-                                    <i class="fas fa-microphone" style="font-size: 15px"></i></label>
+                                    <i class="fas fa-microphone" [ngStyle]="{'color': user.favColor}" style="font-size: 15px"></i></label>
                             </a> 
                         </li>
                         <li role="presentation" style="padding-left:9px;">
@@ -63,7 +63,7 @@
                                 <input type="file" (change)="uploadFile($event,'video')" class="custom-file-input"
                                     style="width:100%;" />
                                     <label class="custom-file-label" for="validatedCustomFile">
-                                    <i class="fas fa-video" style="font-size: 15px"></i></label>
+                                    <i class="fas fa-video" [ngStyle]="{'color': user.favColor}" style="font-size: 15px"></i></label>
                             </a> 
                         </li>
                     </ul>
@@ -85,13 +85,15 @@
                         <li role="presentation" style="padding-left:9px;">
                             <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                 <i class="fas fa-bookmark"
-                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                [ngStyle]="{'color': user.favColor}"
+                                    style="font-size: 16px;margin-right: 5px;"></i>
                                 Bookmark post</button>
                         </li>
                         <li *ngIf="post.owner.id == user.id" role="presentation" style="padding-left:9px;">
                             <button (click)="deletepost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                 <i class="fas fa-recycle"
-                                    style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                [ngStyle]="{'color': user.favColor}"
+                                    style="font-size: 16px;margin-right: 5px;"></i>
                                 Delete post</button>
                         </li>
 
@@ -105,7 +107,9 @@
 
                 <span style="padding: 2%;" *ngIf="post.description">{{post.description}}</span>
                 <!-- <span style="padding: 2%;" *ngIf="post.image.length>0"><img *ngFor="let item of post.image;" [src]="item." class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt=""></span> -->
-                <img [src]="post.image" *ngIf="post.image" style="width: 20vw;">
+                <div class="mx-auto col-6">
+                    <img [src]="post.image" *ngIf="post.image!=false" style="height: 100%; width: 100%; object-fit: contain" >
+                </div>
                 <span *ngIf="post.audio">
                     <div class="container-audio">
                         <audio controls  >
@@ -116,8 +120,8 @@
                 </span>
 
                 <span *ngIf="post.video">
-                    <div class="container ny-3" >
-                            <video controls> 
+                    <div class="col-6 ny-3 mx-auto" >
+                            <video style="height: 100%; width: 100%; object-fit: contain" controls> 
                                 <source [src]="sanitize(post.video)" type="video/mp4">
                             </video>
                         </div>

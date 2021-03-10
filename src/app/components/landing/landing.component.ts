@@ -13,7 +13,7 @@ import { LocalizationService } from 'src/app/services/localization.service';
 })
 export class LandingComponent implements OnInit {
   loading: Boolean = false;
-
+//  usr:any;
 
   loginfrm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
@@ -77,8 +77,9 @@ export class LandingComponent implements OnInit {
     await this.usrInfo.login(this.loginfrm.value.email, this.loginfrm.value.password).then(async () => {
       this.loading = false;
       this.closeloginbutton.nativeElement.click();
-      let usr = await JSON.parse(localStorage.getItem('userdata')!);
-      if (usr !== null) {
+      return await JSON.parse(localStorage.getItem('userdata')!);
+    }).then((usr) => {
+      if (usr) {
         if (!usr.blocked) {
           this.route.navigate(['/users/home'])
         } else if (usr.blocked) {

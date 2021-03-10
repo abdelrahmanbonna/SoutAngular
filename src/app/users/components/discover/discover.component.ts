@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post.model';
 import { Talent } from 'src/app/models/talent.model';
@@ -6,13 +6,14 @@ import { User } from 'src/app/models/user.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { TalentService } from 'src/app/services/talent.service';
 import { FireService } from 'src/app/services/fire.service';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Report } from 'src/app/models/report.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ModeService } from 'src/app/services/mode.service';
+
 
 @Component({
   selector: 'app-discover',
@@ -40,6 +41,7 @@ export class DiscoverComponent implements OnInit {
   downloadURL: Observable<string> | any;
   uploaded: string = "";
   imageReStatus: string = "Choose Image";
+  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
 
   reportAudioURL: string = "";
   audioReStatus: string = "Choose Audio";
@@ -57,6 +59,10 @@ export class DiscoverComponent implements OnInit {
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
 
+      this.settingsData.favMode = this.user.favMode;
+      if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
+
       this.getAllTalents();
       this.getAllPosts();
     }
@@ -64,7 +70,7 @@ export class DiscoverComponent implements OnInit {
       this.route.navigate(['/landing'])
   }
 
-  
+
   getAllTalents() {
 
     this.talentService.getAllTalents().subscribe(res => {
@@ -126,6 +132,7 @@ export class DiscoverComponent implements OnInit {
       this.userList.push(res)
     });
   }
+
 
   addLike(postid: any) {
     this.firestore.collection('post').doc(postid.id).collection("like").add({
