@@ -76,7 +76,7 @@ export class ProfileComponent implements OnInit {
   ) {
 // =======
 
-  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
+  // settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
 
 //   constructor(private postsService: PostsService, private route: Router,
 //     private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService
@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
       this.coverPicURL = this.user.coverPicURL;
 // <<<<<<< mai
 // =======
-      this.settingsData.favMode = this.user.favMode;
+      // this.settingsData.favMode = this.user.favMode;
 // >>>>>>> master
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
 
@@ -110,8 +110,8 @@ export class ProfileComponent implements OnInit {
       console.log(this.user);
 
 
-      if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
-      else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
+      // if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
+      // else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
 
     }
     else

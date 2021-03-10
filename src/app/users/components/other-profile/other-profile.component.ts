@@ -15,6 +15,7 @@ import { finalize, map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { ModeService } from 'src/app/services/mode.service';
+import { ISettingsData } from '../../viewModels/isettings-data';
 
 @Component({
   selector: 'app-other-profile',
@@ -61,7 +62,7 @@ export class OtherProfileComponent implements OnInit {
 //   followingList: any[] = [];
 
 //   subscribtion: Subscription[] = [];
-//   settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
+  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
 // >>>>>>> master
 
   subscribtion: Subscription[] = [];
@@ -83,9 +84,9 @@ export class OtherProfileComponent implements OnInit {
       this.picURL = this.user.picURL;
 // <<<<<<< mai
 // =======
-//       this.settingsData.favMode = this.user.favMode;
-//       if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
-//       else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
+      this.settingsData.favMode = this.user.favMode;
+      if (this.settingsData.favMode === "dark") { this.modeService.OnDark(); this.settingsData.favMode = "dark"; }
+      else if (this.settingsData.favMode === "light") { this.modeService.defaultMode(); this.settingsData.favMode = "light"; }
 // >>>>>>> master
 
       this.activatedRoute.paramMap.subscribe((params) => {
@@ -245,22 +246,22 @@ export class OtherProfileComponent implements OnInit {
 
 //   }
 
-  async getComments(postid: string) {
-    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
-      this.commentsList.push(data);
-      console.log(data)
-    })
-    )
-  }
+  // async getComments(postid: string) {
+  //   this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+  //     this.commentsList.push(data);
+  //     console.log(data)
+  //   })
+  //   )
+  // }
 
-  async getLikes(postid: string) {
-    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
-      this.LikesList.push(data)
-      console.log(data)
-    })
-    )
+  // async getLikes(postid: string) {
+  //   this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+  //     this.LikesList.push(data)
+  //     console.log(data)
+  //   })
+  //   )
 // >>>>>>> master
-  }
+  // }
 
   
   async notifyUser(usrId: string, msg: string) {
@@ -384,29 +385,29 @@ export class OtherProfileComponent implements OnInit {
     })
   }
 
-  bookmarkpost(post: any) {
-    this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
-      post: this.firestore.collection("post").doc(post.id).ref,
-    })
-    alert(`post added`)
-  }
+  // bookmarkpost(post: any) {
+  //   this.firestore.collection("Users").doc(this.user.id).collection("bookmarks").add({
+  //     post: this.firestore.collection("post").doc(post.id).ref,
+  //   })
+  //   alert(`post added`)
+  // }
 
-  reportPost(title: string, des: string, postId: string) {
+  // reportPost(title: string, des: string, postId: string) {
 
-    this.report.title = title;
-    this.report.description = des;
-    this.report.userId = this.user.id;
-    this.report.reportedId = postId;
-    this.report.type = "post";
-    this.report.id = this.firestore.createId();
-    this.report.image = this.reportImageURL;
-    this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
-  }
-  ngOnDestroy(): void {
-    this.subscribtion.forEach(element => {
-      element.unsubscribe();
-    })
-  }
+  //   this.report.title = title;
+  //   this.report.description = des;
+  //   this.report.userId = this.user.id;
+  //   this.report.reportedId = postId;
+  //   this.report.type = "post";
+  //   this.report.id = this.firestore.createId();
+  //   this.report.image = this.reportImageURL;
+  //   this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
+  // }
+  // ngOnDestroy(): void {
+  //   this.subscribtion.forEach(element => {
+  //     element.unsubscribe();
+  //   })
+  // }
 
 }
 
