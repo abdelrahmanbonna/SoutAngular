@@ -61,7 +61,7 @@ export class UserInfoService {
           } else {
             gen = "./../../../../assets/avatar.png"
           }
-          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light");
+          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "./../../../../assets/cover2.jpg", birthdate, false, "red", "light");
           this.firestore.collection(`Users`).doc(res.user.uid).set({
             id: res.user.uid,
             firstName: fname,
@@ -69,14 +69,15 @@ export class UserInfoService {
             gender: gender,
             mobile: mobile,
             picURL: gen,
-            coverPicURL: "",
+            coverPicURL: "./../../../../assets/cover2.jpg",
             birthDate: birthdate,
             dateCreated: new Date().toISOString(),
             dateUpdated: new Date().toISOString(),
             privateAcc: false,
-            favColor: "grey",
+            favColor: "red",
             favMode: "light",
             blocked: false,
+            bio:""
           })
         }
 

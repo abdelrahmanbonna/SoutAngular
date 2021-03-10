@@ -7,12 +7,12 @@
             <div id="avatar">
                 <img [src]="picURL">
                 <h3 id="name" style="text-align: center;margin-top: 15px">{{userName}}</h3>
+                <div style="text-align: center;font-size: 17px;color: dimgray;" *ngIf="user.bio">{{user.bio}}</div>
             </div>
             <hr style="margin-top: 10%;">
         </div>
-
-
     </div>
+
     <div class="row" style="margin-top: 40px">
         <input type="file" id="myFileInput" />
         <div class="row nav  nav2" id="nav-tab"
@@ -41,24 +41,33 @@
                             style="color: #D93746;font-size: 20px " [ngStyle]="{'color': user.favColor}"></i> <span
                             style="margin-right: 2%">Edit</span>
                     </button>
-                    <ul class="dropdown-menu" style="width: 100%;border: none" role="menu" aria-labelledby="menu1">
-                        <li role="presentation" style="padding-left:7px;">
+                    <ul class="dropdown-menu" style="width: 100%;" role="menu" aria-labelledby="menu1">
+                        <li role="presentation" style="padding-left:7px;padding-right:7px;">
                             <a class="custom-file" role="menuitem" tabindex="-1">
                                 <input type="file" (change)="uploadFile($event,'profile')" class="custom-file-input"
                                     style="width:100%;" />
                                 <label class="custom-file-label" for="validatedCustomFile">
                                     <i class="fas fa-camera" style="font-size: 15px"
-                                        [ngStyle]="{'color': user.favColor}"></i> Edit Profile Pic</label>
+                                        [ngStyle]="{'color': user.favColor}"></i> Edit ProfilePic</label>
                             </a>
                         </li>
                         <hr>
-                        <li role="presentation" style="padding-left:5px;">
+                        <li role="presentation" style="padding-left:7px;padding-right:7px;">
                             <a class="custom-file" role="menuitem" tabindex="-1">
                                 <input type="file" (change)="uploadFile($event,'cover')" class="custom-file-input"
                                     style="width:100%;" />
                                 <label class="custom-file-label" for="validatedCustomFile">
                                     <i class="fas fa-image" style="font-size: 15px"
                                         [ngStyle]="{'color': user.favColor}"></i> Edit Cover</label>
+                            </a>
+                        </li>
+                        <hr>
+                        <li role="presentation" style="padding-left:5px;margin-bottom: 10px;">
+                            <a role="menuitem" tabindex="-1" (click)="open(content)"
+                                style="margin-left: 24px;background-color: #E9ECEF;padding: 10px 15px 10px 15px;width:300px;border-radius: 5px;">
+                                <i class="fas fa-pen" style="font-size: 15px;padding-right: 5px;"
+                                    [ngStyle]="{'color': user.favColor}"></i>
+                                Edit About Info
                             </a>
                         </li>
                         <!-- <hr>
@@ -79,6 +88,7 @@
         </div>
 
     </div>
+
     <div class="row" id="center">
         <!--            <div class="col-sm-1 col-md-3 leftSide" style="">-->
         <nav id="sidebarMenu1" class="col-sm-1 col-md-3" style="background-color: #F5F7F8;border-radius: 5px;
@@ -162,8 +172,7 @@
                 <div class="firstRow">
                     <img [src]="picURL" style="width: 6%" [routerLink]="'/users/profile/'+post.owner.id"
                         routerLinkActive="active" style="cursor: pointer;">
-                    <input *ngIf="urls.length===0||urlsVideo.length===0" type="text" placeholder={{postMind}}
-                        [(ngModel)]="postDesc" style="cursor:auto;" />
+                    <input type="text" placeholder={{postMind}} [(ngModel)]="postDesc" style="cursor:auto;" />
                     <div class="p-2 ny-3" *ngFor="let url of urls">
                         <audio controls="" *ngIf="url">
                             <source [src]="sanitize(url)" type="audio/wav">
@@ -200,11 +209,6 @@
                                 (click)="stopRecordingVideo()"><i class="fas fa-video" id="liveIcon"
                                     style="cursor: pointer;" [ngStyle]="{'color': user.favColor}"></i></button>
                         </div>
-                        <!-- <i class="fas fa-video" id="liveIcon" style="cursor: pointer;margin-top: 6px;"
-                            [ngStyle]="{'color': user.favColor}"></i>
-                        <i class="fas fa-microphone-alt" style="cursor: pointer;margin-top: 6px;margin-left: 23px;"
-                            [ngStyle]="{'color': user.favColor}"></i> -->
-                        <!-- <i class="fas fa-paperclip" style="cursor: pointer;" [ngStyle]="{'color': user.favColor}"></i> -->
                         <div class="dropdown" style="float:right;">
                             <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><i class="fas fa-paperclip"
@@ -254,6 +258,117 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation" style="padding-left:9px;">
+                            <button (click)="openEdit(editPost)"
+                                style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <i class="fas fa-pen" style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
+                                Edit Post</button>
+
+                            <!-- Edit Posttttttttttttttttt Modal -->
+
+                            <ng-template #editPost let-c="close" let-d="dismiss" class="modal-xl"
+                                style="border-radius: 20px;width: 2000px">
+                                <div class="modal-header text-light bg-dark">
+                                    <h4 class="modal-title" id="modal-basic-title">Edit Post</h4>
+                                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                        <span aria-hidden="true" style="color:white;">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="poster">
+                                        <img [src]="picURL" style="cursor: pointer;width: 45px;">
+                                        <div id="posterName" style="cursor: pointer;">{{userName}}</div>
+                                        <div id="time">{{post.date.seconds * 1000 | date:'dd-MM-yyyy hh:mm'}} <i
+                                                class="fas fa-globe-africa"></i></div>
+                                    </div>
+                                    <div style="padding: 5px;">
+                                        <textarea matInput class="form-control" #descEdit placeholder="Description"
+                                            [value]="post.description"
+                                            style="width: 100%;background: #F0F2F5;"></textarea>
+
+                                        <button type="button" *ngIf="post.image.length!=0" class="close"
+                                            aria-label="Close" (click)="post.image=''" style="margin-top: 5px;">
+                                            <span aria-hidden="true" style="color:black;display: inline;">&times;</span>
+                                        </button>
+                                        <img [src]="post.image" *ngIf="post.image" style="width: 100%;">
+
+                                        <button type="button" *ngIf="post.audio" class="close" aria-label="Close"
+                                            (click)="post.audio=''" style="margin-top: 5px;">
+                                            <span aria-hidden="true" style="color:black;">&times;</span>
+                                        </button>
+                                        <br>
+                                        <div *ngIf="post.audio">
+                                            <div class="container-audio">
+                                                <audio controls style="width: 100%;">
+                                                    <source [src]="post.audio" type="audio/ogg">
+                                                    Your browser dose not Support the audio Tag
+                                                </audio>
+                                            </div>
+                                        </div>
+                                        <button type="button" *ngIf="post.video" class="close" aria-label="Close"
+                                            (click)="post.video=''" style="margin-top: 5px;">
+                                            <span aria-hidden="true" style="color:black;">&times;</span>
+                                        </button>
+                                        <div *ngIf="post.video" style="width: 100%;">
+                                            <div class="container ny-3">
+                                                <video controls style="width: 100%;">
+                                                    <source [src]="post.video" type="video/mp4">
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <!-- <span class="ml-2">{{post.description}}</span> -->
+
+                                        <br />
+                                        <div class="dropdown" style="float:right;">
+                                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"><i class="fas fa-paperclip"
+                                                    [ngStyle]="{'color': this.user.favColor}"
+                                                    style="font-size: 25px;"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li role="presentation" style="padding-left:9px;padding-right: 9px;">
+                                                    <a class="custom-file" role="menuitem" tabindex="-1">
+                                                        <input type="file"
+                                                            (change)="uploadFileEdit($event,'image',post)"
+                                                            class="custom-file-input" style="width:100%;" />
+                                                        <label class="custom-file-label" for="validatedCustomFile">
+                                                            <i class="fas fa-image" style="font-size: 20px"></i></label>
+                                                    </a>
+                                                </li>
+                                                <hr>
+                                                <li role="presentation" style="padding-left:9px;padding-right: 9px;">
+                                                    <a class="custom-file" role="menuitem" tabindex="-1">
+                                                        <input type="file"
+                                                            (change)="uploadFileEdit($event,'audio',post)"
+                                                            class="custom-file-input" style="width:100%;" />
+                                                        <label class="custom-file-label" for="validatedCustomFile">
+                                                            <i class="fas fa-microphone"
+                                                                style="font-size: 20px"></i></label>
+                                                    </a>
+                                                </li>
+                                                <hr>
+                                                <li role="presentation" style="padding-left:9px;padding-right: 9px;">
+                                                    <a class="custom-file" role="menuitem" tabindex="-1">
+                                                        <input type="file"
+                                                            (change)="uploadFileEdit($event,'video',post)"
+                                                            class="custom-file-input" style="width:100%;" />
+                                                        <label class="custom-file-label" for="validatedCustomFile">
+                                                            <i class="fas fa-video" style="font-size: 20px"></i></label>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" style="width: 200px;"
+                                        (click)="c('Save click');editPostFun(descEdit.value,post.id,post)">Save</button>
+                                </div>
+                            </ng-template>
+                            <!-- Edit Posttttttttttttttttt -->
+                        </li>
+                        <hr>
+                        <li role="presentation" style="padding-left:9px;">
                             <button (click)="deletePost(post.id)"
                                 style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                 <i class="fas fa-trash" style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
@@ -289,6 +404,13 @@
                         </audio>
                     </div>
                 </span>
+                <div *ngIf="post.video">
+                    <div class="container ny-3">
+                        <video controls style="width: 100%;">
+                            <source [src]="post.video" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
 
                 <hr style="margin-top: 5px;">
                 <div class="lastRowPost">
@@ -304,7 +426,7 @@
                             Voice
                         </span>
                     </div>
-                    <div id="comment" (click)="addComment(post,i)">
+                    <div id="comment" (click)="addComment(post,i);comm.value=''">
                         <i class="far fa-comment-alt" id="commentIcon"></i>
                         <span id="commentCont">
                             Comment <span class="badge badge-pill badge-light">{{commentsList[i].length}}</span>
@@ -318,7 +440,7 @@
                     <div class="firstRow">
                         <img [src]="picURL" [routerLink]="'/users/profile/'+post.owner.id" routerLinkActive="active"
                             style="cursor: pointer;">
-                        <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..."
+                        <input [(ngModel)]="postcomfields[i]" #comm type="text" placeholder="Write a comment..."
                             id="cmntInput" />
                     </div>
 
@@ -393,6 +515,36 @@
             <hr style="margin-top: 10px;" *ngIf="followingList.length>1" />
         </div>
 
+    </div>
+</ng-template>
+<!-- End Modal -->
+
+<!-- About Info Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header text-light bg-dark">
+        <h4 class="modal-title" id="modal-basic-title">About Info</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true" style="color:white;">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- <input type="text" class="form-control" #name placeholder="Name" [value]="user.firstName+' '+user.secondName" >
+        <br /> -->
+        <label for="bio">Add Bio :</label>
+        <input type="text" id="bio" class="form-control" #bio placeholder="Bio" [value]="user.bio">
+        <br />
+        <label for="bio">Mobile :</label>
+        <input type="text" id="mobile" class="form-control" #mobile placeholder="Mobile" [value]="user.mobile">
+        <br />
+        <label for="birthday">Birth Date :</label>
+        <input type="date" id="birthday" name="birthday" #birthDate [value]="user.birthDate"
+            style="width: 100%;height: 5vh;border-radius: 3.5px;border: 1px;border-style: solid;border-color: #D4D9DF;padding-left: 10px;padding-right: 10px;">
+        <br />
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark"
+            (click)="c('Save click');editInfo(bio.value,mobile.value,birthDate.value)">Update Info</button>
     </div>
 </ng-template>
 <!-- End Modal -->

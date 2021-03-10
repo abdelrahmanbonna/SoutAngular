@@ -13,7 +13,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize, map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
-import { ISettingsData } from '../../viewModels/isettings-data';
 import { ModeService } from 'src/app/services/mode.service';
 
 @Component({
@@ -36,11 +35,14 @@ export class OtherProfileComponent implements OnInit {
   picURL: any;
   coverPicURL: string = "";
   reportImageURL: string = "";
+  reportAudioURL: string = "";
 
   uploadPercent: Observable<number> | any;
   downloadURL: Observable<string> | any;
   uploaded: string = "";
+  uploadedAudio: string = "";
   imageReStatus: string = "Choose Image";
+  audioReStatus: string = "Choose Audio";
   notificationsNo: number = 0;
   check: boolean | undefined;
   checkFollower: boolean = false;
@@ -51,7 +53,6 @@ export class OtherProfileComponent implements OnInit {
   followingList: any[] = [];
 
   subscribtion: Subscription[] = [];
-  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
   
   constructor(private postsService: PostsService, private activatedRoute: ActivatedRoute,
     private router: Router, private FireService: FireService, config: NgbModalConfig, private modalService: NgbModal
@@ -68,9 +69,6 @@ export class OtherProfileComponent implements OnInit {
     if (this.user) {
 
       this.picURL = this.user.picURL;
-      this.settingsData.favMode = this.user.favMode;
-      if (this.settingsData.favMode === "dark") { this.OnDark(); this.settingsData.favMode = "dark"; }
-      else if (this.settingsData.favMode === "light") { this.defaultMode(); this.settingsData.favMode = "light"; }
 
       this.activatedRoute.paramMap.subscribe((params) => {
         let UIDParam: string | null = params.get('UID');
@@ -93,16 +91,6 @@ export class OtherProfileComponent implements OnInit {
     }
     else
       this.router.navigate(['/landing'])
-  }
-
-  OnDark() {
-    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkFont"), document.querySelectorAll("#name"));
-    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode = "dark";
-  }
-  defaultMode() {
-    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode = "light";
-    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"), document.querySelectorAll(".darkFont"), document.querySelectorAll("#name"));
-
   }
 
 
@@ -134,15 +122,20 @@ export class OtherProfileComponent implements OnInit {
     this.modalService.open(content);
   }
 
-  addLike(post: any) {
-    this.firestore.collection('post').doc(post.id).collection("like").add({
+  addLike(postid: any) {
+    this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
-    })
-    this.notifyUser(post.owner.id, `${this.user.firstName} liked on your post `)
+    });
+
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
+    this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(post: any, index: number) {
-    this.firestore.collection(`post`).doc(post.id).collection('comment').add({
+  addComment(postid: any, index: number) {
+    this.firestore.collection(`post`).doc(postid.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -152,7 +145,25 @@ export class OtherProfileComponent implements OnInit {
       date: new Date().toISOString(),
     })
 
-    this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+    //this.getComments(postid)
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
+    this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+  }
+  async getComments(postid: string) {
+    // this.commentsList = []
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      // console.log(data)
+    }))
+  }
+
+  async getLikes(postid: string) {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList.push(data)
+    }))
   }
 
   follow() {
@@ -199,22 +210,7 @@ export class OtherProfileComponent implements OnInit {
 
   }
 
-  async getComments(postid: string) {
-    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
-      this.commentsList.push(data);
-      console.log(data)
-    })
-    )
-  }
-
-  async getLikes(postid: string) {
-    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
-      this.LikesList.push(data)
-      console.log(data)
-    })
-    )
-  }
-
+  
   async notifyUser(usrId: string, msg: string) {
     await this.firestore.collection(`Users`).doc(usrId).collection('notifications').add({
       date: new Date().toISOString(),
@@ -268,6 +264,36 @@ export class OtherProfileComponent implements OnInit {
 
   }
 
+  uploadReportAudio(event: any) {
+    var filePath: any;
+    const file = event.target.files[0];
+    var audioId = this.firestore.createId();
+
+    filePath = '/Reports/audios/' + audioId;
+
+    const task = this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    this.audioReStatus = ""
+    this.uploadedAudio = `Uploading..`
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.uploadedAudio = `Audio Uploaded`;
+        this.audioReStatus = file.name
+
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url => {
+          this.reportAudioURL = url
+          console.log(this.reportAudioURL)
+        })
+
+      })
+    )
+      .subscribe()
+
+  }
+
   reportUser(title: string, des: string) {
 
     this.report.title = title;
@@ -277,6 +303,7 @@ export class OtherProfileComponent implements OnInit {
     this.report.type = "user";
     this.report.id = this.firestore.createId();
     this.report.image = this.reportImageURL;
+    this.report.audio = this.reportAudioURL;
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
   }
 
@@ -296,6 +323,7 @@ export class OtherProfileComponent implements OnInit {
     this.report.type = "post";
     this.report.id = this.firestore.createId();
     this.report.image = this.reportImageURL;
+    this.report.audio = this.reportAudioURL;
     this.FireService.setDocument("/Reports/" + this.report.id, { ...this.report });
   }
   ngOnDestroy(): void {

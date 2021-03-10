@@ -13,7 +13,6 @@ import { Report } from 'src/app/models/report.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ModeService } from 'src/app/services/mode.service';
-import { ISettingsData } from '../../viewModels/isettings-data';
 
 @Component({
   selector: 'app-discover',
@@ -41,8 +40,11 @@ export class DiscoverComponent implements OnInit {
   downloadURL: Observable<string> | any;
   uploaded: string = "";
   imageReStatus: string = "Choose Image";
-  settingsData: ISettingsData = { privateAcc: false, favColor: '', favMode: '', oldPassword: '', deactive: false };
 
+  reportAudioURL: string = "";
+  audioReStatus: string = "Choose Audio";
+  uploadedAudio: string = "";
+  
   constructor(private talentService: TalentService, private route: Router, private postsService: PostsService
     , private FireService: FireService
     , config: NgbModalConfig, private modalService: NgbModal
@@ -55,10 +57,6 @@ export class DiscoverComponent implements OnInit {
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
 
-      this.settingsData.favMode = this.user.favMode;
-      if (this.settingsData.favMode === "dark") { this.OnDark(); this.settingsData.favMode = "dark"; }
-      else if (this.settingsData.favMode === "light") { this.defaultMode(); this.settingsData.favMode = "light"; }
-
       this.getAllTalents();
       this.getAllPosts();
     }
@@ -66,15 +64,7 @@ export class DiscoverComponent implements OnInit {
       this.route.navigate(['/landing'])
   }
 
-  OnDark() {
-    this.modeService.OnDarkFont( document.querySelectorAll("#discover"));
-    this.settingsData.favMode = "dark";
-  }
-  defaultMode() {
-    this.settingsData.favMode = "light";
-    this.modeService.defaultModeFont( document.querySelectorAll("#discover"));
-
-  }
+  
   getAllTalents() {
 
     this.talentService.getAllTalents().subscribe(res => {
@@ -137,15 +127,20 @@ export class DiscoverComponent implements OnInit {
     });
   }
 
-  addLike(post: any) {
-    this.firestore.collection('post').doc(post.id).collection("like").add({
+  addLike(postid: any) {
+    this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
-    })
-    this.notifyUser(post.owner.id, `${this.user.firstName} liked on your post `)
+    });
+
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
+    this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(post: any, index: number) {
-    this.firestore.collection(`post`).doc(post.id).collection('comment').add({
+  addComment(postid: any, index: number) {
+    this.firestore.collection(`post`).doc(postid.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -154,20 +149,25 @@ export class DiscoverComponent implements OnInit {
       description: this.postcomfields[index],
       date: new Date().toISOString(),
     })
-    this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
-  }
 
+    //this.getComments(postid)
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
+    this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+  }
   async getComments(postid: string) {
+    // this.commentsList = []
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
       this.commentsList.push(data);
-      console.log(data)
+      // console.log(data)
     }))
   }
 
   async getLikes(postid: string) {
     this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
-      console.log(data)
     }))
   }
 
@@ -215,6 +215,36 @@ export class DiscoverComponent implements OnInit {
         downloadURL.subscribe(url => {
           this.reportImageURL = url
           console.log(this.reportImageURL)
+        })
+
+      })
+    )
+      .subscribe()
+
+  }
+
+  uploadReportAudio(event: any) {
+    var filePath: any;
+    const file = event.target.files[0];
+    var audioId = this.firestore.createId();
+
+    filePath = '/Reports/audios/' + audioId;
+
+    const task = this.storage.upload(filePath, file);
+    const ref = this.storage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath);
+
+    this.audioReStatus = ""
+    this.uploadedAudio = `Uploading..`
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.uploadedAudio = `Audio Uploaded`;
+        this.audioReStatus = file.name
+
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url => {
+          this.reportAudioURL = url
+          console.log(this.reportAudioURL)
         })
 
       })

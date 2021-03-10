@@ -37,19 +37,20 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li role="presentation" style="padding-left:9px;">
-                                <button (click)="bookmarkpost(post)" style="color: black;background-color: transparent;border: none;cursor: pointer;">
+                                <button (click)="bookmarkpost(post)"
+                                    style="color: black;background-color: transparent;border: none;cursor: pointer;">
                                     <i class="fas fa-bookmark"
                                         style="font-size: 16px;color: #d8352b;margin-right: 5px;"></i>
                                     Bookmark Post</button>
                             </li>
                             <hr>
-                            <li role="presentation" style="padding-left:7px;cursor: pointer;">
+                            <li role="presentation" style="padding-left:9px;cursor: pointer;">
                                 <a role="menuitem" tabindex="-1" (click)="open(content)" style="color: black">
                                     <i class="fas fa-exclamation-triangle"
                                         style="font-size: 15px;color: #d8352b;margin-right: 5px;"></i>
                                     Report Post</a>
 
-                                <!-- Modal -->
+                                <!-- Report Post Modal -->
                                 <ng-template #content let-c="close" let-d="dismiss">
                                     <div class="modal-header text-light bg-dark">
                                         <h4 class="modal-title" id="modal-basic-title">Report Post !
@@ -73,9 +74,20 @@
                                                 <b *ngIf="uploaded=='Image Uploaded'">&#10003;</b> {{ uploaded }}
                                             </div>
                                         </div>
+                                        <br /><br />
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                (change)="uploadReportAudio($event)">
+                                            <label class="custom-file-label"
+                                                for="inputGroupFile01">{{audioReStatus}}</label>
+                                            <div *ngIf="uploadedAudio" class="mt-1" style="font-size: small;">
+                                                <b *ngIf="uploadedAudio=='Audio Uploaded'">&#10003;</b> {{ uploadedAudio
+                                                }}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-dark"
+                                        <button type="button" class="btn btn-dark"
                                             (click)="c('Save click');reportPost(title.value,desc.value,post.id)">Report</button>
                                     </div>
                                 </ng-template>
@@ -117,6 +129,13 @@
                             </audio>
                         </div>
                     </span>
+                    <div *ngIf="post.video">
+                        <div class="container ny-3" style="width: 100%;">
+                            <video controls>
+                                <source [src]="post.video" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
 
                     <hr style="margin-top: 15px;">
                     <div class="lastRowPost">
@@ -135,7 +154,7 @@
                             </span>
                         </div>
 
-                        <div id="comment" (click)="addComment(post,i)">
+                        <div id="comment" (click)="addComment(post,i);comm.value=''">
 
                             <i class="far fa-comment-alt" id="commentIcon"></i>
                             <span id="commentCont">
@@ -150,7 +169,7 @@
                         <div class="firstRow">
                             <img [src]="picURL" [routerLink]="'/users/profile'" routerLinkActive="active"
                                 style="cursor: pointer;">
-                            <input [(ngModel)]="postcomfields[i]" type="text" placeholder="Write a comment..."
+                            <input [(ngModel)]="postcomfields[i]" #comm type="text" placeholder="Write a comment..."
                                 id="cmntInput" />
                         </div>
 
@@ -159,7 +178,8 @@
                         style="width: 70%;margin-left: 3.5%;">
 
                         <img style="width: 6%;height: 6%;float: left;border-radius: 50%;"
-                            [src]="user.id==item.writer.id?picURL:item.writer.picURL" [routerLink]="'/users/profile/'+item.writer.id" routerLinkActive="active">
+                            [src]="user.id==item.writer.id?picURL:item.writer.picURL"
+                            [routerLink]="'/users/profile/'+item.writer.id" routerLinkActive="active">
 
                         <div class="pl-2" style="background-color:#F0F2F5;border-radius: 10px;margin-left: 5.5%;">
                             <div><small id="posterName" style="font-size:15px;">{{item.writer.name}}</small>

@@ -8,7 +8,6 @@ import { PostsService } from 'src/app/services/posts.service';
 import { FireService } from 'src/app/services/fire.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { ISettingsData } from '../../viewModels/isettings-data';
 import { ModeService } from 'src/app/services/mode.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as RecordRTC from 'recordrtc';
@@ -47,7 +46,8 @@ export class ProfileComponent implements OnInit {
   comment: object = {};
   isRecordingVideo: boolean = false;
   urlsVideo: any[] = [];
-
+  checkCover: boolean | undefined;
+  updatedPost: object = {};
   styleObject(): Object {
     return { color: this.user.favColor }
   }
@@ -55,12 +55,10 @@ export class ProfileComponent implements OnInit {
   private record: any; //audio recorder item
   public urls: any[] = []; //audio recorder audios
   private error: any; //audio recorder error
-
-  settingsData: ISettingsData={privateAcc:false,favColor:'',favMode:'',oldPassword:'',deactive:false};
-
   constructor(private postsService: PostsService, private route: Router,
     private firestore: AngularFirestore, private storage: AngularFireStorage, private FireService: FireService
-    , config: NgbModalConfig, private modalService: NgbModal,private modeService:ModeService, private domSanitizer: DomSanitizer, private firestorage: AngularFireStorage,) {
+    , config: NgbModalConfig, private modalService: NgbModal, private modeService: ModeService, private domSanitizer: DomSanitizer, private firestorage: AngularFireStorage,
+  ) {
     this.modalService.dismissAll();
   }
 
@@ -72,30 +70,22 @@ export class ProfileComponent implements OnInit {
       this.userName = this.user.firstName + " " + this.user.secondName;
       this.picURL = this.user.picURL;
       this.coverPicURL = this.user.coverPicURL;
-      this.settingsData.favMode = this.user.favMode;
       this.postMind = "What's on your mind, " + this.user.firstName + "?";
+
+      if (this.user.coverPicURL === "")
+        this.checkCover = false;
+      else
+        this.checkCover = true;
       this.getAllPosts();
       this.getnotificationsno();
       this.getFollowers();
       this.getFollowing();
       console.log(this.user);
-
-      if(this.settingsData.favMode==="dark") {this.OnDark();this.settingsData.favMode="dark";}
-      else if(this.settingsData.favMode==="light") {this.defaultMode();this.settingsData.favMode="light";}
     }
     else
       this.route.navigate(['/landing'])
   }
 
-  OnDark(){
-    this.modeService.OnDarkFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
-    this.modeService.OnDarkColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="dark";
-  }
-  defaultMode(){
-    this.modeService.defaultModeColumn(document.querySelectorAll("#sidebarMenu")); this.settingsData.favMode="light";
-    this.modeService.defaultModeFont(document.querySelectorAll(".nav-item a"),document.querySelectorAll(".darkFont"),document.querySelectorAll("#name"));
-    
-  }
 
   uploadFile(event: any, type: string) {
     var filePath: any;
@@ -149,18 +139,6 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  // addPost(desc: string) {
-  //   this.post.description = desc;
-  //   this.post.owner.id = this.user.id;
-  //   this.post.owner.name = this.user.firstName + " " + this.user.secondName,
-  //     this.post.owner.picURL = this.user.picURL,
-  //     this.post.id = this.firestore.createId();
-  //   this.postsService.addPost(this.post).then(() => {
-  //     console.log(this.post)
-  //   });
-  //   this.ngOnInit()
-  // }
-
   addPost(desc: string, audio: any = null, video: any = null, images: any[] = []) {
     this.post.description = desc;
     this.post.owner.id = this.user.id;
@@ -170,10 +148,10 @@ export class ProfileComponent implements OnInit {
     this.postsService.addPost(this.post).then(() => {
       console.log(this.post)
     });
-    this.ngOnInit();
-    this.route.navigate(['/users/profile']).then(() => {
-      window.location.reload();
-    });
+    this.ngOnInit()
+    // this.route.navigate(['/users/profile']).then(() => {
+    //   window.location.reload();
+    // });
   }
 
   deletePost(id: string) {
@@ -187,17 +165,20 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  addLike(post: any) {
-    this.firestore.collection('post').doc(post.id).collection("like").add({
+  addLike(postid: any) {
+    this.firestore.collection('post').doc(postid.id).collection("like").add({
       userid: this.user.id
-    })
-    this.notifyUser(post.owner.id, `${this.user.firstName} liked on your post `)
+    });
+
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('like').valueChanges().subscribe((data) => {
+      this.LikesList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
+    this.notifyUser(postid.owner.id, `${this.user.firstName} liked on your post `)
   }
 
-  addComment(post: any, index: number) {
-    var commentId = this.firestore.createId();
-    this.comment = {
-      id: commentId,
+  addComment(postid: any, index: number) {
+    this.firestore.collection(`post`).doc(postid.id).collection('comment').add({
       writer: {
         id: this.user.id,
         name: this.user.firstName + " " + this.user.secondName,
@@ -205,23 +186,27 @@ export class ProfileComponent implements OnInit {
       },
       description: this.postcomfields[index],
       date: new Date().toISOString(),
-    }
-    this.FireService.setDocument("/post/" + post.id + "/comment/" + commentId, { ...this.comment });
-    this.notifyUser(post.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
-  }
-
-  async getComments(postid: string) {
-    await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
-      this.commentsList.push(data);
-      console.log(data)
     })
+
+    //this.getComments(postid)
+    this.subscribtion.push(this.firestore.collection('post').doc(postid.id).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList[this.postList.findIndex((post)=>post == postid)] = data;
+    }));
+
+    this.notifyUser(postid.owner.id, `${this.user.firstName} commented on your post "${this.postcomfields[index]}"`)
+  }
+  async getComments(postid: string) {
+    // this.commentsList = []
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('comment').valueChanges().subscribe((data) => {
+      this.commentsList.push(data);
+      // console.log(data)
+    }))
   }
 
   async getLikes(postid: string) {
-    await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
+    this.subscribtion.push(await this.firestore.collection('post').doc(postid).collection('like').valueChanges().subscribe((data) => {
       this.LikesList.push(data)
-      console.log(data)
-    })
+    }))
   }
 
   async notifyUser(usrId: string, msg: string) {
@@ -288,7 +273,7 @@ export class ProfileComponent implements OnInit {
       //     x.writer.name = name;
       //     this.FireService.updateDocument("/post/" + el.id + "/comment/" + element.id, x);
       //   })
-      
+
       // })
     });
 
@@ -439,5 +424,62 @@ export class ProfileComponent implements OnInit {
     })
     alert(`post added`)
   }
+
+  editInfo(bio: string, mobile: string, birthDate: Date) {
+    this.user.bio = bio;
+    this.user.mobile = mobile;
+    this.user.birthDate = birthDate;
+    this.FireService.updateDocument("Users/" + this.user.id, this.user);
+    localStorage.setItem('userdata', JSON.stringify(this.user));
+
+    // this.route.navigate(['/users/profile']).then(() => {
+    //   window.location.reload();
+    // });
+  }
+
+  editPostFun(desc: string, postId: string,post:Post) {
+    post.description = desc;
+    console.log(post)
+    this.FireService.updateDocument(`post/${postId}`, post);;
+
+    console.log(this.post)
+    // this.ngOnInit()
+    // this.route.navigate(['/users/profile']).then(() => {
+    //       window.location.reload();
+    //     });
+  }
+
+  async uploadFileEdit(event: any, type: string,post:Post) {
+    var filePath: any;
+    const file = event.target.files[0];
+    const id = this.firestore.createId()
+    if (type == "image")
+      filePath = '/post/images/' + id;
+    else if (type == "audio")
+      filePath = '/post/audio/' + id;
+    else if (type == "video")
+      filePath = '/post/video/' + id;
+    await this.firestorage.upload(filePath, file);
+    const ref = this.firestorage.refFromURL("gs://sout-2d0f6.appspot.com" + filePath).getDownloadURL().toPromise().then((url => {
+      console.log(url);
+      if (type == "image") {
+        post.image = url
+      } else if (type == "audio") {
+        post.audio = url
+      } else if (type == "video") {
+        post.video = url
+      }
+      console.log(url)
+    }));
+    alert('upload done')
+    // });
+  }
+
+  openEdit(content: any) {
+    this.modalService.open(content, {
+      size: 'lg'
+    });
+  }
+  
 
 }
