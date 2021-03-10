@@ -15,7 +15,7 @@ export class UserInfoService {
 
   //Variables
   public loggedin: boolean = false;
-  public user: User = new User();
+  public static user: User = new User();
   subscribtion: Subscription[] = [];
   constructor(private fireAuth: AngularFireAuth, private firestore: AngularFirestore, private firestorage: AngularFireStorage) {
   }
@@ -27,12 +27,12 @@ export class UserInfoService {
       let x: any;
       if (res.user) {
         localStorage.setItem('userauth', JSON.stringify(res.user))
-        this.subscribtion.push(await this.firestore.collection(`Users`).doc(res.user.uid).get().subscribe(res => {
+        this.subscribtion.push(await this.firestore.collection(`Users`).doc(res.user.uid).get().subscribe(async res => {
           if (res.data()) {
             x = res.data();
             console.log(res.data())
-            localStorage.setItem('userdata', JSON.stringify(res.data()))
-            this.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.dateCreated, x.dateUpdated, x.blocked!)
+           await localStorage.setItem('userdata', JSON.stringify(res.data()))
+            UserInfoService.user = new User(x.id, x.firstName, x.secondName, x.gender, x.mobile, x.picURL, x.coverPicURL, x.birthDate, x.privateAcc, x.favColor, x.favMode, x.dateCreated, x.dateUpdated, x.blocked!)
           } else if (!res.exists) {
             throw `User not found.`
           }
@@ -61,7 +61,7 @@ export class UserInfoService {
           } else {
             gen = "./../../../../assets/avatar.png"
           }
-          this.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light");
+          UserInfoService.user = new User(res.user.uid, fname, sname, gender, mobile, gen, "", birthdate, false, "grey", "light");
           this.firestore.collection(`Users`).doc(res.user.uid).set({
             id: res.user.uid,
             firstName: fname,
@@ -78,7 +78,24 @@ export class UserInfoService {
             favMode: "light",
             blocked: false,
           })
+          localStorage.setItem('userdata', JSON.stringify({
+            id: res.user.uid,
+            firstName: fname,
+            secondName: sname,
+            gender: gender,
+            mobile: mobile,
+            picURL: gen,
+            coverPicURL: "",
+            birthDate: birthdate,
+            dateCreated: new Date().toISOString(),
+            dateUpdated: new Date().toISOString(),
+            privateAcc: false,
+            favColor: "grey",
+            favMode: "light",
+            blocked: false,
+          }))
         }
+        
 
       }).catch((err) => {
         this.loggedin = false;
@@ -94,11 +111,11 @@ export class UserInfoService {
   async signOut() {
     await this.fireAuth.signOut().then(
       res => {
-        console.log(res)
+        // console.log(res)
         this.loggedin = false;
         localStorage.removeItem('userauth');
         localStorage.removeItem('userdata');
-        this.user = new User();
+        UserInfoService.user = new User();
       }
     ).catch((err) => { console.log(`${err}`) });
   }
@@ -111,9 +128,9 @@ export class UserInfoService {
 
 
   async editProfile(user: User) {
-    if (this.user.id !== "") {
-      this.firestore.collection(`Users`).doc(this.user.id).update({
-        id: this.user.id,
+    if (UserInfoService.user.id !== "") {
+      this.firestore.collection(`Users`).doc(UserInfoService.user.id).update({
+        id: UserInfoService.user.id,
         firstName: user.firstName,
         secondName: user.secondName,
         gender: user.gender,
@@ -125,13 +142,13 @@ export class UserInfoService {
         privateAcc: user.privateAcc,
         favColor: user.favColor,
         favMode: user.favMode,
-        blocked: this.user.blocked,
+        blocked: UserInfoService.user.blocked,
         // notifications: user.notifications,
         // bookmarks: user.bookmarks,
         // followers: user.followers,
         // following: user.following,
       }).catch(err => { console.log(`${err}`) });
-    } else if (this.user.id === "") {
+    } else if (UserInfoService.user.id === "") {
       let userlocal = JSON.parse(localStorage.getItem('userdata')!)
       this.firestore.collection(`Users`).doc(userlocal.id).update({
         id: userlocal.id,
